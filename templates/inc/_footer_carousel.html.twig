@@ -1,0 +1,25 @@
+{# Le carrousel du footer #}
+
+<div id="carousel1">
+
+    {# On boucle sur Partenaire #}
+    {% for partenaire in partenaires %}
+        <div class="item">
+
+            {# On affiche le Logo cliquable #}
+            <div class="item__image">
+                <a href="{{ partenaire.url }}" target="_blank">
+                    <img alt="logo des partenaires de Velo Rando nature Bruz" src="{{ asset("logos/"~ partenaire.logo) }}"></a>
+
+            </div>
+
+            {# On affiche le nom Cliquable #}
+            <div class="item__body">
+                <div class="item__title">
+                    <a href="{{ partenaire.url }}" target="_blank">{{ partenaire.nom }}</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+

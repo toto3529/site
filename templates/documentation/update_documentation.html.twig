@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+{# La page Modification de Documentation #}
+{% block body %}
+    <div class="container">
+        <div class="form__documentation">
+
+            {# Le Titre #}
+            <div class="title_form  col-12">
+                <h1>Modification de la documentation</h1>
+            </div>
+
+            {# Le formulaire partie Gauche #}
+            <div class="gauche_form_documentation col-lg-6">
+                {{ form_start(form) }}
+                <p>Titre *</p>
+                {{ form_widget(form.titre) }}
+
+                <p>Intro *</p>
+                {{ form_widget(form.intro) }}
+
+                <p>PDF</p>
+                {{ form_widget(form.pdf) }}
+            </div>
+
+            {# Le formulaire partie Droite #}
+            <div class="droite_form_documentation col-lg-6">
+                <p>Categorie</p>
+                {{ form_widget(form.categorie) }}
+                <p>Url</p>
+                {{ form_widget(form.url) }}
+                <p>image</p>
+                {{ form_widget(form.image) }}
+
+            </div>
+            <div class="bas_form_documentation col-12">
+
+                {# Le bouton Valider #}
+                <div class="bas_form_documentation1">
+                    {{ form_widget(form.valider) }}
+                    {{ form_end(form) }}
+                </div>
+
+                {# Le bouton Retour #}
+                <div class="bas_form_documentation2">
+                    <a class="butonPersonnalise" href="{{ path('documentation') }}">Retour</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

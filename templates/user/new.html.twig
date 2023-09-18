@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvel Utilisateur  | {{ parent() }}{% endblock %}
+{# page de création d'un utilisateur #}
+
+{% block body %}
+    {% if is_granted("ROLE_ADMIN") %}
+        <div class="admin-cree-adherent-fond-noir container-fluid col-lg-6 col-sm-12">
+
+        {{ include('user/_form.html.twig') }}
+        </div>
+    {% else %}
+        <div class="row d-flex justify-content-center m-3">
+            <a href="{{ path('home1') }}" class=" btn btn-lg btn-danger "> vous n'avez pas accès à ces droits</a>
+        </div>
+    {% endif %}
+}
+
+{% endblock %}

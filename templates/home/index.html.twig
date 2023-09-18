@@ -1,0 +1,314 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} | Accueil {% endblock %}
+
+{% block body %}
+
+    {# La page d'accueil #}
+
+    <div class="container-fluid marginTop">
+
+        {# Le logo et le nom du site sous png #}
+        <div class="en-tete-accueil row col-lg-12 col-sm-12">
+            <div class="title col-lg-12">
+                <img src="{{ asset('logos/velorandonaturebruz_accueil.png') }}" alt="Nom de l'association">
+            </div>
+        </div>
+
+        {# encadré pour les évènements #}
+
+        <div class="encard-evenement col-lg-12 col-sm-12 col-xs-6">
+            <div class="div-home-actu-popup col-lg-5 col-sm-5">
+                {# On boucle sur actualite afin d'afficher toutes les actualites existante #}
+                {% for actualite in actualites %}
+                    {# Ici afficheactu est un boolean #}
+                    {# Si Actualité = 1 alors on l'affiche #}
+                    {% if actualite.afficheactu == 1 %}
+                        <div class="actu-home col-lg-8 col-sm-8 col-xs-8 border border-dark">
+                            <p>{{ actualite.actu }}</p>
+                            <div>
+                                {# Si il y a un lien pour l'actualité #}
+                                {% if(actualite.getUrl != null) %}
+                                    <a href="{{ actualite.url }}" target="_blank">site</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% else %}
+                    {% endif %}
+                {% endfor %}
+                {# On inclut les news sur les activités #}
+                <div class="popup_accueil">
+                    {% include ('home/_news_activite.html.twig') %}
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="grid-meteo">
+                    <iframe class="meteo_accueil" id="widget_meteo" scrolling="no" width="100" height="100"
+                            frameborder="0"
+                            src="https://meteofrance.com/widget/prevision/350470##B5EA86"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div class="carousel-container col-lg-12">
+            <div class="col-lg-12">
+                {# Paragraphe avant Carrousel #}
+                {% for texte in textes %}
+                    <p class="lead text-accueil">{{ texte.firstText | nl2br }} </p>
+                    {% if is_granted("ROLE_ADMIN") %}
+                        <div class="boutonModifierTexte">
+                            <button class="button_show btn btn-outline-success">Modifier le texte</button>
+                        </div>
+                        <div class="form-group formulaire" id="form">
+                            {{ form(formFirst) }}
+                            <div class="mt-3 mb-5 text-center">
+                                <p>{{ form_widget(formFirst.Enregistrer) }}</p>
+                                <button class="button_close btn btn-outline-secondary">Annuler</button>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <!----------------------- Carousel ----------------------------------->
+            <div class="description-accueil row">
+                <div class="slider">
+                    <div class="slide-track" style="--nbImages:{{ photos|length }}">
+
+                        {% for photo in photos %}
+                            {% if photo.getImage() is empty %}
+                            {% else %}
+                                <div class="slide">
+                                    <img src="{{ asset('album-photo/'~ photo.image) }}" alt="tof rando">
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            {# Paragraphe après Carrousel #}
+            <div class="col-lg-12">
+                {% for texte in textes %}
+                    <p class="lead text-accueil">{{ texte.secondText | nl2br }} </p>
+                    {% if is_granted("ROLE_ADMIN") %}
+                        <div class="boutonModifierTexte">
+                            <button class="button_show btn btn-outline-success">Modifier le texte</button>
+                        </div>
+                        <div class="form-group formulaire" id="form">
+                            {{ form(formSecond) }}
+                            <div class="mt-3 mb-5 text-center">
+                                <p>{{ form_widget(formSecond.Enregistrer) }}</p>
+                                <button class="button_close btn btn-outline-secondary">Annuler</button>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="center-hr">
+        <hr class="hr25-pourcent ">
+    </div>
+
+    <div class="col-lg-12">
+        {# Paragraphe #}
+        {% for texte in textes %}
+            <div class="texte">
+                <h2 id="h2-accueil">{{ texte.thirdText }}</h2>
+                {% if is_granted("ROLE_ADMIN") %}
+                    <div class="boutonModifierTexte">
+                        <button class="button_show btn btn-outline-success">Modifier le texte</button>
+                    </div>
+                    <div class="form-group formulaire" id="form">
+                        {{ form(formThird) }}
+                        <div class="mt-3 mb-5 text-center">
+                            <p>{{ form_widget(formThird.Enregistrer) }}</p>
+                            <button class="button_close btn btn-outline-secondary">Annuler</button>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="texte">
+                <h5 id="h5-accueil">{{ texte.fourthText | nl2br }}</h5>
+                {% if is_granted("ROLE_ADMIN") %}
+                    <div class="boutonModifierTexte">
+                        <button class="button_show btn btn-outline-success">Modifier le texte</button>
+                    </div>
+                    <div class="form-group formulaire" id="form">
+                        {{ form(formFourth) }}
+                        <div class="mt-3 mb-5 text-center">
+                            <p>{{ form_widget(formFourth.Enregistrer) }}</p>
+                            <button class="button_close btn btn-outline-secondary">Annuler</button>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    {# Les 4 cards de choix, leurs liens, leurs photo, et leurs effets #}
+    {% for texteEtiquette in textesEtiquettes %}
+        <div class="container">
+            <div class="paragraphe3">
+                {# Première Card #}
+                <div class=" justify-content-center col-lg-6 col-md-12 taille">
+                    <div class="hovereffect-home border-white mb-4">
+                        <a href="{{ path('randosvelo') }}">
+                            <img src="{{ asset('photo-activite/' ~  photoFirstEtiquette) }}"
+                                 class="card-img-top"
+                                 alt="randonnée à vélo">
+                            <div class="centered">{{ texteEtiquette.firstEtiquetteText | nl2br }}</div>
+                            <div class="overlay">
+                                <h2> {{ texteEtiquette.firstEtiquetteOverlay | nl2br }}</h2>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {# Seconde Card #}
+                <div class=" justify-content-center col-lg-6 col-md-12 taille">
+                    <div class="hovereffect-home border-white mb-4">
+                        <a href="{{ path('formations') }}">
+                            <img src="{{ asset('photo-activite/' ~  photoSecondEtiquette) }}"
+                                 class="card-img-top"
+                                 alt="Formations">
+                            <div class="centered">{{ texteEtiquette.secondEtiquetteText | nl2br }}</div>
+                            <div class="overlay">
+                                <h2>{{ texteEtiquette.SecondEtiquetteOverlay | nl2br }}</h2>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {# Troisième Card #}
+                <div class=" justify-content-center col-lg-6 col-md-12 taille">
+                    <div class="hovereffect-home border border-white mb-4">
+                        <a href="{{ path('pleinair') }}">
+                            <img src="{{ asset('photo-activite/' ~  photoThirdEtiquette) }}"
+                                 class="card-img-top"
+                                 alt="autres activités">
+                            <div class="centered">{{ texteEtiquette.thirdEtiquetteText | nl2br }}</div>
+                            <div class="overlay">
+                                <h2>{{ texteEtiquette.ThirdEtiquetteOverlay | nl2br }}</h2>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {# Quatrième Card #}
+                <div class=" justify-content-center col-lg-6 col-md-12 taille mb-4">
+                    <div class="hovereffect-home border border-white ">
+                        <a href="{{ path('activite_index') }}">
+                            <img src="{{ asset('photo-activite/' ~  photoFourthEtiquette) }}"
+                                 class="card-img-top"
+                                 alt="programme des activités">
+                            <div class="centered">{{ texteEtiquette.fourthEtiquetteText | nl2br }}</div>
+                            <div class="overlay">
+                                <h2>{{ texteEtiquette.FourthEtiquetteOverlay | nl2br }}</h2>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    {# Modification des 4 cards: texte, overlay, photo #}
+    {% if is_granted("ROLE_ADMIN") %}
+        <div class="paragraphe3">
+            {# First etiquette #}
+            <div class="etiquette_accueil col-2">
+                <div class="boutonModifierTexte">
+                    <button class="button_show btn btn-outline-success">Modifier la première étiquette</button>
+                </div>
+                <div class="form-group formulaire" id="form">
+                    {{ form(formFirstEtiquette) }}
+                    <div class="mt-3 mb-5 text-center">
+                        <p>{{ form_widget(formFirstEtiquette.Enregistrer) }}</p>
+                        <button class="button_close btn btn-outline-secondary">Annuler</button>
+                    </div>
+                </div>
+            </div>
+            {# Second etiquette #}
+            <div class="etiquette_accueil col-2">
+                <div class="boutonModifierTexte">
+                    <button class="button_show btn btn-outline-success">Modifier la deuxième étiquette</button>
+                </div>
+                <div class="form-group formulaire" id="form">
+                    {{ form(formSecondEtiquette) }}
+                    <div class="mt-3 mb-5 text-center">
+                        <p>{{ form_widget(formSecondEtiquette.Enregistrer) }}</p>
+                        <button class="button_close btn btn-outline-secondary">Annuler</button>
+                    </div>
+                </div>
+            </div>
+            {# Third etiquette #}
+            <div class="etiquette_accueil col-2">
+                <div class="boutonModifierTexte">
+                    <button class="button_show btn btn-outline-success">Modifier la troisième étiquette</button>
+                </div>
+                <div class="form-group formulaire" id="form">
+                    {{ form(formThirdEtiquette) }}
+                    <div class="mt-3 mb-5 text-center">
+                        <p>{{ form_widget(formThirdEtiquette.Enregistrer) }}</p>
+                        <button class="button_close btn btn-outline-secondary">Annuler</button>
+                    </div>
+                </div>
+            </div>
+            {# Fourth etiquette #}
+            <div class="etiquette_accueil col-2">
+                <div class="boutonModifierTexte">
+                    <button class="button_show btn btn-outline-success">Modifier la quatrième étiquette</button>
+                </div>
+                <div class="form-group formulaire" id="form">
+                    {{ form(formFourthEtiquette) }}
+                    <div class="mt-3 mb-5 text-center">
+                        <p>{{ form_widget(formFourthEtiquette.Enregistrer) }}</p>
+                        <button class="button_close btn btn-outline-secondary">Annuler</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="center-hr m-5">
+        <hr class="hr25-pourcent center">
+    </div>
+
+    <div class="col-lg-12">
+        {# Le texte sous les cards #}
+        <div class="text-bas-page example-wrapper">
+            {% for texte in textes %}
+                <div class="texte">
+                    <p class="lead text-accueil">{{ texte.fifthText | nl2br }} </p>
+                    {% if is_granted("ROLE_ADMIN") %}
+                        <div class="boutonModifierTexte">
+                            <button class="button_show btn btn-outline-success">Modifier le texte</button>
+                        </div>
+                        <div class="form-group formulaire" id="form">
+                            {{ form(formFifth) }}
+                            <div class="mt-3 mb-5 text-center">
+                                <p>{{ form_widget(formFifth.Enregistrer) }}</p>
+                                <button class="button_close btn btn-outline-secondary">Annuler</button>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="texte">
+                    <p class="lead text-accueil">{{ texte.sixthText | nl2br }}</p>
+                    {% if is_granted("ROLE_ADMIN") %}
+                        <div class="boutonModifierTexte">
+                            <button class="button_show btn btn-outline-success">Modifier le texte</button>
+                        </div>
+                        <div class="form-group formulaire" id="form">
+                            {{ form(formSixth) }}
+                            <div class="mt-3 mb-5 text-center">
+                                <p>{{ form_widget(formSixth.Enregistrer) }}</p>
+                                <button class="button_close btn btn-outline-secondary">Annuler</button>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

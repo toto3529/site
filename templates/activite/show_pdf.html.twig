@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+{# La page du pdf de l'activité #}
+{% block title %}{{ parent() }}{% endblock %}
+{% block body %}
+
+<div class="row container-profil">
+    <h1 class="col-12">Activité</h1>
+    <hr>
+</div>
+
+<div class="container-fluid">
+    <div class="row-container row">
+
+        <div class="container-fluid page_box">
+            <div class="container documentation__box">
+
+                <div class="documentation__show__header">
+                    {# On affiche le titre de l'activité #}
+                    <div class="title__show col-12">
+                        <p>{{ activites.nom }}</p>
+                    </div>
+                    {# On affiche le logo Calendrier avec la date de l'activité #}
+                    <div class="documentation_date_user-show col-12">
+                        <div class="documentation_date">
+                            <img src="{{ asset('tools/calendrier.png') }}" alt="icon de calendrier">
+                            <p>{{ activites.getDateActivite()| date('j F Y h:i') }}</p>
+                        </div>
+                    </div>
+
+                    <div class="center-hr">
+                        <hr>
+                    </div>
+
+                    <div class="documentation-show__main">
+
+                        {# Si l'image est différent de null on affiche l'image #}
+
+                        {% if(activites.pdf != null) %}
+                            <div class="documentation__pdf col-12">
+                                <embed src="{{ asset('pdf-activite/'~ activites.pdf) }}" type='application/pdf'/>
+                            </div>
+                        {% endif %}
+
+                    </div>
+                    <div class="documentation__option">
+
+                        <a href="{{ path('activite_index') }}">Retour</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    {% endblock %}

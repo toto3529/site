@@ -1,0 +1,60 @@
+.title-recap-activite hr{
+    width: 25%;
+}
+.title-activite hr{
+    width: 25%;
+}
+.title-recap-activite{
+    display: flex;
+    justify-content: center;
+    padding-top: 100px;
+    text-align: center;
+}
+.title-activite{
+    display: flex;
+    justify-content: center;
+    padding-top: 100px;
+    text-align: center;
+}
+.presentation-activite{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.activite-box{
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+}
+.activite{
+    text-align: center;
+    padding: 20px;
+    margin: 0;
+    border-radius: 5px;
+    background-color:rgba(215, 252, 197,0.3);
+}
+.image-box{
+    padding: 0;
+}
+.img-activite{
+    margin-right: 200px;
+}
+.image-activite{
+    max-width: content-box;
+    max-height: content-box;
+}
+.btn-activite{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+.text-activite{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    text-align: start;
+}
+
+

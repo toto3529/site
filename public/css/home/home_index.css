@@ -1,0 +1,247 @@
+#h2-accueil{
+    text-align: center;
+    margin: 40px;
+    font-weight: bold;
+    font-family: 'Caveat', cursive;
+    font-size: xxx-large;
+}
+#h5-accueil{
+    text-align: center;
+    margin: 40px;
+    font-family: 'Caveat', cursive;
+    font-size: xx-large;
+}
+.hovereffect-home:hover h2, .hovereffect:hover a.info {
+    opacity: 1;
+    filter: alpha(opacity=100);
+    -ms-transform: translatey(0);
+    -webkit-transform: translatey(0);
+    transform: translatey(0);
+}
+.hovereffect-home a.info {
+    text-decoration: none;
+    display: inline-block;
+    text-transform: uppercase;
+    color: #fff;
+    border: 1px solid #fff;
+    background-color: transparent;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    -webkit-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+    margin: 50px 0 0;
+    padding: 7px 14px;
+}
+.hovereffect-home a.info:hover {
+    box-shadow: 0 0 5px #fff;
+}
+.hovereffect-home:hover a.info {
+    -webkit-transition-delay: .2s;
+    transition-delay: .2s;
+}
+.hovereffect-home .overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}
+.hovereffect-home:hover .overlay {
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
+.hovereffect-home h2 {
+    text-transform: uppercase;
+    color: #fff;
+    text-align: center;
+    position: relative;
+    font-size: 17px;
+    background: rgba(0, 0, 0, 0.6);
+    -webkit-transform: translatey(-100px);
+    -ms-transform: translatey(-100px);
+    transform: translatey(-100px);
+    -webkit-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+    padding: 10px;
+}
+.hovereffect-home:hover img {
+    -ms-transform: scale(1.2);
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+}
+.description-accueil p{
+    display: flex;
+    justify-content: center;
+    margin: 40px;
+    font-size: x-large;
+}
+.logo img{
+    width: 340px;
+    height: 260px;
+}
+.title img{
+    width: 100%;
+    max-width: 1100px;
+    height: auto;
+}
+.hovereffect-home img {
+    display: block;
+    position: relative;
+    -webkit-transition: all .4s linear;
+    transition: all .4s linear;
+}
+.text-accueil{
+    text-align: center;
+    font-family: 'Caveat', cursive;
+    font-size: xx-large;
+}
+.en-tete-accueil{
+    margin-top: 80px;
+    margin-bottom: 10px;
+}
+.logo{
+    display: flex;
+    justify-content: center;
+}
+.title{
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    margin: 10px 0 30px 0;
+    padding: 20px;
+}
+.agenda{
+    font: bold 50px "Caveat";
+    text-align: center;
+}
+.popup_accueil{
+    display: block;
+    text-align: center;
+    padding: 20px;
+    font: bold 70px "Caveat";
+
+}
+.actu-home{
+    display: block;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #B5EA86;
+    text-align: center;
+    padding: 20px;
+    margin: 5px;
+    align-items: center;
+    font: bold 20px Arial;
+    border-radius: 15px;
+}
+.div-home-actu-popup{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-image: url("../../background/arbre-evenements.jpg");
+    background-size: cover;
+    background-position: bottom;
+    padding: 20px;
+    align-items: center;
+    box-shadow: 5px 2px 10px black;
+    border-radius: 15px;
+}
+@media screen and (max-width: 1024px){
+    .div-home-actu-popup{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        background-image: url("../../background/arbre-evenements.jpg");
+        background-size: cover;
+        background-position: bottom;
+        padding: 20px;
+        align-items: center;
+        box-shadow: 5px 2px 10px black;
+        border-radius: 15px;
+        width: 100%;
+    }
+
+}
+.photo_evenement{
+    max-width: 100%;
+    max-height: 100%;
+}
+.global-div-home-actu-popup{
+    display: flex;
+    justify-content: center;
+}
+.decoration-button-voir{
+    text-decoration: none;
+    color: black;
+}
+.paragraphe2{
+    display: flex;
+    justify-content: center;
+}
+.text-bas-page{
+    text-align: center;
+    margin: 40px;
+    font-size: x-large;
+}
+.size-div-rfap-home{
+    width: 25%;
+    height: 25%;
+    background-color: orange;
+}
+.paragraphe3{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.taille{
+    padding: 20px;
+    width: 500px ;
+    height: 300px;
+}
+.hovereffect-home {
+    width: 100%;
+    height: 100%;
+    float: left;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    cursor: default;
+    margin: 20px;
+}
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fefefe;
+    font-weight: 700;
+    font-size: xx-large;
+    text-shadow: 0 1px 0 #000;
+}
+.meteo_accueil {
+    margin-top: 10px;
+}
+.grid-meteo {
+    display: flex;
+ justify-content: flex-end;
+    margin-left: 50px;
+}
+ .centered-activite {
+     text-align: center;
+     margin-left: 40px;
+ }
+.encard-evenement{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.marginTop{
+    margin-top: 100px;
+}

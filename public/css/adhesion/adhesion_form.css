@@ -1,0 +1,84 @@
+.text-adhesion{
+    text-align: center;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.hr-bulletin-adhesion{
+    border: none;
+    height: 1px;
+    background: white;
+}
+.container-adhesion{
+    padding: 0;
+    margin: 0;
+}
+.adhesion_title_centre{
+    text-align: center;
+    margin-top: 20px;
+}
+.gauche-adhesion{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.global-adhesion{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+}
+.taille-text-adhesion{
+    font: oblique 20px Arial;
+}
+.map-ahesion{
+    margin: auto;
+}
+.text-important-adhesion{
+    margin-top: 75px;
+    display: flex;
+    justify-content: center;
+}
+.adhesion-fond-noir{
+    background-color:rgba(215, 252, 197,0.3);
+    color: black;
+    border-radius: 15px;
+    border:solid 1px;
+    justify-content: center;
+    padding-top: 1%;
+}
+.adhesion_form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0 40px 0;
+}
+.obligation{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.je_reconnais{
+padding: 0 10px 0 10px;
+}
+
+
+
+.champ_je_reconnais{
+    padding: 0 20px 0 20px;
+}
+
+#texteAdhésion{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    width:95%;
+    margin: auto;
+}
+
+.titreAdhesion {
+    text-align: center;
+    font-family: "Times New Roman", fantasy;
+}

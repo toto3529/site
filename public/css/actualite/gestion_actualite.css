@@ -1,0 +1,30 @@
+.gestion-actualite-global{
+    margin-top:100px;
+    display: flex;
+    justify-content: center;
+    flex-direction:row ;
+    flex-wrap: wrap;
+}
+.gestion-actualite{
+    background-color: #ffcc00;
+    display: flex;
+    justify-content: center;
+}
+.title-actualite-gestion{
+    display: flex;
+    justify-content: center;
+}
+.actualite-gestion{
+    margin: 20px;
+    padding: 20px;
+    background-color: #FFFFFF;
+    box-shadow: 5px 2px 10px black;
+    border-radius: 15px;
+    border:solid 1px;
+    width: 500px;
+    text-align: center;
+}
+.button-supprimer-modifier-actualite{
+    display: flex;
+    justify-content: center;
+}

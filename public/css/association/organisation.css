@@ -1,0 +1,258 @@
+#img-bureau{
+    width: 800px;
+    height: 600px;
+}
+.prenom_nom_user p {
+    margin: 5px;
+}
+.bureau_main{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 100px;
+
+}
+.partie1{
+    margin: 50px;
+    width: max-content;
+}
+.president{
+    margin: 10px;
+}
+.tresorier{
+    margin: 10px;
+}
+.secretaire{
+    margin: 10px;
+}
+.teste{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+}
+.role_format{
+    display: flex;
+    flex-direction: row;
+
+}
+.role_user{
+    text-align: center;
+    font-size: large;
+    font-style: oblique;
+    font-weight: lighter;
+    margin: 5px;
+}
+.prenom_nom_user{
+    display: flex;
+    flex-direction: row;
+    font-size: x-large;
+    font-style: oblique;
+    font-weight: lighter;
+}
+.president{
+    padding: 10px;
+}
+.other{
+    padding: 10px;
+    margin: 10px;
+}
+.secretaire_tresorier{
+    padding: 10px;
+}
+.centre-organisation{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/*** Gestion de l'organigramme **/
+.bordure{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around ;
+    margin: 100px auto auto;
+    width: 90%;
+}
+
+.carte-entete{
+    margin-top:2px;
+    background-color: #fbfff0;
+    border: 1px solid black;
+    border-radius: 2px 2px 0 0;
+}
+
+.card-nom .card-prenom{
+    text-align: center;
+}
+
+.card-body{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    background-color: #f4f4e6;
+    max-height: 70px;
+    border:1px solid black;
+}
+
+.card-body:hover{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    background-color: #f4f4e6;
+}
+
+.card-bodyTest{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: #00acc1;
+}
+
+.cacher{
+    display: none;
+}
+
+.modifierMembre{
+    display: flex;
+    background-color: #5c6bc0;
+}
+
+.boutonModifier {
+    background-color: white;
+}
+
+.nomPrenom{
+    font-size: 1.25vw;
+    margin-bottom: 0;
+}
+
+.equipeDeveloppement{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: auto;
+}
+
+.EDBloc{
+    font-size: 0.75em;
+}
+
+#extraBordure{
+    margin-top: 30vh;
+}
+
+.row{
+    border : none;
+}
+
+.boxLigneRef1{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.boxLigneRef2{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.carte{
+    margin: 2vw;
+}
+
+.margin-bottom{
+    margin-bottom: 0;
+}
+
+.margin-right{
+    margin-right: 3vh;
+}
+
+
+@media (max-width: 992px){
+    .role_user{
+        font-size: 1.65vw;
+    }
+
+    .nomPrenom{
+        font-size: 2vw;
+        margin-bottom:0;
+        }
+
+    .card-body{
+        min-height: 80px;
+    }
+
+}
+
+@media (max-width: 768px){
+    .role_user{
+        font-size: 1.5vw;
+    }
+
+    .nomPrenom{
+        font-size: 2vw;
+    }
+}
+
+
+    @media ( max-width: 576px){
+
+        .role_user{
+            font-size: 2vw;
+        }
+
+        .nomPrenom{
+            font-size: 2vw;
+        }
+
+        .card-body{
+            width: 60px;
+        }
+        .carte-entete{
+            width: 60px;
+        }
+
+        .EDBloc{
+            font-size: 0.5em;
+            margin:0;
+        }
+}
+
+@media ( max-width: 535px){
+
+    .role_user{
+        font-size: 2vw;
+    }
+
+    .nomPrenom{
+        font-size: 2vw;
+    }
+
+    .card-body{
+        width: 80px;
+    }
+    .carte-entete{
+        width: 80px;
+    }
+
+    .EDBloc{
+        font-size: 0.5em;
+        margin:0;
+    }
+}
+
+
+
+
+
+

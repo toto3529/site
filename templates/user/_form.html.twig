@@ -1,0 +1,61 @@
+{{ form_start(form) }}
+<div class="form_adhérent">
+    <div class="centre_form_adhérent">
+                <div class="title_form">
+                    <h1>Création d'un nouvel adhérent</h1>
+                </div>
+                <div class="adhérent_widget">
+                    <p>Role :</p>
+                    <p>{{ form_widget(form.roles) }}</p>
+                </div>
+                <div class="adhérent_widget">
+                    <p>Référent :</p>
+                    <p>{{ form_widget(form.referents) }}</p>
+                </div>
+               <div class="adhérent_widget">
+                   <p>Prénom :</p>
+                   <p>{{ form_widget(form.prenom) }}</p>
+               </div>
+                <div class="adhérent_widget">
+                    <p>Nom :</p>
+                    <p>{{ form_widget(form.nom) }}</p>
+                </div>
+                <div class="adhérent_widget">
+                    <p>Pseudo :</p>
+                    <p>{{ form_widget(form.username) }}</p>
+                    <p> {{ form_errors(form.username) }}</p>
+                </div>
+                <div class="adhérent_widget">
+                    <p>Mail :</p>
+                    <p>{{ form_widget(form.email) }}</p>
+                </div>
+                <div class="adhérent_widget">
+                    <p>Téléphone :</p>
+                    <p>{{ form_widget(form.telephone) }}</p>
+                </div>
+                <div class="adhérent_widget">
+                    <p>Mot de passe:</p>
+                    <p>{{ form_widget(form.password) }}</p>
+                </div>
+                <div class="adhérent_widget">
+                    <p>Date de naissance :</p>
+                    <p>{{ form_widget(form.date_naissance) }}</p>
+                </div>
+                <div class="adhérent_widget">
+                    <p>Photo du profil :</p>
+                    <p>{{ form_widget(form.photos) }}</p>
+                </div>
+    </div>
+    <div class="bas_form_adhérent col-12">
+        <div class="bas_form_adhérent1">
+            {{ form_widget(form.enregistrer) }}
+            {{ form_end(form) }}
+        </div>
+        <div class="bas_form_adhérent2">
+            <a href="{{ path('user_index') }}" class="btn btn-secondary">Retour</a>
+        </div>
+    </div>
+</div>
+
+
+

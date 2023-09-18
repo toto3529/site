@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} | modifier Activite{% endblock %}
+{# twig d'affichage de la page modifier activite #}
+{% block body %}
+    {% if is_granted("ROLE_ADMIN") %}
+        <div class="container">
+            <div class="form__activite">
+                <div class="title_form  col-lg-12">
+                    <h1>Modification d'une activité</h1>
+                </div>
+                <div class="gauche-form-activite col-lg6">
+                    {{ form_start(form) }}
+                    <p>Nom: {{ form_widget(form.nom) }}</p>
+                    <p>Categorie: {{ form_widget(form.categoriesFormation) }}</p>
+                    <p>Date: {{ form_widget(form.date_activite) }}</p>
+                    <p>Durée (min): {{ form_widget(form.duree) }}</p>
+                    <p>Distance (km): {{ form_widget(form.distance) }}</p>
+                    <p>Infos: {{ form_widget(form.infos_activite) }}</p>
+                </div>
+                <div class="droite-form-activite col-lg-6">
+                    <p>Denivele: {{ form_widget(form.denivele) }}</p>
+                    <p>Difficulte: {{ form_widget(form.difficulte) }}</p>
+                    <p>Lieu: {{ form_widget(form.lieu) }}</p>
+                    <p>Nombre total de participants : {{ form_widget(form.totalParticipant) }}</p>
+                    <p>PDF: {{ form_widget(form.pdf) }}</p>
+
+                </div>
+                <div class="bas-form-activite col-12">
+                    <div class="bas-form-activite1">
+                        {{ form_widget(form.Valider) }}
+                        {{ form_end(form) }}
+                    </div>
+                    <div class="bas-form-activite2">
+                        <a class="butonPersonnalise" href="{{ path('activite_index') }}">Retour</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

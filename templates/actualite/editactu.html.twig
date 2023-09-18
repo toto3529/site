@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification d'actualite |{{ parent() }}{% endblock %}
+{# La page Modification d'actualité #}
+{% block body %}
+    <div class="global-actualite">
+        <div class="actualite-fond-noir">
+
+            {# Le titre #}
+            <div class="title-actualite">
+                <h1 class="col-12">Modification d'une Actualité</h1>
+            </div>
+
+            {# Le formulaire #}
+            <div class="div-form-actu">
+                {{ form_start(form) }}
+                <label>Actualite : </label>
+                <p>{{ form_widget(form.actu) }}</p>
+                <label>Url : </label>
+                <p>{{ form_widget(form.url) }}</p>
+                <label>Date de publication :</label>
+                <p>{{ form_widget(form.date_actu) }}</p>
+                <p>{{ form_widget(form.affiche_actu) }}</p>
+
+                <p class="button-valider-actualite-create">{{ form_widget(form.Valider) }}</p>
+
+                {{ form_end(form) }}
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

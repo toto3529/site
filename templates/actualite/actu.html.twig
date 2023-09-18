@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Création d'actualite |{{ parent() }}{% endblock %}
+{# La page Création d'actualité #}
+{% block body %}
+    <div class="global-actualite">
+    <div class="actualite-fond-noir">
+
+        {# Le titre #}
+        <div class="title-actualite">
+            <h1 class="col-12">Création d'une Actualité</h1>
+        </div>
+
+        {# Le formulaire #}
+        <div class="div-form-actu">
+            {{ form_start(form) }}
+            <label>Actualite : </label>
+            <p>{{ form_widget(form.actu) }}</p>
+            <label>Url : </label>
+            <p>{{ form_widget(form.url) }}</p>
+            <label>Date de publication :</label>
+            <p>{{ form_widget(form.date_actu) }}</p>
+            <p>{{ form_widget(form.affiche_actu) }}</p>
+            <div class="bas-form-activite col-12">
+
+                <div class="bas-form-activite1">
+                   {{ form_widget(form.Valider) }}
+                        {{ form_end(form) }}
+                </div>
+
+                <div class="bas-form-activite2">
+                    <a class="btn btn-secondary" href="{{ path('home1') }}">Retour</a>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

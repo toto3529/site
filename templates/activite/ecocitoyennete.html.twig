@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} | ecocitoyenneté{% endblock %}
+
+{# La page ecocitoyennete #}
+
+{% block body %}
+
+
+    {# Le titre #}
+    <div class="container container-profil">
+        {% if photoIntro is not empty %}
+            <figure class="textcenter">
+                <img src="{{ asset('photo-intro/'~ photoIntro) }}"
+                     alt="Ecocitoyenneté">
+                <figcaption class="fig" >Nos rendez-vous Ecocitoyenneté</figcaption>
+            </figure>
+        {% else %}
+            <h1 class="titreEnTete">Nos rendez-vous Ecocitoyenneté</h1>
+        {% endif %}
+        <div class="col-lg-12">
+            {% if is_granted("ROLE_ADMIN") %}
+                <div class="boutonModifierTexte">
+                    <button class="button_show btn btn-outline-success">Modifier la photo</button>
+                </div>
+                <div class="form-group formulaire" id="form">
+                    {{ form(formPhotoIntro) }}
+                    <div class="mt-3 mb-5 text-center">
+                        <p>{{ form_widget(formPhotoIntro.Enregistrer) }}</p>
+                        <button class="button_close btn btn-outline-secondary">Annuler</button>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+    <div class="center-hr">
+        <hr class="hr25-pourcent center">
+    </div>
+
+    {# Le corps de la page #}
+
+    <div class="container-fluid">
+        <div class="row">
+            {% for texte in textes %}
+
+                {# texte sous le titre #}
+                <div class="presentation-activite col-12"><br>
+                    <p> {{ texte.EcocitoyenneteTextIntro | nl2br }} </p>
+                </div>
+                {% if is_granted("ROLE_ADMIN") %}
+            <div class="boutonModifierTexte">
+                <button class="button_show btn btn-outline-success">Modifier le texte</button>
+            </div>
+            <div class="form-group formulaire" id="form">
+                    {{ form(formIntro) }}
+                <div class="mt-3 mb-5 text-center">
+                    <p>{{ form_widget(formIntro.Enregistrer) }}</p>
+                    <button class="button_close btn btn-outline-secondary">Annuler</button>
+                </div>
+            </div>
+                {% endif %}
+
+                {# Premier encadré #}
+                <div class="activite-box col-11">
+                    <div class="activite border border-dark row col-12">
+                        <a class="btn-activite btn btn-success col-lg-2 col-12"
+                           href="{{ path('activite_index') }}">
+                            <h3>  {{ texte.ecocitoyenneteTitle | nl2br }}</h3>
+                        </a>
+                        <div class="text-activite col-lg-8 col-xs-12">
+                            <p>
+                                {{ texte.ecocitoyenneteText | nl2br }}
+                            </p>
+                        </div>
+                        <div class="image-box col-lg-2 col-xs-12">
+                            <img class="image-activite" src="{{ asset('photo-activite/' ~  photoEcocitoyennete) }}" alt="illustre l'écocitoyenneté">
+                        </div>
+                        {# Modification du texte et photo #}
+                            {% if is_granted("ROLE_ADMIN") %}
+                                <div class="boutonModifierTexte">
+                                    <button class="button_show btn btn-outline-success">Modifier le titre, le texte et/ou la photo
+                                    </button>
+                                </div>
+                                <div class="form-group formulaire" id="form">
+                                    {{ form(formEcocitoyennete) }}
+                                    <div class="mt-3 mb-5 text-center">
+                                        <p>{{ form_widget(formEcocitoyennete.Enregistrer) }}</p>
+                                        <button class="button_close btn btn-outline-secondary">Annuler</button>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

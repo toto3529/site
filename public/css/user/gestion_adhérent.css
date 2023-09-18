@@ -1,0 +1,37 @@
+.titre-gestion-adherents{
+margin-top: 120px;
+}
+.police-email{
+    font: oblique 12px Arial;
+}
+.global-div-adherents{
+    justify-content: center;
+}
+.div-group-un-adherent{
+    justify-content: center;
+}
+.div-un-adherent{
+    background-image:url("../../content/fond_adherent.jpg") ;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: black;
+    font-weight: bold;
+    border-radius: 10px;
+    border:solid 1px;
+    margin: 3%;
+    height: 100%;
+    width: 100%;
+}
+.pseudo-div-un-adherent{
+    font: oblique 40px "Freestyle Script";
+    color: white;
+}
+.button-supprimer-profil-admin{
+    border-radius: 15px;
+}
+.button-modifier-profil-admin{
+    border-radius: 15px;
+}
+.button-div-modifier-profil-admin{
+    text-align: right;
+}

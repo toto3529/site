@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{# La page Modification de Partneaire #}
+{% block body %}
+    <div class="container-fluid row page__container">
+
+    <div class="container-fluid box1">
+        {# Le formulaire #}
+            <div class="main__partenaire">
+
+                <div class="form__partenaire">
+                    <h1 class="title col-12">Modification Partenaire</h1>
+
+                    {{ form_start(form) }}
+
+                <label>Nom du partenaire : </label>
+                {{ form_widget(form.nom) }}
+                <label>Logo du Partenaire : </label>
+                {{ form_widget(form.logo) }}
+                <label>Url du site partenaire : </label>
+                {{ form_widget(form.url) }}
+
+                    <div class="div-button-partenaire">
+                        {{ form_widget(form.Valider) }}
+                        <a href="{{ path('partenaire') }}" class="btn btn-primary partenaire-button-retour">Retour</a>
+                    </div>
+                    {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

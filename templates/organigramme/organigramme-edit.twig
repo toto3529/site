@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modif des utilisateurs  | {{ parent() }}{% endblock %}
+{# La page de liste des user #}
+
+{% block body %}
+
+
+<div class="bordure mt-10" id="extraBordure">
+
+    <div class="d-flex flex-column center  ">
+        <p class="d-flex justify-content-center"> Quelle référent attribuer à <span>&nbsp{{ user.prenom}}&nbsp{{ user.nom}}</span>?</p>
+        <p class="d-flex justify-content-center"> ( actuellement&nbsp <span>{{ user.referents }}</span>)</p>
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center">
+    {{ form_start(form)}}
+        <div>
+            {{ form_label(form.nom, 'Référent') }}
+            {{ form_errors(form.nom) }}
+            {{ form_widget(form.nom) }}
+        </div>
+            {{ form_row(form.ordre) }}
+        <div class="mt-2 mx-auto">
+            {{ form_row(form.Enregistrer) }}
+        </div>
+    {{ form_end(form)}}
+    </div>
+
+
+
+    <div>
+        <h5>Attribution de l'ordre</h5>
+        <ul>
+            <li>1 - Président et adjoint</li>
+            <li>2 - Trésorier, Secrétaire et adjoints</li>
+            <li>3 - Autres Référents</li>
+            <li>4 - Adhérents</li>
+        </ul>
+    </div>
+</div>
+
+    {% block carousel%}{% endblock %}
+
+{% endblock %}

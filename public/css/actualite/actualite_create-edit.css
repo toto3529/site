@@ -1,0 +1,27 @@
+.div-form-actu{
+    display: flex;
+    justify-content: center;
+}
+.title-actualite{
+    justify-content: center;
+    display: flex;
+    text-align: center;
+}
+.actualite-fond-noir{
+    margin-top: 120px;
+    max-height: 500px;
+    max-width: 500px;
+    background-color:rgba(215, 252, 197,0.3);
+    color: black;
+    border-radius: 15px;
+    border:solid 1px;
+    padding:20px ;
+}
+.global-actualite{
+    display: flex;
+    justify-content: center;
+}
+.button-valider-actualite-create{
+    display: flex ;
+    justify-content: center;
+}

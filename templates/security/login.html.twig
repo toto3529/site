@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion | {{ parent() }}{% endblock %}
+{# La page de login #}
+{% block body %}
+
+    <form method="post">
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+
+        <div class="row tilte__login">
+            <div class="col-auto form-login-fond-noir">
+                <h1 class="h3 mb-3 font-weight-normal">Connectez-vous </h1>
+                <label for="inputUsername">Pseudo</label>
+                <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control"
+                       required autofocus>
+                <label for="inputPassword">Mot de passe</label>
+                <input type="password" name="password" id="inputPassword" class="form-control" required>
+
+                <input type="hidden" name="_csrf_token"
+                       value="{{ csrf_token('authenticate') }}"
+                >
+                <div class="placement-button-envoyer-login">
+                <button class="btn btn-lg button-adherez-login btn-block button-style-envoyer" type="submit">
+                    Se connecter
+                </button>
+                </div>
+                <a class="button-style-login" href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a>
+            </div>
+
+
+        </div>
+        <h2 class="text-center mt-5">Nouveau sur le site ?</h2>
+        <div class=" d-flex justify-content-center">
+
+            <a href="{{ path('adhesion') }}" class="btn btn-lg button-adherez-login m-3">
+                Adhérer à l'association
+            </a>
+        </div>
+    </form>
+
+{% endblock %}

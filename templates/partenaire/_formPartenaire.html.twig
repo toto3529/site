@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+    <div class="main__partenaire">
+        <div class="form__partenaire">
+            <div class="title_form col-12">
+                <h1>Création d'un Partenaire</h1>
+            </div>
+            <label>Nom:</label>
+            {{ form_start(formPartenaire) }}
+            {{ form_widget(formPartenaire.nom) }}
+            <p id="form_file">{{ form_widget(formPartenaire.logo) }}</p>
+            <label>Url:</label>
+            {{ form_widget(formPartenaire.url) }}
+
+            <div class="bas-form-activite col-12">
+
+                <div class="bas-form-activite1">
+                    {{ form_widget(formPartenaire.Valider) }}
+                    {{ form_end(formPartenaire) }}
+                </div>
+                <div class="bas-form-activite2">
+                    <a class="btn btn-secondary" href="{{ path('home1') }}">Retour</a>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+{% endblock %}

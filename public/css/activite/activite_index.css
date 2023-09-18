@@ -1,0 +1,175 @@
+#date-activite{
+    font-weight: bold;
+    font-size: x-large;
+}
+#title-activite{
+    font-weight: bold;
+    align-items: center;
+
+}
+.activite-container:hover .detail-container{
+    display: block;
+    background-color:rgba(215, 252, 197);
+}
+.type-activite a {
+    text-decoration: none;
+}
+.boutton_box a{
+    margin: 0 5px 0 5px;
+}
+.date-container p{
+    padding: 0;
+    margin: 2px;
+}
+.inscrit p {
+    display: flex;
+    align-items: center;
+    align-content: center;
+}
+.is-inscrit img{
+    max-width: 25px;
+    max-height: 25px;
+}
+.difficulte-activite img{
+    max-width: 100px;
+    max-height: 100px;
+}
+.présentation-programme{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+.filter{
+    display: block;
+    position: sticky;
+    top: 90px;
+    padding: 20px;
+    margin-top: 20px;
+    margin-right: 20px;
+    border: solid black 1px;
+    border-radius: 8px;
+    background-color: rgba(215, 252, 197,0.3);
+    background-image: url("../../background/feuille4.png");
+}
+.row-container{
+    padding-right: 20px;
+    padding-left: 20px;
+}
+.activite-container{
+    display: flex;
+
+
+    justify-content: center;
+    padding: 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    border: solid 1px black;
+    border-radius: 8px;
+    background-image: url("../../content/forest.jpg");
+}
+.sans-detail-container{
+    display: flex;
+    justify-content: space-evenly;
+    margin: 20px;
+    padding: 0;
+    border-radius: 8px;
+}
+.date-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: -20px;
+    border-radius: 8px;
+    margin: 20px;
+    background-color:rgba(215, 252, 197);
+
+}
+.nom-container{
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+}
+.info-activite {
+    padding: 0;
+    margin: 0;
+    background-color:rgba(215, 252, 197);
+}
+.type-activite-lieu{
+    margin: 0;
+    align-content: center;
+}
+.type-activite{
+    align-content: center;
+}
+.font-bold-activite{
+    font-weight: bold;
+    align-content: center;
+}
+.padding-activite{
+    align-content: center;
+}
+.is-inscrit{
+    display: flex;
+    justify-content: flex-end;
+    padding: 0;
+}
+.detail-container{
+    display: block;
+    background-color: white;
+    border-radius: 8px;
+    margin: 20px;
+    padding: 0;
+}
+.detail-gauche{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-left: 40px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.detail-droite{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-right: 40px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.buton-container{
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    background-color:rgba(215, 252, 197);
+}
+.boutton_box{
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-left: 60px;
+}
+.centered-activite {
+    text-align: center;
+    margin-left: 60px;
+}
+
+.margin_titre {
+    text-align: center;
+}
+
+ol {
+    padding:0;
+}
+
+
+.container-photo{
+    align-content: center;
+    padding-right: 210px;
+    padding-left: 210px;
+}
+.inscrit{
+    background-color:rgba(215, 252, 197);
+}

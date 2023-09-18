@@ -1,0 +1,75 @@
+.album_photo_date p, .album_photo_user p{
+    color: lightslategray;
+}
+.album_photo_etiquette, .album_photo_etiquette p{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: lightgray;
+    margin: 0 5px 0 5px;
+    padding: 1px;
+    width: max-content;
+    border-radius: 5px;
+    color: lightslategray;
+    font-style: italic;
+}
+.album_photo_date img, .album_photo_user img{
+    margin: 0 10px 0 10px;
+    width: 20px ;
+    height:20px ;
+    object-fit: contain;
+}
+.album_photo_date, .album_photo_user{
+    display: flex;
+    flex-direction: row;
+    width: 250px;
+    height: 40px;
+}
+.title_album_photo a {
+    text-decoration: none;
+}
+.bas_album_photo a {
+    margin: 0 10px 0 10px;
+    text-decoration: none;
+}
+.nom_prenom_user_album_photo p {
+    padding: 5px;
+}
+.album_photo_etiquette img{
+    width: 20px ;
+    height:20px ;
+    object-fit: contain;
+}
+.album_photo_main{
+    margin: 150px 10px 10px 10px;
+    padding: 0;
+}
+.title_album_photo{
+    font-size: xx-large;
+    font-weight: lighter;
+    margin: 10px;
+    color:royalblue ;
+}
+
+.nom_prenom_user_album_photo{
+    display: flex;
+    flex-direction: row;
+}
+.album_photo_resume{
+    margin: 10px;
+}
+.bas_album_photo{
+    display: flex;
+    justify-content: flex-end;
+    margin: 5px;
+}
+.album_photo{
+    padding: 20px;
+    border-radius: 5px;
+}
+.container_album_photo{
+    background: white;
+    margin: 20px;
+    padding: 0;
+    border-radius: 20px;
+}

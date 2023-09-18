@@ -1,0 +1,9 @@
+.centered_text {
+    justify-content: center;
+    top: 150px;
+    color: #fefefe;
+    font-weight: 700;
+    font-size: xxx-large;
+    text-shadow: 0 1px 0 #000;
+}
+
