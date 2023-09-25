@@ -2,101 +2,72 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Activite;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-/**
- * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(fields={"username"}, message="Il y a déjà un compte avec ce pseudo")
- */
-class User implements UserInterface
+#[ORM\Entity(repositoryClass: 'App\Repository\UserRepository')]
+#[UniqueEntity(fields: ['username'], message: 'Il y a déjà un compte avec ce pseudo')]
+
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-
-     * @Assert\Length(max=50, maxMessage="Maximum 50 caracteres")
-     * @ORM\Column(type="string", length=50, unique=true)
-     */
+    #[Assert\Length(max: 50, maxMessage: 'Maximum 50 caracteres')]
+    #[ORM\Column(type: 'string', length: 50, unique: true)]
     private $username;
 
-    /**
-     *
-     * @ORM\Column(type="json")
-     */
+    #[ORM\Column(type: 'json')]
     private $roles = [];
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
      */
-    private $password;
+    
+    #[ORM\Column(type: 'string')]
+    private ?string $password;
 
-    /**
-     * @Assert\Type("string")
-     * @Assert\NotBlank(message="Veuillez inscrire votre nom")
-     * @ORM\Column(type="string", length=60)
-     */
+    #[Assert\Type('string')]
+    #[Assert\NotBlank(message: 'Veuillez inscrire votre nom')]
+    #[ORM\Column(type: 'string', length: 60)]
     private $nom;
 
-    /**
-
-     * @ORM\Column(type="string", length=60)
-     */
+    #[ORM\Column(type: 'string', length: 60)]
     private $prenom;
 
-    /**
-     * @ORM\Column(type="string", length=20, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 20, nullable: true)]
     private $telephone;
 
-    /**
-
-     * @Assert\Email()
-     * @ORM\Column(type="string", length=255)
-     */
+    #[Assert\Email()]
+    #[ORM\Column(type: 'string', length: 255)]
     private $email;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_naissance;
 
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Activite::class, inversedBy="users")
-     */
+    #[ORM\ManyToMany(targetEntity: Activite::class, inversedBy: 'users')]
     private $inscription;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Activite::class, mappedBy="organisateur",cascade={"remove"})
-     */
+    #[ORM\OneToMany(targetEntity: Activite::class, mappedBy: 'organisateur', cascade: ['remove'])]
     private $activite;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Photo::class, mappedBy="adhherent",
-     *     cascade={"persist","remove"})
-     */
+    #[ORM\OneToMany(targetEntity: Photo::class, mappedBy: 'adhherent', cascade: ['persist', 'remove'])]
     private $photos;
 
-    /**
-     * @ORM\ManyToOne (targetEntity=Referent::class, inversedBy="user")
-     */
+    #[ORM\ManyToOne(targetEntity: Referent::class, inversedBy: 'user')]
     private $referents;
 
     public function __toString()
     {
-        return $this->getUsername();
+        return $this->getUserIdentifier();
     }
 
     public function __construct()
@@ -116,6 +87,11 @@ class User implements UserInterface
      *
      * @see UserInterface
      */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->username;
+    }
+
     public function getUsername(): string
     {
         return (string) $this->username;
@@ -148,7 +124,7 @@ class User implements UserInterface
     }
 
     /**
-     * @see UserInterface
+     * @see PasswordAuthenticatedUserInterface
      */
     public function getPassword(): string
     {
@@ -167,13 +143,14 @@ class User implements UserInterface
      */
     public function getSalt()
     {
-        // not needed when using the "bcrypt" algorithm in security.yaml
+        return null;
+        // not needed when using the 'bcrypt' algorithm in security.yaml
     }
 
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;

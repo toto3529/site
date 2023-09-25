@@ -2,31 +2,25 @@
 
 namespace App\Entity;
 
-use App\Repository\EtatRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Activite;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\EtatRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * @ORM\Entity(repositoryClass=EtatRepository::class)
- */
+#[ORM\Entity(repositoryClass: EtatRepository::class)]
+
 class Etat
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $libelle;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Activite::class, mappedBy="etat")
-     */
+    #[ORM\OneToMany(targetEntity: Activite::class, mappedBy: 'etat')]
     private $activites;
 
     public function __toString()

@@ -2,115 +2,76 @@
 
 namespace App\Entity;
 
-use App\Repository\DocumentationRepository;
 use DateTimeInterface;
+use App\Entity\Categorie;
+use App\Entity\Commentaire;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\DocumentationRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[ORM\Entity(repositoryClass: DocumentationRepository::class)]
 
-/**
- * @ORM\Entity(repositoryClass=DocumentationRepository::class)
- */
 class Documentation
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $date_creation;
 
-    /**
-    * @ORM\Column(type="datetime", nullable=true)
-    */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_modifier;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $auteur;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $titre;
 
-    /**
-     * @ORM\ManyToOne (targetEntity=Categorie::class, inversedBy="documentation")
-     * @Assert\Type(type="App\Entity\Categorie")
-     */
+    #[ORM\ManyToOne (targetEntity: Categorie::class, inversedBy: 'documentation')]
+    #[Assert\Type(type: 'App\Entity\Categorie')]
     private $categorie;
 
-    /**
-     * @ORM\Column (type="text")
-     */
+    #[ORM\Column (type: 'text')]
     private $intro;
-    /**
-     * @ORM\Column (type="text", nullable=true)
-     */
+
+    #[ORM\Column (type: 'text', nullable: true)]
     private $paragraphe1;
 
-    /**
-     * @ORM\Column (type="text", nullable=true)
-     */
+    #[ORM\Column (type: 'text', nullable: true)]
     private $paragraphe2;
 
-    /**
-     * @ORM\Column(type="string", length=255,  nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255,  nullable: true)]
     private $image;
 
-    /**
-     * @ORM\Column(type="string", length=255,  nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255,  nullable: true)]
     private $imageModification;
 
-    /**
-     * @ORM\Column(type="string", length=255,  nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255,  nullable: true)]
     private $imageLegende;
 
-    /**
-     * @ORM\Column(type="string", length=255,  nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255,  nullable: true)]
     private $image2;
 
-    /**
-     * @ORM\Column(type="string", length=255,  nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255,  nullable: true)]
     private $imageModification2;
 
-    /**
-     * @ORM\Column(type="string", length=255,  nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255,  nullable: true)]
     private $imageLegende2;
 
-    /**
-     * @ORM\Column (type="text",  nullable=true)
-     */
+    #[ORM\Column (type: 'text',  nullable: true)]
     private $url;
 
-    /**
-     * @ORM\Column (type="string", nullable=true)
-     */
+    #[ORM\Column (type: 'string', nullable: true)]
     private $pdf;
 
-    /**
-     * @ORM\Column (type="string", nullable=true)
-     */
+    #[ORM\Column (type: 'string', nullable: true)]
     private $pdfModification;
 
-    /**
-     * @ORM\OneToMany ( targetEntity=Commentaire::class, mappedBy="documentation",
-     *     cascade={"persist","remove"})
-     */
+    #[ORM\OneToMany (targetEntity: Commentaire::class, mappedBy: 'documentation', cascade: ['persist','remove'])]
     private $commentaire;
-
 
     public function getId(): ?int
     {

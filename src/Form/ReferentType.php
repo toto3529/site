@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ReferentType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): Void
     {
         $builder
             ->add('nom')
@@ -25,13 +25,14 @@ class ReferentType extends AbstractType
                     '3' => 3,
                     '4' => 4,
 
-                ],])
-           ;
+                ],
+            ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): Void
     {
-        $resolver->setDefaults(['date_class'=> Referent::class,
+        $resolver->setDefaults([
+            'date_class' => Referent::class,
         ]);
     }
 }

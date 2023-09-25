@@ -2,14 +2,15 @@
 
 namespace App\Entity;
 
+use App\Entity\Activite;
+use App\Entity\PhotoAlbum;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 use App\Repository\CategorieFormationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=CategorieFormationRepository::class)
- */
+#[ORM\Entity(repositoryClass: CategorieFormationRepository::class)]
+
 class CategorieFormation
 {
     public function __toString()
@@ -17,21 +18,15 @@ class CategorieFormation
         return $this->getLibelle();
     }
 
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $libelle;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Activite::class, mappedBy="categories_formation")
-     */
+    #[ORM\OneToMany(targetEntity: Activite::class, mappedBy: 'categories_formation')]
     private $activites;
 
     public function __construct()
@@ -50,7 +45,7 @@ class CategorieFormation
         return $this->libelle;
     }
 
-    public function setLibelle(string $libelle): self
+    public function setLibelle(string $libelle): static
     {
         $this->libelle = $libelle;
 
@@ -65,7 +60,7 @@ class CategorieFormation
         return $this->activites;
     }
 
-    public function addActivite(Activite $activite): self
+    public function addActivite(Activite $activite): static
     {
         if (!$this->activites->contains($activite)) {
             $this->activites[] = $activite;
@@ -75,7 +70,7 @@ class CategorieFormation
         return $this;
     }
 
-    public function removeActivite(Activite $activite): self
+    public function removeActivite(Activite $activite): static
     {
         if ($this->activites->removeElement($activite)) {
             // set the owning side to null (unless already changed)
@@ -95,7 +90,7 @@ class CategorieFormation
         return $this->photoAlbums;
     }
 
-    public function addPhotoAlbum(PhotoAlbum $photoAlbum): self
+    public function addPhotoAlbum(PhotoAlbum $photoAlbum): static
     {
         if (!$this->photoAlbums->contains($photoAlbum)) {
             $this->photoAlbums[] = $photoAlbum;
@@ -105,7 +100,7 @@ class CategorieFormation
         return $this;
     }
 
-    public function removePhotoAlbum(PhotoAlbum $photoAlbum): self
+    public function removePhotoAlbum(PhotoAlbum $photoAlbum): static
     {
         if ($this->photoAlbums->removeElement($photoAlbum)) {
             // set the owning side to null (unless already changed)

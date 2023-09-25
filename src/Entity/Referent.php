@@ -2,16 +2,29 @@
 
 namespace App\Entity;
 
-use App\Repository\ReferentRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ReferentRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * @ORM\Entity(repositoryClass=ReferentRepository::class)
- */
+#[ORM\Entity(repositoryClass: ReferentRepository::class)]
+
 class Referent
 {
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private $id;
+
+    #[ORM\Column(type: 'string', length: 75)]
+    private $nom;
+
+    #[ORM\Column (type: 'integer')]
+    private $ordre;
+
+    #[ORM\OneToMany (targetEntity: User::class, mappedBy: 'referents', cascade: ['persist','remove'])]
+    private $user;
+
     public function __toString()
     {
         return $this->getNom();
@@ -19,33 +32,8 @@ class Referent
 
     public function __construct()
     {
-        $this->user = new ArrayCollection();
+        $this->user =  new ArrayCollection();
     }
-
-
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
-     * @ORM\Column(type="string", length=75)
-     */
-    private $nom;
-
-    /**
-     * @ORM\Column (type="integer")
-     */
-    private $ordre;
-
-    /**
-     * @ORM\OneToMany (targetEntity=User::class, mappedBy="referents", cascade={"persist","remove"})
-     */
-    private $user;
-
-
 
     public function getId(): ?int
     {

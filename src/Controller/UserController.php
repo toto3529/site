@@ -10,31 +10,28 @@ use App\Repository\IntroPhotoRepository;
 use App\Repository\PhotoRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Swift_Mailer;
-use Swift_Message;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-/**
- * @Route("/user")
- */
+
+#[Route("/user")]
+
 class UserController extends AbstractController
 {
     /**
-     * @Route("/", name="user_index", methods={"GET"})
+     * Cette methode est en charge d'afficher la page Liste des Adhérents
+     * 
      * @param UserRepository $userRepository
      * @return Response
-     *
-     *
-     * Cette methode est en charge d'afficher la page Liste des Adhérents
-     *
      */
+    #[Route('/', name: 'user_index', methods: ['GET'])]
+
     public function index(UserRepository $userRepository): Response
     {
         //On laisse l'accès à cette fonction seulement aux Administrateur.
@@ -47,17 +44,17 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="user_new", methods={"GET","POST"})
-     * @param Request $request
-     * @param UserPasswordEncoderInterface $encoder
-     * @param Swift_Mailer $mailer
-     * @return Response
-     *
-     *
      * Cette methode est en charge de créer un Utilisateur
-     *
+     * 
+     * @param Request $request
+     * @param UserPasswordHasherInterface $passwordHasher
+     * @param MailerInterface $mailer
+     * @return Response
      */
-    public function new(Request $request, UserPasswordEncoderInterface $encoder, Swift_Mailer $mailer): Response
+
+    #[Route('/new', name: 'user_new', methods: ['GET', 'POST'])]
+
+    public function new(Request $request, UserPasswordHasherInterface $passwordHasher, MailerInterface $mailer): Response
     {
 
         //On laisse l'accès à cette fonction seulement aux Administrateur.
@@ -112,7 +109,7 @@ class UserController extends AbstractController
             $plainpassword = $user->getPassword();
 
             //Hashe le mot de passe
-            $hashed = $encoder->encodePassword($user, $user->getPassword());
+            $hashed = $passwordHasher->hashPassword($user, $user->getPassword());
             $user->setPassword($hashed);
 
 
@@ -121,7 +118,7 @@ class UserController extends AbstractController
 
             //Ici nous enverrons automatiquement un mail avec le mot de passe non hashé
             //Pour que le nouvel adhérent puisse s'inscrire avec ses nouveaux identifiants
-            $message = (new Swift_Message('Votre adhesion est validee'))
+            $message = (new MailerInterface('Votre adhesion est validee'))
                 ->setFrom('vrnb2020@velorandonaturebruz.fr')
 
                 //On attribue le destinataire
@@ -130,11 +127,14 @@ class UserController extends AbstractController
                 //On créée le message avec la vue twig
                 ->setBody(
                     $this->renderView(
-                        'emails/buletin_valide.html.twig', [
+                        'emails/buletin_valide.html.twig',
+                        [
                             'adherent' => $adherent,
                             'user' => $user,
-                            'password' => $plainpassword,]
-                    ), 'text/html'
+                            'password' => $plainpassword,
+                        ]
+                    ),
+                    'text/html'
                 );
 
             //On envoie le message
@@ -153,21 +153,21 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="user_show")
+     * Cette methode est en charge d'afficher la page profil
+     * 
      * @param User $user
      * @param UserRepository $userRepository
      * @return Response
-     *
-     *
-     * Cette methode est en charge d'afficher la page profil
-     *
      */
+
+    #[Route('/{id}', name: 'user_show')]
+
     public function show(EntityManagerInterface $entityManager, Request $request, IntroPhotoRepository $introPhotoRepository, User $user, UserRepository $userRepository): Response
     {
 
-        //Il faut être minimum Adhérent pour avoir accès a cette methode
+        //Il faut être minimum Adhérent pour avoir accès à cette methode
         $this->denyAccessUnlessGranted("ROLE_USER");
-        //On recupere tout de l'adhérent en cours et la photo d'introduction
+        //On recupère tout de l'adhérent en cours et la photo d'introduction
         $utilisateur = $userRepository->findOneBy(['username' => $user]);
         $photoIntroProfil = $introPhotoRepository->find("1");
 
@@ -203,7 +203,7 @@ class UserController extends AbstractController
         }
         //Si l'id n'est pas le même
         foreach ($this->getUser()->getRoles() as $role) {
-            if ($role != "ROLE_ADMIN" AND $this->getUser()->getUsername() != $user->getUsername()) {
+            if ($role != "ROLE_ADMIN" and $this->getUser()->getUsername() != $user->getUsername()) {
 
                 $this->addFlash('danger', 'Vous ne pouvez pas voir le profil des autres adhérents !');
                 return $this->render('user/show.html.twig', [
@@ -226,24 +226,21 @@ class UserController extends AbstractController
                 ]);
             }
         }
-
     }
 
     /**
-     * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
+     * Cette methode est en charge de modifier un Utilisateur en tant qu'Administrateur
+     * 
      * @param Request $request
      * @param User $user
-     * @param UserPasswordEncoderInterface $encoder
+     * @param UserPasswordHasherInterface $passwordHasher
      * @return Response
-     *
-     *
-     * Cette methode est en charge de modifier un Utilisateur en tant que Administrateur
-     *
      */
-    public
-    function    edit(Request $request, User $user, UserPasswordEncoderInterface $encoder): Response
-    {
 
+    #[Route('/{id}/edit', name: 'user_edit', methods: ['GET', 'POST'])]
+
+    public function edit(Request $request, User $user, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
+    {
         //Il faut être minimum Administrateur pour avoir accès a cette methode
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
 
@@ -259,9 +256,8 @@ class UserController extends AbstractController
         //Si le formulaire a été envoyer et est valide ...
         if ($form->isSubmitted() && $form->isValid()) {
 
-
             //Hashe le mot de passe
-            $hashed = $encoder->encodePassword($user, $user->getPassword());
+            $hashed = $passwordHasher->hashPassword($user, $user->getPassword());
             $user->setPassword($hashed);
 
             //On recupere les photos envoyées
@@ -287,8 +283,7 @@ class UserController extends AbstractController
                 $user->addPhoto($phot);
             }
 
-
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
             //On renvoie un message de succes à l'utilisateur pour prévenir de la réussite de la modification.
             $this->addFlash('success', 'Le profil a bien été modifié !!');
             //On redirige l'utilisateur sur la page user/index.html.twig.
@@ -303,17 +298,17 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("delete_adherent/{id}", name="supprimer_user")
+     * Cette méthode est en charge de supprimer un Utilisateur
+     * 
      * @param Request $request
      * @param User $user
      * @param PhotoRepository $photoRepository
      * @return Response
-     *
-     * Cette méthode est en charge de supprimer un Utilisateur
      */
+    #[Route('delete_adherent/{id}', name: 'supprimer_user')]
 
-    public
-    function supprimerAdherent(Request $request, User $user, PhotoRepository $photoRepository): Response
+
+    public function supprimerAdherent(Request $request, User $user, PhotoRepository $photoRepository): Response
     {
         //On laisse l'accès à cette fonction seulement aux Administrateur.
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
@@ -331,7 +326,6 @@ class UserController extends AbstractController
             $entityManager->remove($photo);
             $entityManager->flush();
             $photo = $photoRepository->findOneBy(['adhherent' => $user]);
-
         }
 
         $entityManager->remove($user);
@@ -342,19 +336,17 @@ class UserController extends AbstractController
         return $this->redirectToRoute('home1');
     }
 
-
     /**
-     * @Route("/supprime/photo/{id}", name="user_delete_photo", methods={"POST"})
+     * Cette methode est en charge de supprimer son image profil
+     * 
      * @param Photo $photo
      * @param Request $request
      * @return JsonResponse|RedirectResponse
-     *
-     *
-     * Cette methode est en charge de supprimer son image profil
-     *
      */
-    public
-    function deleteImage(Photo $photo, Request $request)
+
+    #[Route('/supprime/photo/{id}', name: 'user_delete_photo', methods: ['POST'])]
+
+    public function deleteImage(Photo $photo, Request $request)
     {
         //Il faut être minimum Adhérent pour avoir accès a cette methode
         $this->denyAccessUnlessGranted("ROLE_USER");
@@ -385,18 +377,19 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route ("/profiledit/{id}", name="profiledit")
+     * Cette methode est en charge modifier son propre profil
+     * 
      * @param $id
      * @param UserRepository $userRepository
      * @param Request $request
      * @param User $user
-     * @param UserPasswordEncoderInterface $encoder
+     * @param UserPasswordHasherInterface $passwordHasher
      * @return Response
-     * Cette methode est en charge modifier son propre profil
      */
 
-    public
-    function profiledit($id, UserRepository $userRepository, Request $request, User $user, UserPasswordEncoderInterface $encoder): Response
+    #[Route('/profiledit/{id}', name: 'profiledit')]
+
+    public function profiledit($id, UserRepository $userRepository, Request $request, User $user, UserPasswordHasherInterface $passwordHasher): Response
     {
         $userInSession = $userRepository->findOneBy(["username" => $this->getUser()->getUsername()]);
         $userTest = $userRepository->find($id);
@@ -425,9 +418,8 @@ class UserController extends AbstractController
         }
         if ($form->isSubmitted() && $form->isValid()) {
 
-
             //Hashe le mot de passe
-            $hashed = $encoder->encodePassword($user, $user->getPassword());
+            $hashed = $passwordHasher->hashPassword($user, $user->getPassword());
             $user->setPassword($hashed);
 
             //On recupere les photos envoyées
@@ -451,7 +443,6 @@ class UserController extends AbstractController
                 $user->addPhoto($phot);
             }
 
-
             $this->getDoctrine()->getManager()->flush();
             //On renvoie un message de succes à l'utilisateur pour prévenir de la réussite de la modification.
             $this->addFlash('success', 'Votre profil a bien été modifié !!');
@@ -467,5 +458,3 @@ class UserController extends AbstractController
         ]);
     }
 }
-
-

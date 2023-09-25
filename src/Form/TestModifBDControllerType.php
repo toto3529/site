@@ -12,21 +12,22 @@ use function DI\add;
 
 class TestModifBDControllerType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function buildForm(FormBuilderInterface $builder, array $options): Void
     {
         $builder
             ->add('nom', EntityType::class, [
                 'class' => Referent::class,
-                'attr' => ['label' => 'btn-success']])
+                'attr' => ['label' => 'btn-success']
+            ])
 
             ->add('ordre')
 
             ->add('Enregistrer', SubmitType::class, [
-            'attr' => ['class' => 'btn-success'],
-    ]);
+                'attr' => ['class' => 'btn-success'],
+            ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $resolver): Void
     {
         $resolver->setDefaults([
             'data_class' => Referent::class,

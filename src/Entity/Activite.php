@@ -2,127 +2,87 @@
 
 namespace App\Entity;
 
-use App\Repository\ActiviteRepository;
+use App\Entity\Etat;
+use App\Entity\Lieu;
+use App\Entity\User;
+use App\Entity\DocPdf;
 use DateTimeInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\PhotoAlbum;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\CategorieFormation;
+use App\Repository\ActiviteRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=ActiviteRepository::class)
- */
+#[ORM\Entity(repositoryClass: ActiviteRepository::class)]
+
 class Activite
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $nom;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $date_activite;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $duree;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $distance;
 
-    /**
-     * @ORM\Column(type="string", length=1000, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 1000, nullable: true)]
     private $infos_activite;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $denivele;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $difficulte;
 
-
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Etat::class, inversedBy="activites")
-     */
+    #[ORM\ManyToOne(targetEntity: Etat::class, inversedBy: 'activites')]
     private $etat;
 
-    /**
-     * @Assert\Valid()
-     *
-     * @ORM\ManyToOne(targetEntity=Lieu::class, inversedBy="activites",
-     *     cascade={"persist", "remove"})
-     */
+    #[Assert\Valid()]
+    #[ORM\ManyToOne(targetEntity: Lieu::class, inversedBy: 'activites', cascade: ['persist', 'remove'])]
     private $lieu;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="inscription")
-     */
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'inscription')]
     private $users;
 
-    /**
-     * @ORM\OneToMany (targetEntity=PhotoAlbum::class, mappedBy="activite")
-     */
+    #[ORM\OneToMany(targetEntity: PhotoAlbum::class, mappedBy: 'activite')]
     private $albumPhoto;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="activite")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'activite')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private $organisateur;
 
-    /**
-     * @ORM\OneToMany(targetEntity=DocPdf::class, mappedBy="pdfactivite",
-     *     cascade={"persist","remove"})
-     */
+    #[ORM\OneToMany(targetEntity: DocPdf::class, mappedBy: 'pdfactivite', cascade: ['persist', 'remove'])]
     private $docPdfs;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=CategorieFormation::class, inversedBy="activites")
-     * @ORM\JoinColumn(nullable=false)
-     * @Assert\Type(type="App\Entity\CategorieFormation")
-     */
+    #[ORM\ManyToOne(targetEntity: CategorieFormation::class, inversedBy: 'activites')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Type(type: 'App\Entity\CategorieFormation')]
     private $categories_formation;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $urlAlbumPhoto;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $urlAlbumPhotoDeux;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
+    #[ORM\Column(type: 'string', nullable: true)]
     private $pdf;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $pdfModification;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $totalParticipant;
 
     public function __construct()
@@ -220,7 +180,6 @@ class Activite
         return $this;
     }
 
-
     public function getEtat(): ?Etat
     {
         return $this->etat;
@@ -255,12 +214,10 @@ class Activite
         $this->albumPhoto = $albumPhoto;
     }
 
-
     public function getCategoriesFormation(): ?CategorieFormation
     {
         return $this->categories_formation;
     }
-
 
     public function setCategoriesFormation(?CategorieFormation $categories_formation): self
     {
@@ -370,7 +327,6 @@ class Activite
     public function setPdf($pdf): void
     {
         $this->pdf = $pdf;
-
     }
 
     public function getPdfModification(): ?string
@@ -396,8 +352,4 @@ class Activite
 
         return $this;
     }
-
-
-
-
 }

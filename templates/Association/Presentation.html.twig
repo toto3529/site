@@ -1,277 +1,288 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} |Présentation {% endblock %}
+{% block title %}
+	{{ parent() }}
+	|Présentation
+{% endblock %}
 {# La page Présentation #}
 {% block body %}
 
-    {# Le titre #}
-    <div class="container container-profil">
-        {% if photoIntro is not empty %}
-            <figure class="textcenter">
-                <img src="{{ asset('photo-intro/'~ photoIntro) }}"
-                     alt="Présentation de l'association Vélo Rando Nature Bruz">
-                <figcaption class="fig">Présentation</figcaption>
-            </figure>
-        {% else %}
-            <h1 class="titreEnTete">Présentation</h1>
-        {% endif %}
-    </div>
-        <div class="col-lg-12">
-            {% if is_granted("ROLE_ADMIN") %}
-                <div class="boutonModifierTexte">
-                    <button class="button_show btn btn-outline-success">Modifier la photo</button>
-                </div>
-                <div class="form-group formulaire" id="form">
-                    {{ form(formPhotoIntro) }}
-                    <div class="mt-3 mb-5 text-center">
-                        <p>{{ form_widget(formPhotoIntro.Enregistrer) }}</p>
-                        <button class="button_close btn btn-outline-secondary">Annuler</button>
-                    </div>
-                </div>
-            {% endif %}
-        </div>
+	{# Le titre #}
+	<div class="container container-profil">
+		{% if photoIntro is not empty %}
+			<figure class="textcenter">
+				<img src="{{ asset('photo-intro/'~ photoIntro) }}" alt="Présentation de l'association Vélo Rando Nature Bruz">
+				<figcaption class="fig">Présentation</figcaption>
+			</figure>
+		{% else %}
+			<h1 class="titreEnTete">Présentation</h1>
+		{% endif %}
+	</div>
+	<div class="col-lg-12">
+		{% if is_granted("ROLE_ADMIN") %}
+			<div class="boutonModifierTexte">
+				<button class="button_show btn btn-outline-success">Modifier la photo</button>
+			</div>
+			<div class="form-group formulaire" id="form">
+				{{ form(formPhotoIntro) }}
+					<div
+						class="mt-3 mb-5 text-center">
+						{# <p>{{ form_widget(formPhotoIntro.Enregistrer) }}</p> #}
+						<button class="button_close btn btn-outline-secondary">Annuler</button>
+					</div>
+				</div>
+			{% endif %}
+		</div>
 
 
-    <div class="center-hr">
-        <hr class="hr25-pourcent center">
-    </div>
+		<div class="center-hr">
+			<hr class="hr25-pourcent center">
+		</div>
 
-    <div class="container">
-    {% for texte in textes %}
-        {# Le premier paragraphe #}
-        <div class="text-presentation">
-            <p>{{ texte.textOne | nl2br }} </p>
-            {% if is_granted("ROLE_ADMIN") %}
-                <div class="boutonModifierTexte">
-                    <button class="button_show btn btn-outline-success">Modifier le texte</button>
-                </div>
-                <div class="form-group formulaire" id="form">
-                    {{ form(formTextOne) }}
-                    <div class="mt-3 mb-5 text-center">
-                        <p>{{ form_widget(formTextOne.Enregistrer) }}</p>
-                        <button class="button_close btn btn-outline-secondary">Annuler</button>
-                    </div>
-                </div>
-            {% endif %}
-        </div>
+		<div class="container">
+			{% for texte in textes %}
+				{# Le premier paragraphe #}
+				<div class="text-presentation">
+					<p>{{ texte.textOne | nl2br }}
+					</p>
+					{% if is_granted("ROLE_ADMIN") %}
+						<div class="boutonModifierTexte">
+							<button class="button_show btn btn-outline-success">Modifier le texte</button>
+						</div>
+						<div class="form-group formulaire" id="form">
+							{{ form(formTextOne) }}
+								<div
+									class="mt-3 mb-5 text-center">
+									{# <p>{{ form_widget(formTextOne.Enregistrer) }}</p> #}
+									<button class="button_close btn btn-outline-secondary">Annuler</button>
+								</div>
+							</div>
+						{% endif %}
+					</div>
 
-        <div class="center-hr">
-            <hr class="hr25-pourcent center">
-        </div>
+					<div class="center-hr">
+						<hr class="hr25-pourcent center">
+					</div>
 
-        {# Partie Ou somme nous ? #}
-        <div class="encadre border border-dark p-3">
-            <div>
-                <h2 class="text-sous-ligner-vert">{{ texte.titleOne | nl2br }}</h2>
-                {% if is_granted("ROLE_ADMIN") %}
-                    <div class="boutonModifierTexte">
-                        <button class="button_show btn btn-outline-success">Modifier le texte</button>
-                    </div>
-                    <div class="form-group formulaire" id="form">
-                        {{ form(formTitleOne) }}
-                        <div class="mt-3 mb-5 text-center">
-                            <p>{{ form_widget(formTitleOne.Enregistrer) }}</p>
-                            <button class="button_close btn btn-outline-secondary">Annuler</button>
-                        </div>
-                    </div>
-                {% endif %}
-            </div>
-            <div>
-                <div class="row col-12 container-lieu-asso">
-                    {# Le texte #}
-                    <div class="col-lg-6 col-sm-12 col-xs-12 text-sous-ligner-noir">
-                        <div>
-                            <p>{{ texte.textTwo | nl2br }} </p>
-                            {% if is_granted("ROLE_ADMIN") %}
-                                <div class="boutonModifierTexte">
-                                    <button class="button_show btn btn-outline-success">Modifier le texte</button>
-                                </div>
-                                <div class="form-group formulaire" id="form">
-                                    {{ form(formTextTwo) }}
-                                    <div class="mt-3 mb-5 text-center">
-                                        <p>{{ form_widget(formTextTwo.Enregistrer) }}</p>
-                                        <button class="button_close btn btn-outline-secondary">Annuler</button>
-                                    </div>
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
+					{# Partie Ou somme nous ? #}
+					<div class="encadre border border-dark p-3">
+						<div>
+							<h2 class="text-sous-ligner-vert">{{ texte.titleOne | nl2br }}</h2>
+							{% if is_granted("ROLE_ADMIN") %}
+								<div class="boutonModifierTexte">
+									<button class="button_show btn btn-outline-success">Modifier le texte</button>
+								</div>
+								<div class="form-group formulaire" id="form">
+									{{ form(formTitleOne) }}
+										<div
+											class="mt-3 mb-5 text-center">
+											{# <p>{{ form_widget(formTitleOne.Enregistrer) }}</p> #}
+											<button class="button_close btn btn-outline-secondary">Annuler</button>
+										</div>
+									</div>
+								{% endif %}
+							</div>
+							<div>
+								<div
+									class="row col-12 container-lieu-asso">
+									{# Le texte #}
+									<div class="col-lg-6 col-sm-12 col-xs-12 text-sous-ligner-noir">
+										<div>
+											<p>{{ texte.textTwo | nl2br }}
+											</p>
+											{% if is_granted("ROLE_ADMIN") %}
+												<div class="boutonModifierTexte">
+													<button class="button_show btn btn-outline-success">Modifier le texte</button>
+												</div>
+												<div class="form-group formulaire" id="form">
+													{{ form(formTextTwo) }}
+														<div
+															class="mt-3 mb-5 text-center">
+															{# <p>{{ form_widget(formTextTwo.Enregistrer) }}</p> #}
+															<button class="button_close btn btn-outline-secondary">Annuler</button>
+														</div>
+													</div>
+												{% endif %}
+											</div>
+										</div>
 
-                    {# L'iframe de la map de google #}
-                    <div class="col-lg-6 col-sm-12 col-xs-12 map-presentation">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2668.720611233386!2d-1.7574356843551209!3d48.0191073792142!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x480f1ef2cdd24d6f%3A0xc61fe53b8132941d!2s31%20Rue%20des%20Forges%2C%2035170%20Bruz!5e0!3m2!1sfr!2sfr!4v1613063726862!5m2!1sfr!2sfr"
-                                frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false"
-                                tabindex="0"></iframe>
-                    </div>
+										{# L'iframe de la map de google #}
+										<div class="col-lg-6 col-sm-12 col-xs-12 map-presentation">
+											<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2668.720611233386!2d-1.7574356843551209!3d48.0191073792142!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x480f1ef2cdd24d6f%3A0xc61fe53b8132941d!2s31%20Rue%20des%20Forges%2C%2035170%20Bruz!5e0!3m2!1sfr!2sfr!4v1613063726862!5m2!1sfr!2sfr" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+										</div>
 
-                </div>
-            </div>
-        </div>
+									</div>
+								</div>
+							</div>
 
-        <div class="center-hr">
-            <hr class="hr25-pourcent center">
-        </div>
+							<div class="center-hr">
+								<hr class="hr25-pourcent center">
+							</div>
 
-        {# Partie futur #}
-        <div class="encadre border border-dark p-3">
-            {# Titre Second Paragraphe #}
-            <div>
-                <h2 class="text-sous-ligner-vert">{{ texte.titleTwo | nl2br }}</h2>
-                {% if is_granted("ROLE_ADMIN") %}
-                    <div class="boutonModifierTexte">
-                        <button class="button_show btn btn-outline-success">Modifier le texte</button>
-                    </div>
-                    <div class="form-group formulaire" id="form">
-                        {{ form(formTitleTwo) }}
-                        <div class="mt-3 mb-5 text-center">
-                            <p>{{ form_widget(formTitleTwo.Enregistrer) }}</p>
-                            <button class="button_close btn btn-outline-secondary">Annuler</button>
-                        </div>
-                    </div>
-                {% endif %}
-            </div>
-            {# Second Paragraphe #}
-            <div>
-                <div class="text-presentation">
-                    <p>{{ texte.textThree | nl2br }} </p>
-                    {% if is_granted("ROLE_ADMIN") %}
-                        <div class="boutonModifierTexte">
-                            <button class="button_show btn btn-outline-success">Modifier le texte</button>
-                        </div>
-                        <div class="form-group formulaire" id="form">
-                            {{ form(formTextThree) }}
-                            <div class="mt-3 mb-5 text-center">
-                                <p>{{ form_widget(formTextThree.Enregistrer) }}</p>
-                                <button class="button_close btn btn-outline-secondary">Annuler</button>
-                            </div>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        <div class="center-hr">
-            <hr class="hr25-pourcent center">
-        </div>
-        {# Partie règle d'or #}
-        <div class="encadre border border-dark p-3">
-            {# Titre Règle d'Or #}
-            <div>
-                <h2 class="text-sous-ligner-vert">{{ texte.titleThree | nl2br }}</h2>
-                {% if is_granted("ROLE_ADMIN") %}
-                    <div class="boutonModifierTexte">
-                        <button class="button_show btn btn-outline-success">Modifier le texte</button>
-                    </div>
-                    <div class="form-group formulaire" id="form">
-                        {{ form(formTitleThree) }}
-                        <div class="mt-3 mb-5 text-center">
-                            <p>{{ form_widget(formTitleThree.Enregistrer) }}</p>
-                            <button class="button_close btn btn-outline-secondary">Annuler</button>
-                        </div>
-                    </div>
-                {% endif %}
-            </div>
+							{# Partie futur #}
+							<div
+								class="encadre border border-dark p-3">
+								{# Titre Second Paragraphe #}
+								<div>
+									<h2 class="text-sous-ligner-vert">{{ texte.titleTwo | nl2br }}</h2>
+									{% if is_granted("ROLE_ADMIN") %}
+										<div class="boutonModifierTexte">
+											<button class="button_show btn btn-outline-success">Modifier le texte</button>
+										</div>
+										<div class="form-group formulaire" id="form">
+											{{ form(formTitleTwo) }}
+												<div
+													class="mt-3 mb-5 text-center">
+													{# <p>{{ form_widget(formTitleTwo.Enregistrer) }}</p> #}
+													<button class="button_close btn btn-outline-secondary">Annuler</button>
+												</div>
+											</div>
+										{% endif %}
+									</div>
+									{# Second Paragraphe #}
+									<div>
+										<div class="text-presentation">
+											<p>{{ texte.textThree | nl2br }}
+											</p>
+											{% if is_granted("ROLE_ADMIN") %}
+												<div class="boutonModifierTexte">
+													<button class="button_show btn btn-outline-success">Modifier le texte</button>
+												</div>
+												<div class="form-group formulaire" id="form">
+													{{ form(formTextThree) }}
+														<div
+															class="mt-3 mb-5 text-center">
+															{# <p>{{ form_widget(formTextThree.Enregistrer) }}</p> #}
+															<button class="button_close btn btn-outline-secondary">Annuler</button>
+														</div>
+													</div>
+												{% endif %}
+											</div>
+										</div>
+									</div>
+									<div class="center-hr">
+										<hr class="hr25-pourcent center">
+									</div>
+									{# Partie règle d'or #}
+									<div
+										class="encadre border border-dark p-3">
+										{# Titre Règle d'Or #}
+										<div>
+											<h2 class="text-sous-ligner-vert">{{ texte.titleThree | nl2br }}</h2>
+											{% if is_granted("ROLE_ADMIN") %}
+												<div class="boutonModifierTexte">
+													<button class="button_show btn btn-outline-success">Modifier le texte</button>
+												</div>
+												<div class="form-group formulaire" id="form">
+													{{ form(formTitleThree) }}
+														<div
+															class="mt-3 mb-5 text-center">
+															{# <p>{{ form_widget(formTitleThree.Enregistrer) }}</p> #}
+															<button class="button_close btn btn-outline-secondary">Annuler</button>
+														</div>
+													</div>
+												{% endif %}
+											</div>
 
-            {# Règle D'or #}
-            <div>
-                <div class="text-presentation">
-                    <p>{{ texte.textFour | nl2br }} </p>
-                    {% if is_granted("ROLE_ADMIN") %}
-                        <div class="boutonModifierTexte">
-                            <button class="button_show btn btn-outline-success">Modifier le texte</button>
-                        </div>
-                        <div class="form-group formulaire" id="form">
-                            {{ form(formTextFour) }}
-                            <div class="mt-3 mb-5 text-center">
-                                <p>{{ form_widget(formTextFour.Enregistrer) }}</p>
-                                <button class="button_close btn btn-outline-secondary">Annuler</button>
-                            </div>
-                        </div>
-                    {% endif %}
+											{# Règle D'or #}
+											<div>
+												<div class="text-presentation">
+													<p>{{ texte.textFour | nl2br }}
+													</p>
+													{% if is_granted("ROLE_ADMIN") %}
+														<div class="boutonModifierTexte">
+															<button class="button_show btn btn-outline-success">Modifier le texte</button>
+														</div>
+														<div class="form-group formulaire" id="form">
+															{{ form(formTextFour) }}
+																<div
+																	class="mt-3 mb-5 text-center">
+																	{# <p>{{ form_widget(formTextFour.Enregistrer) }}</p> #}
+																	<button class="button_close btn btn-outline-secondary">Annuler</button>
+																</div>
+															</div>
+														{% endif %}
 
-                </div>
-            </div>
-        </div>
+													</div>
+												</div>
+											</div>
 
-        <div class="center-hr">
-            <hr class="hr25-pourcent center">
-        </div>
+											<div class="center-hr">
+												<hr class="hr25-pourcent center">
+											</div>
 
-        {# Troisième Paragraphe #}
-        <div class="text-presentation">
-            <p>{{ texte.textFive | nl2br }} </p>
-            {% if is_granted("ROLE_ADMIN") %}
-                <div class="boutonModifierTexte">
-                    <button class="button_show btn btn-outline-success">Modifier le texte</button>
-                </div>
-                <div class="form-group formulaire" id="form">
-                    {{ form(formTextFive) }}
-                    <div class="mt-3 mb-5 text-center">
-                        <p>{{ form_widget(formTextFive.Enregistrer) }}</p>
-                        <button class="button_close btn btn-outline-secondary">Annuler</button>
-                    </div>
-                </div>
-            {% endif %}
-        </div>
+											{# Troisième Paragraphe #}
+											<div class="text-presentation">
+												<p>{{ texte.textFive | nl2br }}
+												</p>
+												{% if is_granted("ROLE_ADMIN") %}
+													<div class="boutonModifierTexte">
+														<button class="button_show btn btn-outline-success">Modifier le texte</button>
+													</div>
+													<div class="form-group formulaire" id="form">
+														{{ form(formTextFive) }}
+															<div
+																class="mt-3 mb-5 text-center">
+																{# <p>{{ form_widget(formTextFive.Enregistrer) }}</p> #}
+																<button class="button_close btn btn-outline-secondary">Annuler</button>
+															</div>
+														</div>
+													{% endif %}
+												</div>
 
-        <div class="center-hr">
-            <hr class="hr25-pourcent center">
-        </div>
+												<div class="center-hr">
+													<hr class="hr25-pourcent center">
+												</div>
 
-        <div class="encadre border border-dark p-3">
+												<div class="encadre border border-dark p-3">
 
-            {# Titre Devises #}
-            <div>
-                <h2 class="text-sous-ligner-vert">{{ texte.titleFour | nl2br }}</h2>
-                {% if is_granted("ROLE_ADMIN") %}
-                    <div class="boutonModifierTexte">
-                        <button class="button_show btn btn-outline-success">Modifier le texte</button>
-                    </div>
-                    <div class="form-group formulaire" id="form">
-                        {{ form(formTitleFour) }}
-                        <div class="mt-3 mb-5 text-center">
-                            <p>{{ form_widget(formTitleFour.Enregistrer) }}</p>
-                            <button class="button_close btn btn-outline-secondary">Annuler</button>
-                        </div>
+													{# Titre Devises #}
+													<div>
+														<h2 class="text-sous-ligner-vert">{{ texte.titleFour | nl2br }}</h2>
+														{% if is_granted("ROLE_ADMIN") %}
+															<div class="boutonModifierTexte">
+																<button class="button_show btn btn-outline-success">Modifier le texte</button>
+															</div>
+															<div class="form-group formulaire" id="form">
+																{{ form(formTitleFour) }}
+																	<div
+																		class="mt-3 mb-5 text-center">
+																		{# <p>{{ form_widget(formTitleFour.Enregistrer) }}</p> #}
+																		<button class="button_close btn btn-outline-secondary">Annuler</button>
+																	</div>
+																</div>
+															{% endif %}
+														</div>
+                                                        
+														{# Les Devises #}
+														<div>
+															<div class="text-presentation">
+																<p>{{ texte.textSix | nl2br }}
+																</p>
+																{% if is_granted("ROLE_ADMIN") %}
+																	<div class="boutonModifierTexte">
+																		<button class="button_show btn btn-outline-success">Modifier le texte</button>
+																	</div>
+																	<div class="form-group formulaire" id="form">
+																		{{ form(formTextSix) }}
+																			<div class="mt-3 mb-5 text-center">
+																				{# <p>{{ form_widget(formTextSix.Enregistrer) }}</p> #}
+																				<button class="button_close btn btn-outline-secondary">Annuler</button>
+																			</div>
+																		</div>
+																	{% endif %}
+																</div>
+															</div>
+														</div>
 
-                    </div>
-                {% endif %}
-            </div>
-
-            {# Les Devises #}
-            <div>
-                <div class="text-presentation">
-                    <p>{{ texte.textSix | nl2br }} </p>
-                    {% if is_granted("ROLE_ADMIN") %}
-                        <div class="boutonModifierTexte">
-                            <button class="button_show btn btn-outline-success">Modifier le texte</button>
-                        </div>
-                        <div class="form-group formulaire" id="form">
-                            {{ form(formTextSix) }}
-                            <div class="mt-3 mb-5 text-center">
-                                <p>{{ form_widget(formTextSix.Enregistrer) }}</p>
-                                <button class="button_close btn btn-outline-secondary">Annuler</button>
-                            </div>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        {# Boutons d'affichage des pdf de status et de la charte #}
-        <div class="row">
-            <div class="col-lg-12 col-sm-12 d-flex justify-content-center">
-                <a class="m-3 btn btn-success btn-lg text-white"
-                   href="{{ asset('documents/Statuts_asso_Rando nature Bruz.pdf') }}" target="_blank">Statuts de
-                    l'association</a>
-            </div>
-            <div class="col-lg-12 col-sm-12 d-flex justify-content-center">
-
-                <a class="m-3 btn btn-success btn-lg text-white"
-                   href="{{ asset('documents/Charte_asso_Rando nature Bruz.pdf') }}" target="_blank">Charte de
-                    l'association</a>
-
-            </div>
-        </div>
-    {% endfor %}
-
-{% endblock %}
+														{# Boutons d'affichage des pdf de status et de la charte #}
+														<div class="row">
+															<div class="col-lg-12 col-sm-12 d-flex justify-content-center">
+																<a class="m-3 btn btn-success btn-lg text-white" href="{{ asset('documents/Statuts_asso_Rando nature Bruz.pdf') }}" target="_blank">Statuts de l'association</a>
+															</div>
+															<div class="col-lg-12 col-sm-12 d-flex justify-content-center">
+																<a class="m-3 btn btn-success btn-lg text-white" href="{{ asset('documents/Charte_asso_Rando nature Bruz.pdf') }}" target="_blank">Charte de l'association</a>
+															</div>
+														</div>
+													{% endfor %}
+												{% endblock %}

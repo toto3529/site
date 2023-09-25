@@ -2,41 +2,31 @@
 
 namespace App\Entity;
 
-use App\Repository\CategorieRepository;
+use App\Entity\Activite;
+use App\Entity\PhotoAlbum;
+use App\Entity\Documentation;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CategorieRepository;
 
-/**
- * @ORM\Entity(repositoryClass=CategorieRepository::class)
- */
+#[ORM\Entity(repositoryClass: CategorieRepository::class)]
 class Categorie
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $libelle;
 
-    /**
-     * @ORM\OneToMany (targetEntity=Activite::class, mappedBy="categorie")
-     */
+    #[ORM\OneToMany(targetEntity: Activite::class, mappedBy: 'categorie')]
     private $activites;
 
-    /**
-     * @ORM\OneToMany (targetEntity=PhotoAlbum::class, mappedBy="categorie")
-     */
+    #[ORM\OneToMany(targetEntity: PhotoAlbum::class, mappedBy: 'categorie')]
     private $photoAlbum;
 
-    /**
-     * @ORM\OneToMany (targetEntity=Documentation::class, mappedBy="categorie")
-     */
+    #[ORM\OneToMany(targetEntity: Documentation::class, mappedBy: 'categorie')]
     private $documentation;
-
 
     public function getId(): ?int
     {
@@ -101,5 +91,4 @@ class Categorie
 
         return $this;
     }
-
 }

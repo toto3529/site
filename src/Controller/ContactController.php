@@ -3,8 +3,7 @@
 namespace App\Controller;
 
 use App\Form\ContactType;
-use Swift_Mailer;
-use Swift_Message;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,15 +12,16 @@ use Symfony\Component\HttpFoundation\Request;
 class ContactController extends AbstractController
 {
     /**
-     * @Route("/contact", name="contact")
-     * @param Request $request
-     * @param Swift_Mailer $mailer
-     * @return Response
-     *
      * Cette méthode sert a afficher une formulaire de contact sur la page Contact.
-     *
+     * 
+     * @param Request $request
+     * @param MailerInterface $mailer
+     * @return Response
      */
-    public function index(Request $request, Swift_Mailer $mailer): Response
+
+    #[Route('/contact', name: 'contact')]
+
+    public function index(Request $request, MailerInterface $mailer): Response
     {
         //On créer notre formulaire.
         $form = $this->createForm(ContactType::class);
@@ -33,7 +33,7 @@ class ContactController extends AbstractController
             $contact = $form->getData();
 
             //ici nous enverrons le mail.
-            $message = (new Swift_Message('Nouveau Contact'))
+            $message = (new MailerInterface('Nouveau Contact'))
                 ->setFrom($contact['email'])
 
                 //on attribue le destinataire - ci-dessous c'est le mail du site.
@@ -42,8 +42,10 @@ class ContactController extends AbstractController
                 //on créée le message avec la vue twig (qui est dans les templates emails).
                 ->setBody(
                     $this->renderView(
-                        'emails/contact.html.twig', compact('contact')
-                    ), 'text/html'
+                        'emails/contact.html.twig',
+                        compact('contact')
+                    ),
+                    'text/html'
                 );
 
             // on envoie le message
@@ -58,6 +60,4 @@ class ContactController extends AbstractController
             'contactForm' => $form->createView()
         ]);
     }
-
-
 }

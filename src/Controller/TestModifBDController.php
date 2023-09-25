@@ -2,11 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Photo;
 use App\Entity\User;
-use App\Form\OrgaEditNomPrenomType;
 use App\Form\TestModifBDControllerType;
-use App\Form\UserType;
 use App\Repository\ReferentRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,15 +11,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-
-
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class TestModifBDController extends AbstractController
 {
-    /**
-         * @Route("/test/modif/b/d", name="app_test_modif_b_d")
-     */
+    #[Route('/test/modif/b/d', name : 'app_test_modif_b_d')]
+    
     public function affichage(UserRepository $userRepository): Response
     {
         $user = $userRepository->findAll();
@@ -31,23 +25,19 @@ class TestModifBDController extends AbstractController
         ]);
     }
 
-
-
     /**
-     * @Route("/{id}/edit", name="use_edit", methods={"GET","POST"})
+     * Cette methode est en charge de modifier un Utilisateur en tant qu'Administrateur
+     * 
      * @param Request $request
      * @param User $user
-     * @param UserPasswordEncoderInterface $encoder
+     * @param UserPasswordHasherInterface $passwordHasher
      * @return Response
-     *
-     *
-     * Cette methode est en charge de modifier un Utilisateur en tant que Administrateur
-     *
      */
-    public
-    function edit(Request $request, int $id, User $user, UserPasswordEncoderInterface $encoder, UserRepository $userRepository, ReferentRepository $referentRepository, EntityManagerInterface $entityManager): Response
-    {
 
+    #[Route('/{id}/edit', name : 'use_edit', methods : ['GET','POST'])]
+
+    public function edit(Request $request, int $id, User $user, UserPasswordHasherInterface $passwordHasher, UserRepository $userRepository, ReferentRepository $referentRepository, EntityManagerInterface $entityManager): Response
+    {
         //Il faut être minimum Administrateur pour avoir accès a cette methode
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
 
@@ -61,15 +51,12 @@ class TestModifBDController extends AbstractController
         //Gere le traitement du formulaire
         $form->handleRequest($request);
 
-
         //Si le formulaire a été envoyer et est valide ...
         if ($form->isSubmitted() && $form->isValid()) {
             $ref = $form->getData('nom');
 
-
             $entityManager -> persist($ref);
             $user->setReferents($ref);
-
 
             $entityManager -> persist($user);
             $entityManager -> flush();

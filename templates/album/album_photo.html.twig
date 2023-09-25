@@ -1,109 +1,113 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Nos balades |{{ parent() }}{% endblock %}
+{% block title %}
+	Nos balades |{{ parent() }}
+{% endblock %}
 
 {# La page albums photos #}
 
 {% block body %}
-    {# Le titre #}
-    <div class="container container-profil">
-        {% if photoIntro is not empty %}
-            <figure class="textcenter">
-                <img src="{{ asset('photo-intro/'~ photoIntro) }}"
-                     alt="Albums photos de l'association Vélo Rando Nature Bruz">
-                <figcaption class="fig">Nos balades</figcaption>
-            </figure>
-        {% else %}
-            <h1 class="titreEnTete">Nos balades</h1>
-        {% endif %}
-    </div>
-    <div class="col-lg-12">
-        {% if is_granted("ROLE_ADMIN") %}
-            <div class="boutonModifierTexte">
-                <button class="button_show btn btn-outline-success">Modifier la photo</button>
-            </div>
-            <div class="form-group formulaire" id="form">
-                {{ form(formPhotoIntro) }}
-                <div class="mt-3 mb-5 text-center">
-                    <p>{{ form_widget(formPhotoIntro.Enregistrer) }}</p>
-                    <button class="button_close btn btn-outline-secondary">Annuler</button>
-                </div>
-            </div>
-        {% endif %}
-    </div>
-    <div>
-        <p class="lead text-accueil"> Retrouvez ici le détail de nos dernières balades </p>
-    </div>
+	{# Le titre #}
+	<div class="container container-profil">
+		{% if photoIntro is not empty %}
+			<figure class="textcenter">
+				<img src="{{ asset('photo-intro/'~ photoIntro) }}" alt="Albums photos de l'association Vélo Rando Nature Bruz">
+				<figcaption class="fig">Nos balades</figcaption>
+			</figure>
+		{% else %}
+			<h1 class="titreEnTete">Nos balades</h1>
+		{% endif %}
+	</div>
+	<div class="col-lg-12">
+		{% if is_granted("ROLE_ADMIN") %}
+			<div class="boutonModifierTexte">
+				<button class="button_show btn btn-outline-success">Modifier la photo</button>
+			</div>
+			<div class="form-group formulaire" id="form">
+				{{ form(formPhotoIntro) }}
+					<div class="mt-3 mb-5 text-center">
+						{# <p>{{ form_widget(formPhotoIntro.Enregistrer) }}</p> #}
+						<button class="button_close btn btn-outline-secondary">Annuler</button>
+					</div>
+				</div>
+			{% endif %}
+		</div>
+		<div>
+			<p class="lead text-accueil">
+				Retrouvez ici le détail de nos dernières balades
+			</p>
+		</div>
 
 
-    <div class="center-hr">
-        <hr class="hr25-pourcent center">
-    </div>
+		<div class="center-hr">
+			<hr class="hr25-pourcent center">
+		</div>
 
-    <div class="container-fluid">
-        <div class="row-container row">
+		<div class="container-fluid">
+			<div class="row-container row">
 
-            <div class="col-lg-2 col-sm-12">
-                {% include 'activite/_filter.html.twig' with {form: form} only %}
-            </div>
-            <div class="col-lg-9 col-sm-12 col-xs-12">
-                {# On boucle sur Activite #}
-                {% for activite in activites %}
-                    {% if activite.etat.getLibelle() == 'annulée' or activite.etat.getLibelle() == 'finie' %}
-                        <div class="border border-dark container_album_photo format-image ">
-                            <div class="album_photo">
-                                <div class="title_album_photo col-12">
-                                    <a href="{{ path('show_album', {"id":activite.id}) }}">{{ activite.nom }}</a>
-                                </div>
-                                <div class="album_photo_date_user col-12">
-                                    <div class="album_photo_date">
-                                        <div>
-                                            <img src="{{ asset('tools/calendrier.png') }}" alt="icone de calendrier">
-                                        </div>
-                                        <div>
-                                            <p>{{ activite.getDateActivite()|format_datetime(locale='fr',pattern="dd MMMM YYYY HH:mm") }}
-                                                à {{ activite.getLieu.getNomVille }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="album_photo_user">
-                                        <div>
-                                            <img src="{{ asset('tools/user.png') }}" alt="icone d'utilisateur">
-                                        </div>
-                                        <div class="nom_prenom_user_album_photo">
-                                            <p>{{ activite.organisateur.getNom() }}</p>
-                                            <p>{{ activite.organisateur.getPrenom() }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="album_photo_resume col-12">
-                                    <p>{{ activite.getInfosActivite() }}</p>
-                                </div>
-                                <div class="container__etiquette col-12 ">
-                                    <div class="album_photo_etiquette">
-                                        <div class="album_photo_etiquette">
-                                            <img src="{{ asset('tools/etiquette.png') }}" alt="icone d'étiquette">
-                                        </div>
-                                        <p>{{ activite.getCategoriesFormation.getLibelle() }}</p>
-                                    </div>
-                                </div>
-                                <div {{ activite.getLieu.getNomVille }}></div>
-                                {% if is_granted(["ROLE_ADMIN"]) %}
-                                    <div class="bas_album_photo col-12">
-                                        <a href="{{ path('activite_edit', {'id':activite.id}) }}">
-                                            <button class="btn btn-success">Modifier</button>
-                                        </a>
-                                        <a href="{{ path('delete_activite', {'id':activite.id}) }}"
-                                           onclick="return confirm('Voulez-vous vraiment supprimer cette activité')">
-                                            <button class="btn btn-secondary">Supprimer</button>
-                                        </a>
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-        </div>
-    </div>
+				<div class="col-lg-2 col-sm-12">
+					{% include 'activite/_filter.html.twig' with {form: form} only %}
+				</div>
+				<div
+					class="col-lg-9 col-sm-12 col-xs-12">
+					{# On boucle sur Activite #}
+					{% for activite in activites %}
+						{% if activite.etat.getLibelle() == 'annulée' or activite.etat.getLibelle() == 'finie' %}
+							<div class="border border-dark container_album_photo format-image ">
+								<div class="album_photo">
+									<div class="title_album_photo col-12">
+										<a href="{{ path('show_album', {"id":activite.id}) }}">{{ activite.nom }}</a>
+									</div>
+									<div class="album_photo_date_user col-12">
+										<div class="album_photo_date">
+											<div>
+												<img src="{{ asset('tools/calendrier.png') }}" alt="icone de calendrier">
+											</div>
+											<div>
+												<p>{{ activite.getDateActivite()|format_datetime(locale='fr',pattern="dd MMMM YYYY HH:mm") }}
+													à
+													{{ activite.getLieu.getNomVille }}</p>
+											</div>
+										</div>
+										<div class="album_photo_user">
+											<div>
+												<img src="{{ asset('tools/user.png') }}" alt="icone d'utilisateur">
+											</div>
+											<div class="nom_prenom_user_album_photo">
+												<p>{{ activite.organisateur.getNom() }}</p>
+												<p>{{ activite.organisateur.getPrenom() }}</p>
+											</div>
+										</div>
+									</div>
+									<div class="album_photo_resume col-12">
+										<p>{{ activite.getInfosActivite() }}</p>
+									</div>
+									<div class="container__etiquette col-12 ">
+										<div class="album_photo_etiquette">
+											<div class="album_photo_etiquette">
+												<img src="{{ asset('tools/etiquette.png') }}" alt="icone d'étiquette">
+											</div>
+											<p>{{ activite.getCategoriesFormation.getLibelle() }}</p>
+										</div>
+									</div>
+									<div {{ activite.getLieu.getNomVille }}></div>
+									{% if is_granted(["ROLE_ADMIN"]) %}
+										<div class="bas_album_photo col-12">
+											<a href="{{ path('activite_edit', {'id':activite.id}) }}">
+												<button class="btn btn-success">Modifier</button>
+											</a>
+											<a href="{{ path('delete_activite', {'id':activite.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer cette activité')">
+												<button class="btn btn-secondary">Supprimer</button>
+											</a>
+										</div>
+									{% endif %}
+								</div>
+							</div>
+						{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
 
-{% endblock %}
+	{% endblock %}

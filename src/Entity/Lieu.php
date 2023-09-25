@@ -2,46 +2,33 @@
 
 namespace App\Entity;
 
-use App\Repository\LieuRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Activite;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\LieuRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * @ORM\Entity(repositoryClass=LieuRepository::class)
- */
+#[ORM\Entity(repositoryClass: LieuRepository::class)]
 class Lieu
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $nom_ville;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $cp_ville;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $num_rue;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $nom_rue;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Activite::class, mappedBy="lieu")
-     */
+    #[ORM\OneToMany(targetEntity: Activite::class, mappedBy: 'lieu')]
     private $activites;
 
     public function __construct()
@@ -134,5 +121,5 @@ class Lieu
     public function __toString()
     {
         return $this->nom_ville;
-     }
+    }
 }

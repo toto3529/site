@@ -20,7 +20,7 @@ use function Sodium\add;
 
 class OrgaEditNomPrenomType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): Void
     {
         $builder
             // Le champ déroule une liste grâce à EntityType
@@ -40,7 +40,7 @@ class OrgaEditNomPrenomType extends AbstractType
         ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): Void
     {
         $resolver->setDefaults([
             'data_class' => Referent::class,

@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TextFourType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): Void
     {
         $builder
             ->add('textFour', TextareaType::class, [
@@ -22,7 +22,7 @@ class TextFourType extends AbstractType
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): Void
     {
         $resolver->setDefaults([
             'data_class' => TextPresentation::class,

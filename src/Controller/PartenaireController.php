@@ -16,31 +16,32 @@ class PartenaireController extends AbstractController
 {
 
     /**
-     * @Route ("/partenaire", name="partenaire")
+     * Cette méthode sert à rediriger sur la page Gestion des partenaires et à afficher tous les partenaires présents en base données.
+     * 
      * @param PartenaireRepository $partenaireRepository
      * @return Response
-     *
-     * Cette méthode sert a rediriger sur la page Gestion des partenaires,
-     * et a afficher tous les partenaires présent en base donnée.
-     *
      */
+
+    #[Route('/partenaire', name: 'partenaire')]
+
     public function partenaire(PartenaireRepository $partenaireRepository): Response
     {
         //On récupère toutes les données de la table activité avec la méthode findPartenaire().
-        return $this->render('partenaire/partenaire.html.twig',[
-        //On envoie les données récupérer sur la page partenaire.html.twig.
+        return $this->render('partenaire/partenaire.html.twig', [
+            //On envoie les données récupérer sur la page partenaire.html.twig.
             'partenaires' => $partenaireRepository->findPartenaire(),
         ]);
     }
 
     /**
-     * @Route ("/createP", name="createP")
+     * Cette méthode sert a créer un partenaire.
+     * 
      * @param Request $request
      * @return Response
-     *
-     * Cette méthode sert a créer un partenaire.
-     *
      */
+
+    #[Route('/createP', name: 'createP')]
+
     public function createPartenaire(Request $request): Response
     {
         //On refuse l'accès a cette méthode a l'utilisateur si l'utilisateur n'a pas le rôle Admin.
@@ -52,15 +53,14 @@ class PartenaireController extends AbstractController
         //On récupère les information saisi.
         $formPartenaire->handleRequest($request);
         //Si le formulaire a bien été envoyer et qu'il est valide ...
-        if($formPartenaire->isSubmitted() && $formPartenaire->isValid())
-        {
+        if ($formPartenaire->isSubmitted() && $formPartenaire->isValid()) {
             //On stock le nom du fichier dans la variable $file.
             $file = $partenaire->getLogo();
             //On renomme le fichier avec un nom unique et on lui ajoute l'extension contenue
             //dans la variable $file, on stock le tout dans la variable $fileName.
-            $fileName = md5(uniqid()). '.' .$file->guessExtension();
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
             //On déplace le fichier dans le repository logos
-            $file->move($this->getParameter('logo_directory'),$fileName);
+            $file->move($this->getParameter('logo_directory'), $fileName);
             //On injecte le nouveau nom du fichier dans la propriété image.
             $partenaire->setLogo($fileName);
             //On envoie les informations a la base de donnée
@@ -73,22 +73,22 @@ class PartenaireController extends AbstractController
             return $this->redirectToRoute('partenaire');
         }
         //On envoie les données sur la page _formPartenaire.html.twig
-        return $this->render('partenaire/_formPartenaire.html.twig',[
+        return $this->render('partenaire/_formPartenaire.html.twig', [
             'partenaire' => $partenaire,
             'formPartenaire' => $formPartenaire->createView(),
         ]);
-
     }
 
     /**
-     * @Route ("/update/{id}", name="partenaire_update")
+     * Cette méthode sert à modifier un partenaire.
+     * 
      * @param Partenaire $partenaire
      * @param Request $request
      * @return RedirectResponse|Response
-     *
-     * Cette méthode sert a modifier un partenaire.
-     *
      */
+
+    #[Route ('/update/{id}', name : 'partenaire_update')]
+
     public function partenaireUpdate(Partenaire $partenaire, Request $request): Response
     {
         //On refuse l'accès a cette méthode a l'utilisateur si l'utilisateur n'a pas le rôle Admin.
@@ -104,7 +104,7 @@ class PartenaireController extends AbstractController
         //Si le formulaire a bien été envoyer et qu'il est valide ...
         if ($form->isSubmitted() && $form->isValid()) {
             //Si la variable $nom est diffèrente de null(rien)...
-            if($nom != null) {
+            if ($nom != null) {
                 //On supprime le fichier stocker dans le repository logos.
                 unlink($this->getParameter('logo_directory') . '/' . $nom);
             }
@@ -112,9 +112,9 @@ class PartenaireController extends AbstractController
             $file = $partenaire->getLogo();
             //On renomme le fichier avec un nom unique et on lui ajoute l'extension contenue
             //dans la variable $file, on stock le tout dans la variable $fileName.
-            $fileName = md5(uniqid()). '.' .$file->guessExtension();
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
             //On déplace le fichier dans le repository logos.
-            $file->move($this->getParameter('logo_directory'),$fileName);
+            $file->move($this->getParameter('logo_directory'), $fileName);
             //On injecte le nouveau nom du fichier dans la propriété image.
             $partenaire->setLogo($fileName);
             //On envoie les informations a la base de donnée.
@@ -126,19 +126,20 @@ class PartenaireController extends AbstractController
             return $this->redirectToRoute('partenaire');
         }
         //On envoie les données sur la page updatePartenaire.html.twig
-        return $this->render('partenaire/updatePartenaire.html.twig',[
+        return $this->render('partenaire/updatePartenaire.html.twig', [
             'form' => $form->createView()
         ]);
     }
 
     /**
-     * @Route("/delete/{id}", name="partenaire_delete")
+     * Cette méthode sert a supprimer un partenaire.
+     * 
      * @param Partenaire $partenaire
      * @return RedirectResponse
-     *
-     * Cette méthode sert a supprimer un partenaire.
-     *
      */
+
+    #[Route('/delete/{id}', name : 'partenaire_delete')]
+
     public function partenaireDelete(Partenaire $partenaire): RedirectResponse
     {
         //On refuse l'accès a cette méthode si l'utilisateur n'a pas le rôle Admin.
@@ -155,6 +156,4 @@ class PartenaireController extends AbstractController
         //On redirige l'utilisateur sur la page partenaire.html.twig.
         return $this->redirectToRoute('partenaire');
     }
-
-
 }

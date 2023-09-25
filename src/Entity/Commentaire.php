@@ -7,43 +7,29 @@ use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[ORM\Entity(repositoryClass: CommentaireRepository::class)]
 
-/**
- * @ORM\Entity(repositoryClass=CommentaireRepository::class)
- */
 class Commentaire
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $userName;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $dateCreation;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $dateModification;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank(message="Le champ doit contenir du texte pour être validable")
-     */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank(message: 'Le champ doit contenir du texte pour être validable')]
     private $commentaire;
 
-    /**
-     * @ORM\ManyToOne (targetEntity=Documentation::class, inversedBy="commentaire")
-     */
+    #[ORM\ManyToOne (targetEntity: Documentation::class, inversedBy: 'commentaire')]
     private $documentation;
 
     public function getId(): ?int

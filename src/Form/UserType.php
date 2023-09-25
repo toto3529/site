@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): Void
     {
         $builder
             ->add('username')
@@ -50,8 +50,9 @@ class UserType extends AbstractType
             ])
             ->add('nom')
             ->add('prenom')
-            ->add('telephone', TelType::class,[
-                'required' => true])
+            ->add('telephone', TelType::class, [
+                'required' => true
+            ])
             ->add('email')
             ->add('roles', ChoiceType::class, [
                 'required' => true,
@@ -62,14 +63,14 @@ class UserType extends AbstractType
                     'Administrateur' => 'ROLE_ADMIN',
                 ],
             ])
-            ->add('referents', EntityType::class,[
+            ->add('referents', EntityType::class, [
                 'class' => Referent::class
             ])
 
             #class birthday pour que les années soient dispos jusque 1901#
             ->add('date_naissance', BirthdayType::class, [
                 # 'placeholder'=>'selectionner une valeur',
-                'widget' =>'single_text'
+                'widget' => 'single_text'
             ])
             ->add('photos', FileType::class, [
                 'label' => false,
@@ -78,7 +79,7 @@ class UserType extends AbstractType
                 'required' => false
             ])
 
-            ->add('enregistrer',SubmitType::class, [
+            ->add('enregistrer', SubmitType::class, [
                 'attr' => ['class' => 'btn btn-success'],
             ]);
 
@@ -89,19 +90,15 @@ class UserType extends AbstractType
                 function ($rolesArray) {
                     // transform the array to a string
                     return count($rolesArray) ? $rolesArray[0] : null;
-
                 },
                 function ($rolesString) {
                     // transform the string back to an array
                     return [$rolesString];
-
-
                 }
             ));
-
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): Void
     {
         $resolver->setDefaults([
             'data_class' => User::class,

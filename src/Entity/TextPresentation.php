@@ -2,66 +2,45 @@
 
 namespace App\Entity;
 
-use App\Repository\TextPresentationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\TextPresentationRepository;
 
-/**
- * @ORM\Entity(repositoryClass=TextPresentationRepository::class)
- */
+#[ORM\Entity(repositoryClass: TextPresentationRepository::class)]
 class TextPresentation
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $textOne;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $textTwo;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $textThree;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $textFour;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $textFive;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $textSix;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $titleOne;
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $titleTwo;
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $titleThree;
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $titleFour;
 
     public function getId(): ?int
@@ -188,5 +167,4 @@ class TextPresentation
 
         return $this;
     }
-
 }

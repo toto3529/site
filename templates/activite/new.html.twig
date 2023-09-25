@@ -2,14 +2,14 @@
 {# La page creer activité #}
 {% block body %}
 
-    {# Si l'Utilisateur est Administrateur alors on lui met le formulaire sinon on met rien #}
+	{# Si l'Utilisateur est Administrateur alors on lui met le formulaire sinon on met rien #}
 
-    {% if is_granted("ROLE_ADMIN") %}
+	{% if is_granted("ROLE_ADMIN") %}
 
-{# On inclut le formulaire #}
-<div class="mb-5">
-   {{ include('activite/_form.html.twig') }}
-</div>
-    {% else %}
-    {% endif %}
+		{# On inclut le formulaire #}
+		<div class="mb-5">
+			{{ include('activite/_form.html.twig') }}
+		</div>
+		{% else %}
+	{% endif %}
 {% endblock %}

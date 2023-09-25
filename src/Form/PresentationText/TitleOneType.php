@@ -11,19 +11,18 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TitleOneType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): Void
     {
         $builder
             ->add('titleOne', TextareaType::class, [
                 'label' => 'Premier titre'
             ])
-            ->add('Enregistrer',SubmitType::class, [
+            ->add('Enregistrer', SubmitType::class, [
                 'attr' => ['class' => 'btn-success'],
-            ]);
-        ;
+            ]);;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): Void
     {
         $resolver->setDefaults([
             'data_class' => TextPresentation::class,

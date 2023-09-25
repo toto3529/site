@@ -11,19 +11,18 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TitleTwoType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): Void
     {
         $builder
             ->add('titleTwo', TextareaType::class, [
                 'label' => 'Deuxième titre'
             ])
-            ->add('Enregistrer',SubmitType::class, [
+            ->add('Enregistrer', SubmitType::class, [
                 'attr' => ['class' => 'btn-success'],
-            ]);
-        ;
+            ]);;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): Void
     {
         $resolver->setDefaults([
             'data_class' => TextPresentation::class,

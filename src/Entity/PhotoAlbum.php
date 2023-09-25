@@ -2,34 +2,26 @@
 
 namespace App\Entity;
 
-use App\Repository\PhotoAlbumRepository;
+use App\Entity\Activite;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\PhotoAlbumRepository;
 
-/**
- * @ORM\Entity(repositoryClass=PhotoAlbumRepository::class)
- */
+#[ORM\Entity(repositoryClass: PhotoAlbumRepository::class)]
+
 class PhotoAlbum
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $image;
 
-    /**
-     * @ORM\Column (type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $url;
 
-    /**
-     * @ORM\ManyToOne (targetEntity=Activite::class, inversedBy="albumPhoto")
-     */
+    #[ORM\ManyToOne(targetEntity: Activite::class, inversedBy: 'albumPhoto')]
     private $activite;
 
 
@@ -91,7 +83,4 @@ class PhotoAlbum
 
         return $this;
     }
-
-
-
 }

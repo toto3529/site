@@ -2,29 +2,23 @@
 
 namespace App\Entity;
 
-use App\Repository\DocPdfRepository;
+use App\Entity\Activite;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\DocPdfRepository;
 
-/**
- * @ORM\Entity(repositoryClass=DocPdfRepository::class)
- */
+#[ORM\Entity(repositoryClass: DocPdfRepository::class)]
+
 class DocPdf
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $nompdf;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Activite::class, inversedBy="docPdfs")
-     */
+    #[ORM\ManyToOne(targetEntity: Activite::class, inversedBy: 'docPdfs')]
     private $pdfactivite;
 
     public function getId(): ?int

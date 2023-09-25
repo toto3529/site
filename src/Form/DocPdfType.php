@@ -12,11 +12,11 @@ use Symfony\Component\Validator\Constraints\File;
 
 class DocPdfType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nompdf',FileType::class,[
-                'label'=>'choisissez votre pdf récapitulatif pour cette activité',
+            ->add('nompdf', FileType::class, [
+                'label' => 'choisissez votre pdf récapitulatif pour cette activité',
                 'required' => true,
                 'data_class' => null,
                 'constraints' => [
@@ -30,11 +30,10 @@ class DocPdfType extends AbstractType
                 ]
 
             ])
-           ->add('valider', SubmitType::class)
-        ;
+            ->add('valider', SubmitType::class);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => DocPdf::class,

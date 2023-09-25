@@ -11,23 +11,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UrlPhotoAlbumType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): Void
     {
         $builder
-            ->add('urlAlbumPhoto', TextType::class,[
+            ->add('urlAlbumPhoto', TextType::class, [
                 'required' => false,
                 'label' => "Première URL Album Photos"
             ])
-            ->add('urlAlbumPhotoDeux', TextType::class,[
+            ->add('urlAlbumPhotoDeux', TextType::class, [
                 'required' => false,
                 'label' => "Deuxième URL Album Photos"
             ])
-            ->add('Enregistrer', SubmitType::class)
-
-        ;
+            ->add('Enregistrer', SubmitType::class);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): Void
     {
         $resolver->setDefaults([
             'data_class' => Activite::class,

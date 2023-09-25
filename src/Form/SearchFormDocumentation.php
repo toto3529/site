@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SearchFormDocumentation extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): Void
     {
         $builder
             ->add('q', TextType::class, [
@@ -31,20 +31,19 @@ class SearchFormDocumentation extends AbstractType
                 'class'             => Categorie::class,
                 'expanded'          => true,
                 'multiple'          => true,
-            ])
-        ;
+            ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): Void
     {
-      $resolver->setDefaults([
-          'data_class'              => SearchData::class,
-          'method'                  => 'GET',
-          'csrf_protection'         => false,
-      ]);
+        $resolver->setDefaults([
+            'data_class'              => SearchData::class,
+            'method'                  => 'GET',
+            'csrf_protection'         => false,
+        ]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): String
     {
         return '';
     }

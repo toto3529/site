@@ -1,9 +1,12 @@
-    {# La partie News #}
+{# La partie News #}
 
-    {% if (actidispo) %}
-            {# Le titre #}
-            <h2 class="agenda">À noter sur vos agendas :</h2>
+{% if (actidispo) %}
+	{# Le titre #}
+	<h2 class="agenda">À noter sur vos agendas :</h2>
 
-        <a class="decoration-button-voir" href="{{ path('activite_index') }}">{{ actidispo| length }} évènement(s) à venir</a>
-    {% else %}
-    {% endif %}
+	<a class="decoration-button-voir" href="{{ path('activite_index') }}">
+		{{ actidispo| length }}
+		évènement(s) à venir
+	</a>
+	{% else %}
+{% endif %}

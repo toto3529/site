@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Controller;
-
 
 use App\Data\SearchData;
 use App\Entity\Activite;
@@ -21,24 +19,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-
-
 class PhotoAlbumController extends AbstractController
 {
     /**
-     * @Route ("/album", name="album")
+     * Cette méthode sert à rediriger l'utilisateur sur la page Album photo et permet aussi de faire l'affichage des activités avec l'état 'fini' ou 'annulé' et d'afficher un filtre.
+     * 
      * @param ActiviteRepository $activiteRepository
      * @param Request $request
      * @return Response
-     *
-     * Cette méthode sert à rediriger l'utilisateur sur la page Album photo,
-     * et permet aussi de faire l'affichage des activités avec l'état 'fini' ou 'annulé' et d'afficher un filtre.
-     *
      */
+
+    #[Route ('/album', name : 'album')]
+
     public function album(EntityManagerInterface $entityManager, IntroPhotoRepository $introPhotoRepository, ActiviteRepository $activiteRepository, Request $request): Response
     {
         $photoIntroAlbum = $introPhotoRepository->find("1");
-
 
         //On refuse l'accès a cette méthode a l'utilisateur si l'utilisateur n'a pas le rôle User.
         $this->denyAccessUnlessGranted("ROLE_USER");
@@ -80,11 +75,11 @@ class PhotoAlbumController extends AbstractController
             $entityManager->flush();
         }
         //On envoie les données récupérées sur la page album_photo.html.twig.
-        return $this->render('album/album_photo.html.twig',[
+        return $this->render('album/album_photo.html.twig', [
             'user' => $user,
             /**'activites' => $acti,*/
             'date' => $date,
-            'activites'=> $products,
+            'activites' => $products,
             'form' => $form->createView(),
             'photoIntro' => $photoIntroAlbum->getAlbumPhotoPhotoIntro(),
             'formPhotoIntro' => $formIntroAlbum->createView()
@@ -92,16 +87,16 @@ class PhotoAlbumController extends AbstractController
     }
 
     /**
-     * @Route ("/album/create/{id}", name="create_album")
+     * Cette méthode sert à créer une image et à la lier à une activité.
+     * La méthode ne dispose pas de redirection pour permettre à l'utilisateur d'insérer plusieurs images sans gène.
+     *   
      * @param Request $request
      * @param Activite $activite
      * @return Response
-     *
-     * Cette méthode sert à créer une image et a la lier a une activité.
-     * La méthode ne dispose pas de redirection pour permettre à l'utilisateur
-     * d'insérer plusieurs images sans gène.
-     *
      */
+
+    #[Route ('/album/create/{id}', name : 'create_album')]
+
     public function createAlbum(Request $request, Activite $activite): Response
     {
         //On refuse l'accès à cette méthode si l'utilisateur n'a pas le rôle Admin.
@@ -113,21 +108,19 @@ class PhotoAlbumController extends AbstractController
         //On récupère les informations saisies.
         $form->handleRequest($request);
         //Si le formulaire a bien été envoyé et qu'il est valide ...
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             //On injecte l'activité dans le setter activite
             //de cette façon l'activité et l'album sont liés par le même id.
             $album->setActivite($activite);
             //Si la propriété image n'est pas null (vide)...
-            if( $album->getImage() != null )
-            {
+            if ($album->getImage() != null) {
                 //On stocke le nom du fichier dans la variable $file.
                 $file = $album->getImage();
                 //On renomme le fichier avec un nom unique et on lui ajoute l'extension contenue
                 //dans la variable $file, on stocke le tout dans la variable $fileName.
-                $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
                 //On déplace le fichier dans le repository album-photo.
-                $file->move($this->getParameter('album_directory'),$fileName);
+                $file->move($this->getParameter('album_directory'), $fileName);
                 //On injecte le nouveau nom du fichier dans la propriété image.
                 $album->setImage($fileName);
             }
@@ -139,32 +132,32 @@ class PhotoAlbumController extends AbstractController
             $this->addFlash('success', 'Votre image est bien insérée dans l\'album');
         }
         //On envoie les données sur la page new_album.html.twig
-        return $this->render('album/new_album.html.twig',[
+        return $this->render('album/new_album.html.twig', [
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route ("/show/album/{id}", name="show_album")
+     * Cette méthode est en charge de l'affichage d'une activité (plus détaillé), de l'affichage des pdf et des images qui lui sont liées.
+     * 
      * @param Activite $activite
      * @param ActiviteRepository $activiteRepository
      * @return Response
-     *
-     * Cette méthode est en charge de l'affichage d'une activité (plus détaillé),
-     * de l'affichage des pdf et des images qui lui sont liées.
-     *
      */
+
+    #[Route ('/show/album/{id}', name : 'show_album')]
+
     public function showAlbum(EntityManagerInterface $entityManager, Request $request, Activite $activite, ActiviteRepository $activiteRepository): Response
     {
         //On recherche une activité par son id et on la stocke dans la variable $activite grâce a la méthode FindOneBy.
-        $activite = $activiteRepository->findOneBy(['id'=> $activite]);
+        $activite = $activiteRepository->findOneBy(['id' => $activite]);
 
         //On récupère le formulaire pour les urls
-        $form = $this->createForm(UrlPhotoAlbumType::class,$activite);
+        $form = $this->createForm(UrlPhotoAlbumType::class, $activite);
         $form->handleRequest($request);
 
         // Si le formulaire a été envoyé et est valide
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             //On envoie les informations à la base de donnée.
             $url = $form->getData();
             $entityManager->persist($url);
@@ -172,7 +165,7 @@ class PhotoAlbumController extends AbstractController
         }
 
         //On envoie les données sur la page show_album.html.twig
-        return $this->render('album/show_album.html.twig',[
+        return $this->render('album/show_album.html.twig', [
             'activite' => $activite,
             'form' => $form->createView(),
             'photoPdf' => $activite->getPdf()
@@ -180,13 +173,14 @@ class PhotoAlbumController extends AbstractController
     }
 
     /**
-     * @Route ("/delete/album/{id}", name="delete_album")
+     * Cette méthode sert à supprimer les photos stockées dans une activité.
+     * 
      * @param PhotoAlbum $photoAlbum
      * @return Response
-     *
-     * Cette méthode sert à supprimer les photos stockées dans une activité.
-     *
      */
+
+    #[Route ('/delete/album/{id}', name : 'delete_album')]
+
     public function deleteAlbum(PhotoAlbum $photoAlbum): Response
     {
         //On refuse l'accès à cette méthode si l'utilisateur n'a pas le rôle Admin.
@@ -194,12 +188,11 @@ class PhotoAlbumController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getManager();
         //Si la propriété image n'est pas null (vide)...
-        if ($photoAlbum->getImage() != null)
-        {
+        if ($photoAlbum->getImage() != null) {
             //On récupère le nom de l'image stockée en base de données et on le stocke dans la variable $nom.
             $nom = $photoAlbum->getImage();
             //On supprime le fichier stocké dans le repository album-photo.
-            unlink($this->getParameter('album_directory').'/'.$nom);
+            unlink($this->getParameter('album_directory') . '/' . $nom);
         }
         //On supprime le fichier stocké dans la base de données
         $entityManager->remove($photoAlbum);
@@ -211,14 +204,15 @@ class PhotoAlbumController extends AbstractController
     }
 
     /**
-     * @Route ("/pdf/create/{id}", name="create_pdf")
+     * Cette méthode est en charge de créer un pdf et de le lier à une activité.
+     * 
      * @param Request $request
      * @param Activite $activite
      * @return Response
-     *
-     * Cette méthode est en charge de créer un pdf et de le lier à une activité.
-     *
      */
+
+    #[Route ('/pdf/create/{id}', name : 'create_pdf')]
+
     public function createPdf(Request $request, Activite $activite): Response
     {
         //On refuse l'accès à cette méthode si l'utilisateur n'a pas le rôle Admin.
@@ -231,22 +225,20 @@ class PhotoAlbumController extends AbstractController
         //On récupère les informations saisies.
         $form->handleRequest($request);
         //Si le formulaire a bien été envoyé et qu'il est valide ...
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             //On injecte l'activité dans le setter pdfactivite
             //de cette façon l'activité et le pdf sont liés par le même id.
             $pdf->setPdfactivite($activite);
             //Si la propriété nom de l'objet pdf est diffèrent de null(rien)...
-            if ($pdf->getNompdf() != null)
-            {
+            if ($pdf->getNompdf() != null) {
                 //on stocke le nom du fichier dans la variable $file.
                 $file = $form->get('nompdf')->getData();
                 //On renomme le fichier avec un nom unique et on lui ajoute l'extension contenue dans le $file
                 //on stocke le tout dans la variable $fileName.
-                $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
                 //On déplace le fichier contenu dans $file dans le repository recap
                 //on stocke le fichier pdf dans ce repository.
-                $file->move($this->getParameter('upload_recap_directory'),$fileName);
+                $file->move($this->getParameter('upload_recap_directory'), $fileName);
                 //On injecte le nom unique créé précédemment dans l'attribut nom.
                 $pdf->setNompdf($fileName);
             }
@@ -260,38 +252,38 @@ class PhotoAlbumController extends AbstractController
             return $this->redirectToRoute('album');
         }
         //On envoie l'affichage du formulaire sur la page new_pdf.html.twig.
-        return $this->render('album/new_pdf.html.twig',[
+        return $this->render('album/new_pdf.html.twig', [
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route ("/delete/pdf/{id}", name="delete_pdf")
+     * Cette méthode est en charge supprimer un pdf.
+     * 
      * @param DocPdf $docPdf
      * @return Response
-     *
-     * cette méthode est en charge supprimer un pdf.
-     *
      */
-    public function deletePdf(DocPdf $docPdf):Response
+
+    #[Route ('/delete/pdf/{id}', name : 'delete_pdf')]
+
+    public function deletePdf(DocPdf $docPdf): Response
     {
         //On refuse l'accès à cette méthode si l'utilisateur n'a pas le rôle Admin.
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
 
         $entityManager = $this->getDoctrine()->getManager();
         //Si la propriété image n'est pas null (vide)...
-        if ($docPdf->getNompdf() != null)
-        {
+        if ($docPdf->getNompdf() != null) {
             //On récupère le nom de l'image stockée en base de données.
             $nom = $docPdf->getNompdf();
             //On supprime le fichier stocké dans le repository recap.
-            unlink($this->getParameter('upload_recap_directory').'/'.$nom);
+            unlink($this->getParameter('upload_recap_directory') . '/' . $nom);
         }
         //On supprime les valeur stockées dans la base de données.
         $entityManager->remove($docPdf);
         $entityManager->flush();
         //On renvoie un message à l'utilisateur pour lui confirmer la suppression du pdf.
-        $this->addFlash('success','Le pdf a bien été supprimé');
+        $this->addFlash('success', 'Le pdf a bien été supprimé');
         //On redirige l'utilisateur sur la page album.html.twig.
         return $this->redirectToRoute('album');
     }

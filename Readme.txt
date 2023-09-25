@@ -1,4 +1,5 @@
 
+Christophe LECLERE : 
 
 Le site est le travail conjoint de plusieurs stagiaires.
 
@@ -24,3 +25,6 @@ Je suis passé par un Virtual Host.
 Les codes d'accès au dashboard Matomo, au serveur d'hébergement et à l'accès SSH sur le serveur sont à récupérer auprès de l'administrateur. 
 
 
+Antoine MARTIN VAUFREY
+
+passage de SF 4.4 à 6.3 (Php 8.1 fait par hébergeur)

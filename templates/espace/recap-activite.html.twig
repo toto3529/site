@@ -37,7 +37,7 @@
         <div class="row m-6 d-flex justify-content-center">
             <div class="col-auto">
                 <table class="table-hover table-striped table-sm table-bordered table-responsive" data-toggle="table"
-                       data-search="true" data-show-columns="true" data-pagination="true">
+                    data-search="true" data-show-columns="true" data-pagination="true">
 
                     <thead class="text-center">
                     <tr class="thead-light">
@@ -55,11 +55,8 @@
 
                     <tbody class="text-center">
                     {% for activite in activites %}
-
                         <tr>
-
                             <td>{{ activite.nom }}</td>
-
                             <td>{{ activite.dateActivite ? activite.dateActivite|date('d-m-Y') : '' }}</td>
                             <td>{{ activite.duree }} mn</td>
                             <td>{{ activite.distance }} km</td>
@@ -72,9 +69,9 @@
                             </td>
                             <td>
                                 <a href="{{ path('detailrecap', {'id': activite.id}) }}"
-                                   class="btn btn-primary btn-sm">détails</a>
+                                class="btn btn-primary btn-sm">détails</a>
                                 <a href="{{ path('editrecap', {'id': activite.id}) }}"
-                                   class="btn btn-warning btn-sm">ajouter pdf recap</a>
+                                class="btn btn-warning btn-sm">ajouter pdf recap</a>
 
                             </td>
                         </tr>
@@ -85,7 +82,7 @@
         </div>
 
 
-   {% elseif is_granted("ROLE_USER") %}
+    {% elseif is_granted("ROLE_USER") %}
 
         <H3>Voir les détails de l'activité et son pdf en cliquant sur 'détail'</H3>
         </div>
@@ -93,12 +90,10 @@
         </div>
         </div>
 
-
-
         <div class="row m-6 d-flex justify-content-center">
             <div class="col-auto">
                 <table class="table-hover table-striped table-sm table-bordered table-responsive" data-toggle="table"
-                       data-search="true" data-show-columns="true" data-pagination="true">
+                    data-search="true" data-show-columns="true" data-pagination="true">
 
                     <thead class="text-center">
                     <tr class="thead-light">
@@ -116,11 +111,8 @@
 
                     <tbody class="text-center">
                     {% for activite in activites %}
-
                         <tr>
-
                             <td>{{ activite.nom }}</td>
-
                             <td>{{ activite.dateActivite ? activite.dateActivite|date('d-m-Y') : '' }}</td>
                             <td>{{ activite.duree }} mn</td>
                             <td>{{ activite.distance }} km</td>
@@ -132,9 +124,7 @@
                                 <a href="{{ path('user_show', {'id': activite.organisateur.id}) }}"> {{ activite.organisateur.prenom }} {{ activite.organisateur.nom }}</a>
                             </td>
                             <td>
-                                <a href="{{ path('detailrecap', {'id': activite.id}) }}"
-                                   class="btn btn-primary btn-sm">détails</a>
-
+                                <a href="{{ path('detailrecap', {'id': activite.id}) }}" class="btn btn-primary btn-sm">détails</a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -142,15 +132,11 @@
                 </table>
             </div>
         </div>
-
-
-        <div class="text-center m-3"> <a href="{{ path('home1') }}"
-                                         class="btn btn-lg btn-primary ">retour à la l'accueil</a>
-        </div>
-        {% else %}
-            <div class="row text-center"
+        <div class="text-center m-3"> <a href="{{ path('home1') }}" class="btn btn-lg btn-primary ">retour à la l'accueil</a>
+        </div> 
+    {% else %}
+            <div class="row text-center">
             <h2 class="text-danger">Vous  n'avez pas les droits pour accéder à cette page</h2>
             </div>
     {% endif %}
-
 {% endblock %}

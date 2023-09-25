@@ -20,21 +20,21 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-/**
- * @Route("/activite")
- */
+#[Route("/activite")]
+
 class ActiviteController extends AbstractController
 {
     /**
-     * @Route("/", name="activite_index")
+     * Cette méthode est en charge de rediriger l'utilisateur sur la page Programme,
+     * d'afficher les activités avec un état 'ouvert' ou 'modifier' et d'afficher un filtre.
+     * 
      * @param ActiviteRepository $activiteRepository
      * @param Request $request
      * @return Response
-     *
-     * Cette méthode est en charge de rediriger l'utilisateur sur la page Programme,
-     * d'afficher les activités avec un état 'ouvert' ou 'modifié' et d'afficher un filtre.
-     *
      */
+
+    #[Route('/', name : 'activite_index')]
+
     public function index(EntityManagerInterface $entityManager, IntroPhotoRepository $introPhotoRepository, ActiviteRepository $activiteRepository, Request $request): Response
     {
         $photoIntroProgramme = $introPhotoRepository->find("1");
@@ -97,16 +97,16 @@ class ActiviteController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="activite_new", methods={"GET","POST"})
+     * Cette méthode sert à créer une activité.
+     * 
      * @param Request $request
      * @param EtatRepository $etatRepository
      * @return Response
-     *
-     * Cette méthode sert a créer une activité.
-     *
      */
-    public
-    function new(Request $request, EtatRepository $etatRepository): Response
+
+    #[Route('/new', name : 'activite_new', methods : ['GET','POST'])]
+
+    public function new(Request $request, EtatRepository $etatRepository): Response
     {
         //On refuse l'accès à cette méthode si l'utilisateur n'a pas le rôle Admin.
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
@@ -161,13 +161,12 @@ class ActiviteController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="activite_show", methods={"GET"})
      * @param Activite $activite
      * @return Response
-     *
-     *
-     *
      */
+
+    #[Route('/{id}', name : 'activite_show', methods : ['GET'])]
+
     public function show(Activite $activite): Response
     {
         return $this->render('activite/show.html.twig', [
@@ -176,13 +175,15 @@ class ActiviteController extends AbstractController
     }
 
     /**
-     * @Route("/show/pdf/{id}", name="activite_show_pdf")
+     * Cette méthode permet d'afficher le pdf de l'activité s'il est présent
+     * 
      * @param Activite $activite
      * @param ActiviteRepository $activiteRepository
      * @return Response
-     *
-     * Cette méthode permet d'afficher le pdf de l'activité s'il est présent
      */
+
+    #[Route('/show/pdf/{id}', name : 'activite_show_pdf')]
+
     public function showPdf(Activite $activite, ActiviteRepository $activiteRepository,Request $request): Response
     {
         //On récupère une activité en fonction de son identifiant
@@ -194,19 +195,18 @@ class ActiviteController extends AbstractController
         ]);
     }
 
-
-
-
     /**
-     * @Route("/{id}/edit", name="activite_edit", methods={"GET","POST"})
+     * 
+     * Cette méthode sert à modifier une activité
+     *
      * @param Request $request
      * @param Activite $activite
      * @param EtatRepository $etatRepository
      * @return Response
-     *
-     * Cette méthode sert a modifié une activité
-     *
      */
+
+    #[Route('/{id}/edit', name : 'activite_edit', methods : ['GET','POST'])]
+
     public function edit(Request $request, Activite $activite, EtatRepository $etatRepository): Response
     {
         //On refuse l'accès à cette méthode si l'utilisateur n'a pas le rôle Admin.
@@ -250,14 +250,16 @@ class ActiviteController extends AbstractController
     }
 
     /**
-     * @Route ("/delete/{id}", name="delete_activite")
+     * Cette méthode sert à supprimer une activité et un fichier pdf s'il y en a un de lié.
+     * 
      * @param Activite $activite
      * @param DocPdfRepository $docPdfRepository
      * @param PhotoAlbumRepository $photoAlbumRepository
      * @return Response
-     *
-     * Cette méthode sert à supprimer une activité et un fichier pdf s'il y en a un de lié.
      */
+
+    #[Route ('/delete/{id}', name : 'delete_activite')]
+
     public function deleteActivite(Activite $activite, DocPdfRepository $docPdfRepository, PhotoAlbumRepository $photoAlbumRepository): Response
     {
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
@@ -300,13 +302,13 @@ class ActiviteController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/sinscrire", name="activite_sinscrire", methods={"GET","POST"})
+     * Cette méthode sert à s'inscrire à une activité.
+     * 
      * @param Activite $activite
      * @return Response
-     *
-     * Cette méthode sert a s'inscrire a une activité.
-     *
      */
+
+    #[Route('/{id}/sinscrire', name : 'activite_sinscrire', methods : ['GET','POST'])]
 
     public function sinscrire(Activite $activite): Response
     {
@@ -329,13 +331,15 @@ class ActiviteController extends AbstractController
 
 
     /**
-     * @Route("/{id}/sedesister", name="activite_sedesister", methods={"GET","POST"})
+     * Cette méthode sert à se désister d'une activité.
+     * 
      * @param Activite $activite
      * @return Response
-     *
-     * Cette méthode sert à se désister d'une activité.
-     *
      */
+
+    #[Route('/{id}/sedesister', name : 'activite_sedesister', methods : ['GET','POST'])]
+
+
     public function sedesister(Activite $activite): Response
     {
         //On refuse l'accès à cette méthode si l'utilisateur n'a pas le rôle User.
@@ -355,14 +359,15 @@ class ActiviteController extends AbstractController
     }
 
     /**
-     * @Route ("/{id}/annuler", name="activite_annuler",methods={"GET","POST"})
+     * Cette activité sert a annulé une activité.
+     * 
      * @param Activite $activite
      * @param EtatRepository $etatRepository
      * @return Response
-     *
-     * Cette activité sert a annulé une activité.
-     *
      */
+
+    #[Route ('/{id}/annuler', name : 'activite_annuler', methods : ['GET','POST'])]
+
     public function annuler(Activite $activite, EtatRepository $etatRepository): Response
     {
         //On refuse l'accès à cette méthode si l'utilisateur n'a pas le rôle User.

@@ -2,34 +2,24 @@
 
 namespace App\Entity;
 
-use App\Repository\PartenaireRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\PartenaireRepository;
 
-/**
- * @ORM\Entity(repositoryClass=PartenaireRepository::class)
- */
+#[ORM\Entity(repositoryClass: PartenaireRepository::class)]
 class Partenaire
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $nom;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $logo;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private $url;
 
     public function getId(): ?int
@@ -72,5 +62,4 @@ class Partenaire
 
         return $this;
     }
-
 }

@@ -96,7 +96,7 @@
     align-items: center;
     flex-wrap: wrap;
     background-color: #f4f4e6;
-    max-height: 70px;
+    /* max-height: 70px; */
     border:1px solid black;
 }
 

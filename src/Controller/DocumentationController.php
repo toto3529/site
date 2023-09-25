@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Controller;
-
 
 use App\Data\SearchData;
 use App\Entity\Commentaire;
@@ -10,9 +8,7 @@ use App\Entity\Documentation;
 use App\Form\CommentaireType;
 use App\Form\DocumentationType;
 use App\Form\IntroPhoto\DocumentationIntroPhotoType;
-use App\Form\SearchForm;
 use App\Form\SearchFormDocumentation;
-use App\Repository\ActiviteRepository;
 use App\Repository\CommentaireRepository;
 use App\Repository\DocumentationRepository;
 use App\Repository\IntroPhotoRepository;
@@ -27,13 +23,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class DocumentationController extends AbstractController
 {
     /**
-     * @Route ("/documentation", name="documentation")
+     * Cette méthode permet de diriger les utilisateurs vers la page documentation.
+     * Elle affiche les documentations triées par date (dateModification) sur la page documentation.
+     * 
      * @param DocumentationRepository $documentationRepository
      * @return Response
-     *
-     * Cette méthode permet de diriger les utilisateur vers la page documentation.
-     * Elle affiche les documentations trié par date (dateModification) sur la page documentation.
      */
+
+    #[Route('/documentation', name: 'documentation')]
+
     public function documentation(EntityManagerInterface $entityManager, IntroPhotoRepository $introPhotoRepository, DocumentationRepository $documentationRepository, Request $request): Response
     {
 
@@ -80,32 +78,34 @@ class DocumentationController extends AbstractController
             $entityManager->flush();
         }
         //On envoie les données récupérer sur la page documentation.html.twig.
-        return $this->render('documentation/documentation.html.twig',[
+        return $this->render('documentation/documentation.html.twig', [
             'photoIntro' => $photoIntroDocumentation->getDocumentationPhotoIntro(),
             'formPhotoIntro' => $formDoc->createView(),
             'documentation' => $documentationRepository->findDocumentationOrderByDateModifier(),
             'user' => $user,
             'date' => $date,
-            'documents'=> $products,
+            'documents' => $products,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route ("/show/documentation/{id}", name="show_documentation")
+     * Cette méthode permet l'affichage d'une documentation (plus détaillée) grâce à son identifiant unique.
+     * Cette méthode est aussi en charge de la création et l'affiche des commentaires.
+     *
      * @param Documentation $documentation
      * @param DocumentationRepository $documentationRepository
      * @param CommentaireRepository $commentaireRepository
      * @param Request $request
      * @return Response
-     *
-     * Cette méthode permet l'affichage d'une documentation (plus détaillé) grace a son identifiant unique.
-     * Cette méthode est aussi en charge de la création et l'affiche des commentaires.
-     *
      */
-    public function showDocumentation(Documentation $documentation,DocumentationRepository $documentationRepository,
-                                      CommentaireRepository $commentaireRepository,Request $request): Response
-    {
+
+    #[Route ('/show/documentation/{id}', name : 'show_documentation')]
+
+    public function showDocumentation(
+        Documentation $documentation, DocumentationRepository $documentationRepository,
+        CommentaireRepository $commentaireRepository, Request $request): Response
+        {
         //On refuse l'accès a cette méthode a l'utilisateur si l'utilisateur n'a pas le rôle User.
         $this->denyAccessUnlessGranted("ROLE_USER");
         //On récupère une documentation en fonction de son identifiant
@@ -123,8 +123,7 @@ class DocumentationController extends AbstractController
         //On récupère les informations saisi.
         $form->handleRequest($request);
         //Si le formulaire a bien été envoyer et qu'il est valide ...
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             //On hydrate la propriété userName avec la valeur contenue dans la variable $name.
             $comment->setUserName($name);
             //On hydrate la propriété dateCreation avec la date et l'heure lors de l'envoie du formulaire.
@@ -140,7 +139,7 @@ class DocumentationController extends AbstractController
             $this->addFlash('success', 'Le commentaire est bien pris en compte !');
         }
         //On envoie l'affichage du formulaire sur la page new_pdf.html.twig.
-        return $this->render('documentation/show_documentation.html.twig',[
+        return $this->render('documentation/show_documentation.html.twig', [
             'documentations' => $documentations,
             'commentaires' => $commentaires,
             'form' => $form->createView(),
@@ -148,13 +147,14 @@ class DocumentationController extends AbstractController
     }
 
     /**
-     * @Route ("/create/documentation", name="create_documentation")
+     * Cette méthode est en charge de la création d'une documentation.
+     * 
      * @param Request $request
      * @return Response
-     *
-     * Cette méthode est en charge de la création d'une documentation.
-     *
      */
+
+    #[Route ('/create/documentation', name : 'create_documentation')]
+
     public function createDocumentation(Request $request): Response
     {
         //On refuse l'accès a cette méthode a l'utilisateur si l'utilisateur n'a pas le rôle User.
@@ -169,8 +169,7 @@ class DocumentationController extends AbstractController
         //On récupère les informations saisi.
         $formDocumentation->handleRequest($request);
         //Si le formulaire a bien été envoyer et qu'il est valide ...
-        if($formDocumentation->isSubmitted() && $formDocumentation->isValid())
-        {
+        if ($formDocumentation->isSubmitted() && $formDocumentation->isValid()) {
             //On hydrate la propriété auteur avec le pseudo stocké dans la variable user.
             $documentation->setAuteur($user);
             //On récupère la date et l'heure a la que le formulaire est envoyé et on hydrate les propriétés
@@ -179,32 +178,31 @@ class DocumentationController extends AbstractController
             $documentation->setDateModifier(new DateTime('now'));
 
             //Si la valeur contenue dans la propriété image est différente de null(rien)...
-            if( $documentation->getImage() != null )
-            {
+            if ($documentation->getImage() != null) {
                 //On stock le nom du fichier dans la variable $file.
                 $file = $documentation->getImage();
                 //On renomme le fichier avec un nom unique et on lui ajoute l'extension contenue
                 //dans la variable $file, on stock le tout dans la variable $fileName.
-                $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
                 //On déplace le fichier dans le repository documentation-image.
-                $file->move($this->getParameter('documentation_directory'),$fileName);
+                $file->move($this->getParameter('documentation_directory'), $fileName);
                 //On hydrate le nouveau nom du fichier dans les propriétés image et imageModification.
                 $documentation->setImage($fileName);
                 $documentation->setImageModification($fileName);
             }
             //On applique la même logique ici que la condition au_dessus.
-            if($documentation->getImage2() != null){
+            if ($documentation->getImage2() != null) {
                 $file = $documentation->getImage2();
-                $fileName = md5(uniqid()).'.'.$file->guessExtension();
-                $file->move($this->getParameter('documentation_directory'),$fileName);
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                $file->move($this->getParameter('documentation_directory'), $fileName);
                 $documentation->setImage2($fileName);
                 $documentation->setImageModification2($fileName);
             }
             //On applique la même logique ici que la condition au_dessus.
-            if($documentation->getPdf() != null){
+            if ($documentation->getPdf() != null) {
                 $file = $documentation->getPdf();
-                $fileName = md5(uniqid()).'.'.$file->guessExtension();
-                $file->move($this->getParameter('pdf_directory'),$fileName);
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                $file->move($this->getParameter('pdf_directory'), $fileName);
                 $documentation->setPdf($fileName);
                 $documentation->setPdfModification($fileName);
             }
@@ -219,23 +217,23 @@ class DocumentationController extends AbstractController
             return $this->redirectToRoute('documentation');
         }
 
-
         //On envoie les données et l'affichage du formulaire sur la page new_documentation.html.twig.
-        return $this->render('documentation/new_documentation.html.twig',[
-            'documentation'=> $documentation,
-            'form'=> $formDocumentation->createView(),
-            ]);
+        return $this->render('documentation/new_documentation.html.twig', [
+            'documentation' => $documentation,
+            'form' => $formDocumentation->createView(),
+        ]);
     }
 
     /**
-     * @Route ("/update/documentation/{id}", name="update_documentation")
+     * Cette méthode est en charge de la modification d'une documentation.
+     * 
      * @param Documentation $documentation
      * @param Request $request
      * @return Response
-     *
-     * Cette méthode est en charge de la modification d'une documentation.
-     *
      */
+
+    #[Route ('/update/documentation/{id}', name : 'update_documentation')]
+
     public function updateDocumentation(Documentation $documentation, Request $request): Response
     {
         //On refuse l'accès a cette méthode a l'utilisateur si l'utilisateur n'a pas le rôle User.
@@ -260,109 +258,94 @@ class DocumentationController extends AbstractController
         //On récupère les information saisi.
         $form->handleRequest($request);
         //Si le formulaire a bien été envoyer et qu'il est valide ...
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             //On récupère le nom de l'image stocké en base de donnée et on le stock dans la variable $imageActuel.
             $imageActuel = $documentation->getImage();
             //On récupère le nom de l'image stocké en base de donnée et on le stock dans la variable $imageActuel2.
-            $imageActuel2= $documentation->getImage2();
+            $imageActuel2 = $documentation->getImage2();
             //On récupère le nom du pdf stocké en base de donnée et on le stock dans la variable $pdfActuel.
-            $pdfActuel= $documentation->getPdf();
+            $pdfActuel = $documentation->getPdf();
 
             //On hydrate la propriété dateModificatiion avec la date et l'heure ou les formulaire est envoyé.
             $documentation->setDateModifier(new DateTime('now'));
 
 
-                //Si la valeur contenue dans la variable $imageActuel est diffèrent de la valeur contenue
-                // dans la variable $imageModification ET que la valeur contenue dans la variable $imageActuel
-                // est différente de null(rien) ET que la variable $image est différente de null(rien)...
-                if($imageActuel !== $imageModification && $imageActuel != null && $image != null )
-                {
-                    //On supprime le fichier stocké dans le repository documentation-image.
-                    unlink($this->getParameter('documentation_directory') . '/' . $image);
-                    //On stock le nom du fichier dans la variable $file.
-                    $file = $documentation->getImage();
-                    //On renomme le fichier avec un nom unique et on lui ajoute l'extension contenue
-                    //dans la variable $file, on stock le tout dans la variable $fileName.
-                    $fileName = md5(uniqid()). '.' .$file->guessExtension();
-                    //On déplace le fichier dans le repository album-photo.
-                    $file->move($this->getParameter('documentation_directory'),$fileName);
-                    //On injecte le nouveau nom du fichier dans la propriété image.
-                    $documentation->setImage($fileName);
-                    //On injecte égale le nouveau dans la propriété imageModification.
-                    $documentation->setImageModification($fileName);
-                }
-                //Sinon, Si la valeur contenue dans la variable $image est égale a null(rien) ET
-                // que la  valeur contenue dans la variable $imageActuel est diffèrente de null(rien)...
-                elseif ($image == null && $imageActuel != null) {
-                    //On stock le nom du fichier dans la variable $file.
-                    $file = $documentation->getImage();
-                    //On renomme le fichier avec un nom unique et on lui ajoute l'extension contenue
-                    //dans la variable $file, on stock le tout dans la variable $fileName.
-                    $fileName = md5(uniqid()).'.'.$file->guessExtension();
-                    //On déplace le fichier dans le repository documentation-image.
-                    $file->move($this->getParameter('documentation_directory'),$fileName);
-                    //On hydrate le nouveau nom du fichier dans les propriétés image et imageModification.
-                    $documentation->setImage($fileName);
-                    $documentation->setImageModification($fileName);
-                }
-                else {
-                    //Si l'utilisateur ne modifie pas le champs image, on hydrate la propriété  image  avec la valeur
-                    // contenue dans imageModification qui a conserver le nom du fichier actuel en base de donnée.
-                    // On éviter une perte d'image lors de l'affichage après modification.
-                    $documentation->setImage($imageModification);
-                }
+            //Si la valeur contenue dans la variable $imageActuel est diffèrent de la valeur contenue
+            // dans la variable $imageModification ET que la valeur contenue dans la variable $imageActuel
+            // est différente de null(rien) ET que la variable $image est différente de null(rien)...
+            if ($imageActuel !== $imageModification && $imageActuel != null && $image != null) {
+                //On supprime le fichier stocké dans le repository documentation-image.
+                unlink($this->getParameter('documentation_directory') . '/' . $image);
+                //On stock le nom du fichier dans la variable $file.
+                $file = $documentation->getImage();
+                //On renomme le fichier avec un nom unique et on lui ajoute l'extension contenue
+                //dans la variable $file, on stock le tout dans la variable $fileName.
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                //On déplace le fichier dans le repository album-photo.
+                $file->move($this->getParameter('documentation_directory'), $fileName);
+                //On injecte le nouveau nom du fichier dans la propriété image.
+                $documentation->setImage($fileName);
+                //On injecte égale le nouveau dans la propriété imageModification.
+                $documentation->setImageModification($fileName);
+            }
+            //Sinon, Si la valeur contenue dans la variable $image est égale a null(rien) ET
+            // que la  valeur contenue dans la variable $imageActuel est diffèrente de null(rien)...
+            elseif ($image == null && $imageActuel != null) {
+                //On stock le nom du fichier dans la variable $file.
+                $file = $documentation->getImage();
+                //On renomme le fichier avec un nom unique et on lui ajoute l'extension contenue
+                //dans la variable $file, on stock le tout dans la variable $fileName.
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                //On déplace le fichier dans le repository documentation-image.
+                $file->move($this->getParameter('documentation_directory'), $fileName);
+                //On hydrate le nouveau nom du fichier dans les propriétés image et imageModification.
+                $documentation->setImage($fileName);
+                $documentation->setImageModification($fileName);
+            } else {
+                //Si l'utilisateur ne modifie pas le champs image, on hydrate la propriété  image  avec la valeur
+                // contenue dans imageModification qui a conserver le nom du fichier actuel en base de donnée.
+                // On éviter une perte d'image lors de l'affichage après modification.
+                $documentation->setImage($imageModification);
+            }
 
+            //On applique la même logique ici que la condition au_dessus.
+            if ($imageActuel2 !== $imageModification2 && $imageActuel2 != null && $image2 != null) {
+                unlink($this->getParameter('documentation_directory') . '/' . $image2);
 
+                $file = $documentation->getImage2();
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                $file->move($this->getParameter('documentation_directory'), $fileName);
+                $documentation->setImage2($fileName);
+                $documentation->setImageModification2($fileName);
+            } elseif ($image2 == null && $imageActuel2 != null) {
+                $file = $documentation->getImage2();
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                $file->move($this->getParameter('documentation_directory'), $fileName);
+                $documentation->setImage2($fileName);
+                $documentation->setImageModification2($fileName);
+            } else {
+                $documentation->setImage2($imageModification2);
+            }
 
-                //On applique la même logique ici que la condition au_dessus.
-                 if($imageActuel2 !== $imageModification2 && $imageActuel2 != null && $image2 != null)
-                 {
-                     unlink($this->getParameter('documentation_directory') . '/' . $image2);
+            //On applique la même logique ici que la condition au_dessus.
+            if ($pdfActuel !== $nomPdfModification && $pdfActuel != null && $nomPdf != null) {
 
-                     $file = $documentation->getImage2();
-                     $fileName = md5(uniqid()). '.' .$file->guessExtension();
-                     $file->move($this->getParameter('documentation_directory'),$fileName);
-                     $documentation->setImage2($fileName);
-                     $documentation->setImageModification2($fileName);
-                 }
-                 elseif ($image2 == null && $imageActuel2 != null)
-                 {
-                     $file = $documentation->getImage2();
-                     $fileName = md5(uniqid()).'.'.$file->guessExtension();
-                     $file->move($this->getParameter('documentation_directory'),$fileName);
-                     $documentation->setImage2($fileName);
-                     $documentation->setImageModification2($fileName);
+                unlink($this->getParameter('pdf_directory') . '/' . $nomPdf);
 
-                 }
-                 else {
-                     $documentation->setImage2($imageModification2);
-                 }
-
-
-
-                //On applique la même logique ici que la condition au_dessus.
-                 if ($pdfActuel !== $nomPdfModification && $pdfActuel != null && $nomPdf != null){
-
-                     unlink($this->getParameter('pdf_directory') . '/' . $nomPdf);
-
-                     $file = $documentation->getPdf();
-                     $fileName = md5(uniqid()). '.' .$file->guessExtension();
-                     $file->move($this->getParameter('pdf_directory'),$fileName);
-                     $documentation->setPdf($fileName);
-                     $documentation->setPdfModification($fileName);
-                 }
-                 elseif ($nomPdf == null && $pdfActuel != null)
-                 {
-                     $file = $documentation->getPdf();
-                     $fileName = md5(uniqid()).'.'.$file->guessExtension();
-                     $file->move($this->getParameter('pdf_directory'),$fileName);
-                     $documentation->setPdf($fileName);
-                     $documentation->setPdfModification($fileName);
-                 }
-                 else {
-                     $documentation->setPdf($nomPdfModification);
-                 }
+                $file = $documentation->getPdf();
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                $file->move($this->getParameter('pdf_directory'), $fileName);
+                $documentation->setPdf($fileName);
+                $documentation->setPdfModification($fileName);
+            } elseif ($nomPdf == null && $pdfActuel != null) {
+                $file = $documentation->getPdf();
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                $file->move($this->getParameter('pdf_directory'), $fileName);
+                $documentation->setPdf($fileName);
+                $documentation->setPdfModification($fileName);
+            } else {
+                $documentation->setPdf($nomPdfModification);
+            }
 
             //On envoie les informations a la base de donnée.
             $entityManager->persist($documentation);
@@ -373,20 +356,21 @@ class DocumentationController extends AbstractController
             return $this->redirectToRoute('documentation');
         }
         //On envoie l'affichage du formulaire sur la update_documentation.html.twig.
-        return $this->render('documentation/update_documentation.html.twig',[
+        return $this->render('documentation/update_documentation.html.twig', [
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route ("/delete/documentation/{id}", name="delete_documentation")
+     * Cette méthode est en charge de la suppression d'une documentation.
+     * Si cette documentation contient des images ou des commentaires, ils sont supprimés.
+     * 
      * @param Documentation $documentation
      * @return RedirectResponse
-     *
-     * Cette méthode est en charge de la suppression d'une documentation.
-     * Si cette documentation contient des images ou des commentaires, elles supprimé.
-     *
      */
+
+    #[Route ('/delete/documentation/{id}', name : 'delete_documentation')]
+
     public function deleteDocumentation(Documentation $documentation): RedirectResponse
     {
         //On refuse l'accès a cette méthode a l'utilisateur si l'utilisateur n'a pas le rôle User.
@@ -394,27 +378,21 @@ class DocumentationController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getManager();
         //Si la propriété image n'est pas null (vide)...
-        if( $documentation->getImage() != null)
-        {
+        if ($documentation->getImage() != null) {
             //On récupère le nom de l'image stocké en base de donnée.
             $nom = $documentation->getImage();
             //On supprime le fichier stocker dans le repository documentation-image.
             unlink($this->getParameter('documentation_directory') . '/' . $nom);
-
         }
         //On applique la même logique ici que la condition au_dessus.
-        if( $documentation->getImage2() != null)
-        {
+        if ($documentation->getImage2() != null) {
             $nom = $documentation->getImage2();
             unlink($this->getParameter('documentation_directory') . '/' . $nom);
-
         }
         //On applique la même logique ici que la condition au_dessus.
-        if( $documentation->getPdf() != null)
-        {
+        if ($documentation->getPdf() != null) {
             $nom = $documentation->getPdf();
             unlink($this->getParameter('pdf_directory') . '/' . $nom);
-
         }
         //On supprime les valeur stockées dans la base de donnée.
         $entityManager->remove($documentation);
@@ -426,15 +404,16 @@ class DocumentationController extends AbstractController
     }
 
     /**
-     * @Route ("/update/commentaire/{id}", name="update_commentaire")
+     * Cette méthode permet la modification d'un commentaire.
+     * 
      * @param Commentaire $commentaire
      * @param Request $request
      * @return RedirectResponse
-     *
-     * Cette méthode permet la modification d'un commentaire.
-     *
      */
-    public function updateCommentaire(Commentaire $commentaire,Request $request):Response
+
+    #[Route ('/update/commentaire/{id}', name :'update_commentaire')]
+
+    public function updateCommentaire(Commentaire $commentaire, Request $request): Response
     {
         //On refuse l'accès a cette méthode a l'utilisateur si l'utilisateur n'a pas le rôle User.
         $this->denyAccessUnlessGranted("ROLE_USER");
@@ -444,7 +423,7 @@ class DocumentationController extends AbstractController
         //On récupère les information saisi.
         $form->handleRequest($request);
         //Si le formulaire a bien été envoyer et qu'il est valide ...
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             //On hydrate la propriété dateModificatiion avec la date et l'heure ou les formulaire est envoyé.
             $commentaire->setDateModification(new DateTime('now'));
             //On envoie les informations a la base de donnée.
@@ -456,19 +435,20 @@ class DocumentationController extends AbstractController
             return $this->redirectToRoute('documentation');
         }
         //On envoie les données sur la page update_commentaire.html.twig
-        return $this->render('documentation/update_commentaire.html.twig',[
-           'form' => $form->createView(),
+        return $this->render('documentation/update_commentaire.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route ("/delete/commentaire/{id}", name="delete_commentaire")
+     * Cette méthode est en charge supprimer un commentaire.
+     * 
      * @param Commentaire $commentaire
      * @return RedirectResponse
-     *
-     * Cette méthode est en charge supprimer un commentaire.
-     *
      */
+
+    #[Route ('/delete/commentaire/{id}', name : 'delete_commentaire')]
+
     public function deleteCommentaire(Commentaire $commentaire): RedirectResponse
     {
         //On refuse l'accès a cette méthode a l'utilisateur si l'utilisateur n'a pas le rôle User.

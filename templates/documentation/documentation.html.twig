@@ -1,127 +1,142 @@
 {% extends 'base.html.twig' %}
 {# La page Documentation #}
-{% block title %}Documentation | {{ parent() }}{% endblock %}
+{% block title %}Documentation |
+	{{ parent() }}
+{% endblock %}
 {% block body %}
 
-    <div class="container container-profil">
-        {% if photoIntro is not empty %}
-            <figure class="textcenter">
-                <img src="{{ asset('photo-intro/'~ photoIntro) }}"
-                     alt="Documentation">
-                <figcaption class="fig">Documentation</figcaption>
-            </figure>
-        {% else %}
-            <h1 class="titreEnTete">Documentation</h1>
-        {% endif %}
-    </div>
-    <div class="col-lg-12">
-        {% if is_granted("ROLE_ADMIN") %}
-            <div class="boutonModifierTexte">
-                <button class="button_show btn btn-outline-success">Modifier la photo</button>
-            </div>
-            <div class="form-group formulaire" id="form">
-                {{ form(formPhotoIntro) }}
-                <div class="mt-3 mb-5 text-center">
-                    <p>{{ form_widget(formPhotoIntro.Enregistrer) }}</p>
-                    <button class="button_close btn btn-outline-secondary">Annuler</button>
-                </div>
-            </div>
-        {% endif %}
-    </div>
-    <div class="center-hr">
-        <hr class="hr25-pourcent center">
-    </div>
+	<div class="container container-profil">
+		{% if photoIntro is not empty %}
+			<figure class="textcenter">
+				<img src="{{ asset('photo-intro/'~ photoIntro) }}" alt="Documentation">
+				<figcaption class="fig">Documentation</figcaption>
+			</figure>
+		{% else %}
+			<h1 class="titreEnTete">Documentation</h1>
+		{% endif %}
+	</div>
+	<div class="col-lg-12">
+		{% if is_granted("ROLE_ADMIN") %}
+			<div class="boutonModifierTexte">
+				<button class="button_show btn btn-outline-success">Modifier la photo</button>
+			</div>
+			<div class="form-group formulaire" id="form">
+				{{ form(formPhotoIntro) }}
+					<div class="mt-3 mb-5 text-center">
+						{# <p>{{ form_widget(formPhotoIntro.Enregistrer) }}</p> #}
+						<button class="button_close btn btn-outline-secondary">Annuler</button>
+					</div>
+				</div>
+			{% endif %}
+		</div>
+		<div class="center-hr">
+			<hr class="hr25-pourcent center">
+		</div>
 
 
-    {# Si l'Utilisateur est Adhérent alors il peut Créer une documentation #}
-    {% if is_granted(["ROLE_USER"]) %}
+		{# Si l'Utilisateur est Adhérent alors il peut Créer une documentation #}
+		{% if is_granted(["ROLE_USER"]) %}
 
-        {# Le bouton Créer une Documentation #}
+			{# Le bouton Créer une Documentation #}
 
-        <div class="col-md-3 col-sm-3 col-lg-12 col-xs-3 create_documentation">
-            <a class="block_lien" href="{{ path('create_documentation') }}">
-                <img class="logo_create_documentation" src="{{ asset('tools/plus.png') }}"
-                     alt="logo signe plus ajouter vert">
-                <p> Créer une documentation</p>
-            </a>
-        </div>
-    {% endif %}
-
-
-    <div class="container-fluid">
-        <div class="row-container row">
-
-            {# On inclut le Filter #}
-            <div class="col-lg-2 col-sm-12">
-                {% include 'activite/_filter.html.twig' with {form: form} only %}
-            </div>
-
-            <div class="col-lg-9 col-sm-12 col-xs-12">
-                {# On boucle sur documentation #}
-                {% for doc in documents %}
-                    <div class="container__documentation border border-dark col-sm-12 documentation_style_carte">
-                        <div class="documentation">
-                            {# On affiche le titre de la documentation #}
-                            <div class="title__documentaire col-12">
-                                <a href="{{ path('show_documentation', {"id":doc.id}) }}">{{ doc.titre }}</a>
-                            </div>
-                            <div class="container-fluid documentation_date_user col-12">
-                                {# On affiche le logo calendrier ainsi que la date #}
-                                <div class="documentation_date">
-                                    <img src="{{ asset('tools/calendrier.png') }}" alt="icone de calendrier">
-                                    <div class="documentation_date_user">
-                                        <p class="noMarginBottom mb-0">Crée le :&nbsp <p>
-                                        <p><span class="date_user_color"> {{ doc.date_creation | format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY") }}</span></p>
-                                    </div>
-                                </div>
-                                {# On affiche le logo User ainsi que l'Auteur #}
-                                <div class="documentation_user">
-                                    <img src="{{ asset('tools/user.png') }}" alt="icone d'utilisateur">
-                                    <p>Auteur : <span class="date_user_color">{{ doc.auteur }}</span> </p>
-                                </div>
-                            </div>
+			<div class="col-md-3 col-sm-3 col-lg-12 col-xs-3 create_documentation">
+				<a class="block_lien" href="{{ path('create_documentation') }}">
+					<img class="logo_create_documentation" src="{{ asset('tools/plus.png') }}" alt="logo signe plus ajouter vert">
+					<p>
+						Créer une documentation</p>
+				</a>
+			</div>
+		{% endif %}
 
 
-                            {# L'introduction #}
-                            <div class="documentation__resume col-12">
-                                <p>{{ doc.intro }}</p>
-                            </div>
+		<div class="container-fluid">
+			<div
+				class="row-container row">
 
-                            <div class="container__etiquette col-12 d-flex justify-content-center mt-2 ">
+				{# On inclut le Filter #}
+				<div class="col-lg-2 col-sm-12">
+					{% include 'activite/_filter.html.twig' with {form: form} only %}
+				</div>
 
-                                {# On affiche le logo de l'Etiquette et la Categorie #}
-                                <div class="documentation__etiquette">
-                                    <img src="{{ asset('tools/etiquette.png') }}" alt="icone d'étiquette">
-                                    <p>Catégorie :&nbsp <span class="date_user_color"> {{ doc.0.categorie }}</span></p>
-                                </div>
-                            </div>
-                        </div>
+				<div
+					class="col-lg-9 col-sm-12 col-xs-12">
+					{# On boucle sur documentation #}
+					{% for doc in documents %}
+						<div class="container__documentation border border-dark col-sm-12 documentation_style_carte">
+							<div
+								class="documentation">
+								{# On affiche le titre de la documentation #}
+								<div class="title__documentaire col-12">
+									<a href="{{ path('show_documentation', {"id":doc.id}) }}">{{ doc.titre }}</a>
+								</div>
+								<div
+									class="container-fluid documentation_date_user col-12">
+									{# On affiche le logo calendrier ainsi que la date #}
+									<div class="documentation_date">
+										<img src="{{ asset('tools/calendrier.png') }}" alt="icone de calendrier">
+										<div class="documentation_date_user">
+											<p class="noMarginBottom mb-0">Crée le :&nbsp</p>
+											<p></p>
+											<p>
+												<span class="date_user_color">
+													{{ doc.date_creation | format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY") }}</span>
+											</p>
+										</div>
+									</div>
+									{# On affiche le logo User ainsi que l'Auteur #}
+									<div class="documentation_user">
+										<img src="{{ asset('tools/user.png') }}" alt="icone d'utilisateur">
+										<p>Auteur :
+											<span class="date_user_color">{{ doc.auteur }}</span>
+										</p>
+									</div>
+								</div>
 
-                        {# Si l'utilisateur est Adhérent #}
-                        {% if is_granted(["ROLE_USER"]) %}
-                            <div class="documentation__option">
 
-                                {# Si le pseudo de l'Utilisateur est égale à l'Auteur alors il peut Modifier #}
-                                {% if(app.user.username == doc.auteur) %}
+								{# L'introduction #}
+								<div class="documentation__resume col-12">
+									<p>{{ doc.intro }}</p>
+								</div>
 
-                                    {# Le bouton Modifier #}
-                                    <a href="{{ path('update_documentation', {"id":doc.id}) }}">
-                                        <button class="btn btn-success">Modifier</button>
-                                    </a>
-                                {% endif %}
+								<div
+									class="container__etiquette col-12 d-flex justify-content-center mt-2 ">
 
-                                {# Si le pseudo de l'utilisateur est égale au nom de l'Auteur ou qu'il est Administrateur alors il peut Supprimer #}
-                                {% if(app.user.username == doc.auteur or is_granted ("ROLE_ADMIN")) %}
-                                    <a href="{{ path('delete_documentation', {"id":doc.id}) }}"
-                                       onclick="return confirm('Voulez-vous vraiment supprimer cette article ?')">
-                                        <button class="btn btn-secondary">Supprimer</button>
-                                    </a>
-                                {% endif %}
-                            </div>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-{% endblock %}
+									{# On affiche le logo de l'Etiquette et la Categorie #}
+									<div class="documentation__etiquette">
+										<img src="{{ asset('tools/etiquette.png') }}" alt="icone d'étiquette">
+										<p>Catégorie :&nbsp
+											<span class="date_user_color">
+												{{ doc.0.categorie }}</span>
+										</p>
+									</div>
+								</div>
+							</div>
+
+							{# Si l'utilisateur est Adhérent #}
+							{% if is_granted(["ROLE_USER"]) %}
+								<div
+									class="documentation__option">
+
+									{# Si le pseudo de l'Utilisateur est égale à l'Auteur alors il peut Modifier #}
+									{% if(app.user.username == doc.auteur) %}
+
+										{# Le bouton Modifier #}
+										<a href="{{ path('update_documentation', {"id":doc.id}) }}">
+											<button class="btn btn-success">Modifier</button>
+										</a>
+									{% endif %}
+
+									{# Si le pseudo de l'utilisateur est égale au nom de l'Auteur ou qu'il est Administrateur alors il peut Supprimer #}
+									{% if(app.user.username == doc.auteur or is_granted ("ROLE_ADMIN")) %}
+										<a href="{{ path('delete_documentation', {"id":doc.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer cette article ?')">
+											<button class="btn btn-secondary">Supprimer</button>
+										</a>
+									{% endif %}
+								</div>
+							{% endif %}
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	{% endblock %}

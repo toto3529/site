@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\ActiviteContent;
-use App\Entity\TextAccueil;
 use App\Form\AccueilEtiquette\FirstEtiquetteType;
 use App\Form\AccueilEtiquette\FourthEtiquetteType;
 use App\Form\AccueilEtiquette\ThirdEtiquetteType;
@@ -60,35 +58,35 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Form\Form;
 
 class HomeController extends AbstractController
 {
 
     /**
-     * @Route ("/", name="hometotal")
-     *
-     * Cette méthode est en charge de redirige l'utilisateur sur la page accueil
-     * lors d'une déconnexion.
-     *
+     * Cette méthode est en charge de rediriger l'utilisateur sur la page accueil lors d'une déconnexion.
      */
+
+    #[Route('/', name: 'hometotal')]
+
     public function redirige(): Response
     {
         // Redirige vers la page index.html.twig.
         return $this->redirectToRoute('home1');
     }
 
-    #ce controlleur gere les pages fixes du site
+    //ce controlleur gère les pages fixes du site
 
     /**
-     * @Route("/home", name="home1")
+     * Cette méthode est en charge de rediriger l'utilisateur vers la page accueil.
+     * 
      * @param ActiviteRepository $activiteRepository
      * @param ActualiteRepository $actualiteRepository
      * @param PhotoAlbumRepository $photoAlbumRepository
      * @return Response
-     *
-     * Cette méthode est en charge de rediriger l'utilisateur vers la page accueil.
      */
+
+    #[Route('/home', name: 'home1')]
+
     public function index(EntityManagerInterface $entityManager, Request $request, TextAccueilRepository $textAccueilRepository, EtiquetteContentRepository $etiquetteContentRepository, ActiviteRepository $activiteRepository, ActualiteRepository $actualiteRepository, PhotoAlbumRepository $photoAlbumRepository): Response
     {
 
@@ -310,11 +308,11 @@ class HomeController extends AbstractController
 
 
     /**
-     * @Route("/presentation", name="presentation")
-     *
-     * Cette méthode est en charge de rediriger vers la page Présentation de l'association.
-     *
+     * Cette méthode est en charge de rediriger vers la page Présentation de l'Association.
      */
+
+    #[Route('/presentation', name: 'presentation')]
+
     public function pres(TextPresentationRepository $textPresentationRepository, IntroPhotoRepository $introPhotoRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         // Pour le texte et le titre
@@ -444,13 +442,14 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/organisation", name="organisation")
+     * Cette méthode est en charge de rediriger vers la page Organisation bureau.
+     * 
      * @param UserRepository $userRepository
      * @return Response
-     *
-     * Cette méthode est en charge de rediriger vers la page Organisation bureau.
-     *
      */
+
+    #[Route('/organisation', name: 'organisation')]
+
     public function organisation(UserRepository $userRepository, IntroPhotoRepository $introPhotoRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $photoIntroOrganisation = $introPhotoRepository->find("1");
@@ -492,11 +491,11 @@ class HomeController extends AbstractController
 
 
     /**
-     * @Route ("/randosvelo", name="randosvelo")
-     *
      * Cette méthode est en charge de rediriger vers la page Rando Vélos.
-     *
      */
+
+    #[Route('/randosvelo', name: 'randosvelo')]
+
     public function randosvelo(IntroPhotoRepository $introPhotoRepository, EntityManagerInterface $entityManager, Request $request, ActiviteContentRepository $activiteContentRepository): Response
     {
         //Appel des méthodes dans le Repository
@@ -607,16 +606,15 @@ class HomeController extends AbstractController
             'photoIntro' => $photoIntroRandoVelo->getRandoVeloPhotoIntro(),
             'formPhotoIntro' => $formRv->createView(),
         ]);
-
     }
 
 
     /**
-     * @Route ("/formations", name="formations")
-     *
      * Cette méthode est en charge de rediriger vers la page Formations.
-     *
      */
+
+    #[Route('/formations', name: 'formations')]
+
     public function formations(IntroPhotoRepository $introPhotoRepository, EntityManagerInterface $entityManager, Request $request, ActiviteContentRepository $activiteContentRepository): Response
     {
         //Appel des méthodes dans le Repository
@@ -789,17 +787,15 @@ class HomeController extends AbstractController
             'formPhotoIntro' => $formIntroFormation->createView(),
 
         ]);
-
-
     }
 
 
     /**
-     * @Route ("/projections", name="projections")
-     *
      * Cette méthode est en charge de rediriger vers la page Projections.
-     *
      */
+
+    #[Route('/projections', name: 'projections')]
+
     public function projections(IntroPhotoRepository $introPhotoRepository, EntityManagerInterface $entityManager, ActiviteContentRepository $activiteContentRepository, Request $request): Response
     {
         $activiteText = $activiteContentRepository->find("1");
@@ -878,11 +874,11 @@ class HomeController extends AbstractController
 
 
     /**
-     * @Route ("/ecocitoyennete", name="ecocitoyennete")
-     *
      * Cette méthode est en charge de rediriger vers la page Écocitoyenneté.
-     *
      */
+
+    #[Route('/ecocitoyennete', name: 'ecocitoyennete')]
+
     public function ecocitoyennete(IntroPhotoRepository $introPhotoRepository, EntityManagerInterface $entityManager, ActiviteContentRepository $activiteContentRepository, Request $request): Response
     {
         $activiteText = $activiteContentRepository->find("1");
@@ -961,11 +957,11 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route ("/pleinair", name="pleinair")
-     *
      * Cette méthode est en charge de rediriger vers la page Autres activités de pleine air..
-     *
      */
+
+    #[Route('/pleinair', name: 'pleinair')]
+
     public function pleinair(IntroPhotoRepository $introPhotoRepository, EntityManagerInterface $entityManager, ActiviteContentRepository $activiteContentRepository, Request $request): Response
     {
 
@@ -1045,11 +1041,11 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route ("/adherent" , name="adherent")
-     *
      * Cette méthode est en charge de rediriger vers la page Gestion des adhérents.
-     *
      */
+
+    #[Route('/adherent', name: 'adherent')]
+
     public function adherent(): Response
     {
         //Permet de rediriger vers la page index.html.twig ( gestion adhérent )
@@ -1057,42 +1053,39 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route ("/quisommesnous", name="quisommesnous")
-     *
      * Cette méthode est en charge de rediriger vers la page Qui sommes nous ?.
-     *
      */
-    public
-    function quisommesnous(): Response
+
+    #[Route('/quisommesnous', name: ' quisommesnous')]
+
+    public function quisommesnous(): Response
     {
         //Permet de rediriger vers la page Qui-sommes-nous.html.twig( Qui somme nous ?)
-        return $this->render('pagesfooter/Qui-sommes-nous.html.twig', [
-
-        ]);
+        return $this->render('pagesfooter/Qui-sommes-nous.html.twig', []);
     }
 
-
     /**
-     * @Route ("/mentionslegales", name="mentionslegales")
-     *
-     * Cette méthode est en charge de rediriger vers la page Mentions légales.
-     *
+     * Cette méthode est en charge de rediriger vers la page Mentions Légales.
      */
-    public function mentionslegales(): Response
+
+    #[Route('/mentionslegales', name: 'mentions_legales')]
+
+    public function mentions(): Response
     {
-        //Permet de rediriger vers la page mentions-legales.html.twig( Mention légales )
+        //Permet de rediriger vers la page présentation.html.twig.
         return $this->render('Association/MentionsLegales.html.twig');
     }
 
 
     /**
-     * @Route("/pdfstatus", name="pdfstatus")
+     * Cette méthode est en charge de créer un pdf.
+     * 
      * @param Request $request
      * @return Response
-     *
-     * Cette méthode est en charge de créer un pdf.
-     *
      */
+
+    #[Route('/pdfstatus', name: 'pdfstatus')]
+
     public function editpdf(Request $request): Response
     {
         //On refuse l'accès a cette méthode a l'utilisateur si l'utilisateur n'a pas le rôle Admin.
@@ -1128,15 +1121,15 @@ class HomeController extends AbstractController
         ));
     }
 
-
     /**
-     * @Route("/chartestatus", name="chartestatus")
+     * Cette méthode est en charge de créer un pdf.
+     * 
      * @param Request $request
      * @return Response
-     *
-     * Cette méthode est en charge de créer un pdf.
-     *
      */
+
+    #[Route('/chartestatus', name: 'chartestatus')]
+
     public function editpdfcharte(Request $request): Response
     {
         # cette fonction sert à uploader le pdf de la charte.
@@ -1174,10 +1167,10 @@ class HomeController extends AbstractController
 
 
     /**
-     * @Route("/statistiques", name="statistiques")
-     *
      * Affiche la page des statistiques générées par le plugin Matomo .
      */
+
+    #[Route('/statistiques', name: 'statistiques')]
 
     public function Statistiques(): Response
     {
@@ -1190,13 +1183,14 @@ class HomeController extends AbstractController
 
 
     /**
-     * @Route("/pdf_mentionslegales", name="pdfmentionslegales")
+     * Cette méthode est en charge de créer un pdf.
+     * 
      * @param Request $request
      * @return Response
-     *
-     * Cette méthode est en charge de créer un pdf.
-     *
      */
+
+    #[Route('/pdf_mentionslegales', name: 'pdfmentionslegales')]
+
     public function editpdfmentions(Request $request): Response
     {
         # cette fonction sert à uploader le pdf des mentions légales.
@@ -1232,17 +1226,4 @@ class HomeController extends AbstractController
             'form' => $form->createView(),
         ));
     }
-
-    /**
-     * @Route("/mentionslegales", name="mentions_legales")
-     *
-     * Cette méthode est en charge de rediriger vers la page Mentions Legales.
-     *
-     */
-    public function mentions(): Response
-    {
-        //Permet de rediriger vers la page présentation.html.twig.
-        return $this->render('Association/MentionsLegales.html.twig');
-    }
-
 }

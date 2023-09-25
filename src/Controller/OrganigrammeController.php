@@ -2,27 +2,29 @@
 
 namespace App\Controller;
 
-use App\Entity\Photo;
 use App\Entity\User;
-use App\Form\OrgaEditNomPrenomType;
-use App\Form\TestModifBDControllerType;
+use App\Entity\Photo;
 use App\Form\UserType;
-use App\Repository\ReferentRepository;
 use App\Repository\UserRepository;
+use App\Form\OrgaEditNomPrenomType;
+use App\Repository\ReferentRepository;
+use App\Form\TestModifBDControllerType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
 
 class OrganigrammeController extends AbstractController
 {
     /**
-     * @Route("/gestion-organisation", name="app_organigramme")
-     *
      * Affiche l'organigramme de l'association sur la page "Gestion de l'organigramme"
      */
+
+    #[Route('/gestion-organisation', name : 'app_organigramme')]
+
     public function affichage ( UserRepository $userRepository): Response
     {
         //On refuse l'accès à cette méthode si l'utilisateur n'a pas le rôle Admin.
@@ -37,19 +39,19 @@ class OrganigrammeController extends AbstractController
 
 
     /**
-     * @Route("/{id}/edit", name="referent_edit", methods={"GET","POST"})
+     * Modifie la propriété "Référent" de l'user sélectionné
+     * 
      * @param Request $request
      * @param User $user
      * @return Response
-     *
-     *
-     * Modifie la propriété "Référent" de l'user sélectionné
      */
 
-    public function edit (Request $request, int $id, User $user,
-                          UserPasswordEncoderInterface $encoder, UserRepository $userRepository,
-                          ReferentRepository $referentRepository, EntityManagerInterface $entityManager):Response
-    {
+    #[Route('/{id}/edit', name : 'referent_edit', methods : ['GET','POST'])]
+
+    public function edit (Request $request, int $id, User $user, UserPasswordHasherInterface $passwordHasher,
+                        UserRepository $userRepository, ReferentRepository $referentRepository,
+                        EntityManagerInterface $entityManager):Response
+        {
         //On refuse l'accès à cette méthode si l'utilisateur n'a pas le rôle Admin.
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
 
