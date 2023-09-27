@@ -9,9 +9,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ReferentController extends AbstractController
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
 
     /**
      * Cette méthode sert à rediriger l'utilisateur sur la page Gestion referent et affiche tous les référents.
@@ -40,7 +47,7 @@ class ReferentController extends AbstractController
 
     #[Route ('/createRef', name : 'createRef')]
 
-    public function createReferent(Request $request): Response
+    public function createReferent(EntityManagerInterface $entityManager, Request $request): Response
     {
         //On refuse l'accès a cette méthode a l'utilisateur si l'utilisateur n'a pas le rôle Admin.
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -54,7 +61,6 @@ class ReferentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             //On envoie les informations a la base de donnée.
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($referent);
             $entityManager->flush();
             //On renvoie un message de success a l'utilisateur pour prévenir de la réussite.
@@ -79,7 +85,7 @@ class ReferentController extends AbstractController
 
     #[Route ('/updateRef/{id}', name : 'updateRef')]
 
-    public function updateReferent(Request $request, Referent $referent): Response
+    public function updateReferent(EntityManagerInterface $entityManager, Request $request, Referent $referent): Response
     {
 
         //On refuse l'accès a cette méthode a l'utilisateur si l'utilisateur n'a pas le rôle Admin.
@@ -90,7 +96,6 @@ class ReferentController extends AbstractController
         $form->handleRequest($request);
         //Si le formulaire a bien été envoyer et qu'il est valide ...
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             //On envoie les informations modifiées a la base de donnée.
             $entityManager->flush();
             //On renvoie un message de success a l'utilisateur pour prévenir de la réussite.
@@ -114,17 +119,16 @@ class ReferentController extends AbstractController
 
     #[Route ('/deleteRef/{id}', name : 'deleteRef')]
 
-    public function deleteReferent(Referent $referent): Response
+    public function deleteReferent(EntityManagerInterface $entityManager, Referent $referent): Response
     {
         #fonction qui supprime un référent#
 
         //On refuse l'accès a cette méthode a l'utilisateur si l'utilisateur n'a pas le rôle Admin.
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        $em = $this->getDoctrine()->getManager();
         //On supprime le referent.
-        $em->remove($referent);
-        $em->flush();
+        $entityManager->remove($referent);
+        $entityManager->flush();
         //On renvoie un message de success à l'utilisateur pour prévenir de la réussite.
         $this->addFlash('success', 'Le référent a été supprimé');
         //On envoie les données sur la page referent.html.twig.

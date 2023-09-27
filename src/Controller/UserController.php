@@ -24,6 +24,13 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * Cette methode est en charge d'afficher la page Liste des Adhérents
      * 
@@ -44,7 +51,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * Cette methode est en charge de créer un Utilisateur
+     * Cette méthode est en charge de créer un Utilisateur
      * 
      * @param Request $request
      * @param UserPasswordHasherInterface $passwordHasher
@@ -57,30 +64,32 @@ class UserController extends AbstractController
     public function new(Request $request, UserPasswordHasherInterface $passwordHasher, MailerInterface $mailer): Response
     {
 
-        //On laisse l'accès à cette fonction seulement aux Administrateur.
+        //On laisse l'accès à cette fonction seulement aux Administrateurs.
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
-        //Creation d'un nouvel utilisateur
+        //Création d'un nouvel utilisateur
         $user = new User();
 
         //On récupère le formulaire dans UserType.
         $form = $this->createForm(UserType::class, $user);
 
-        //Gere le traitement de la saisie du formulaire, on récupère les données depuis la requête
+        //Gérer le traitement de la saisie du formulaire, on récupère les données depuis la requête
         $form->handleRequest($request);
-        //Si le formulaire a été envoyer et est valide ...
+        //Si le formulaire a été envoyer et est valide
         if ($form->isSubmitted() && $form->isValid()) {
 
-            //On recupere le role dans le formulaire ...
+            //On récupère le rôle dans le formulaire
             $role = $user->getRoles();
 
             $rolerecupere = $role[0];
-            $role = [0 => $rolerecupere];
+            // $role = [0 => $rolerecupere];
+            $role = [$rolerecupere];
 
             //Et on l'inscrit correctement en BDD car sinon il s'sincrit mal
             $user->setRoles($role);
 
             //On recupere les coordonnées que le candidat à l'adhesion a envoyé
-            $adherent = $form->getData();
+            // $adherent = $form->getData();
+            $adherent = $user;
 
             //On recupere les photos envoyées s'il y en a a l'inscription ou a la modification du profil
             $photos = $form->get('photos')->getData();
@@ -103,7 +112,7 @@ class UserController extends AbstractController
                 $user->addPhoto($phot);
             }
 
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $this->entityManager;
 
             //On recupere le mot de passe non hashé pour l'envoyer en clair au candidat a l'inscription dans le mail
             $plainpassword = $user->getPassword();
@@ -308,13 +317,11 @@ class UserController extends AbstractController
     #[Route('delete_adherent/{id}', name: 'supprimer_user')]
 
 
-    public function supprimerAdherent(Request $request, User $user, PhotoRepository $photoRepository): Response
+    public function supprimerAdherent(Request $request, User $user, PhotoRepository $photoRepository, EntityManagerInterface $entityManager): Response
     {
         //On laisse l'accès à cette fonction seulement aux Administrateur.
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
         $photo = $photoRepository->findOneBy(['adhherent' => $user]);
-
-        $entityManager = $this->getDoctrine()->getManager();
 
         while ($photo != null) {
             $nomphoto = $photo->getName();
@@ -346,7 +353,7 @@ class UserController extends AbstractController
 
     #[Route('/supprime/photo/{id}', name: 'user_delete_photo', methods: ['POST'])]
 
-    public function deleteImage(Photo $photo, Request $request)
+    public function deleteImage(Photo $photo, Request $request, EntityManagerInterface $entityManager)
     {
         //Il faut être minimum Adhérent pour avoir accès a cette methode
         $this->denyAccessUnlessGranted("ROLE_USER");
@@ -363,9 +370,8 @@ class UserController extends AbstractController
             unlink($this->getParameter('photo_directory') . '/' . $nom);
 
             //On supprime l'entrée de la base
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($photo);
-            $em->flush();
+            $entityManager->remove($photo);
+            $entityManager->flush();
 
             //On répond en json
             return new JsonResponse(['success' => 1]);
@@ -389,33 +395,39 @@ class UserController extends AbstractController
 
     #[Route('/profiledit/{id}', name: 'profiledit')]
 
-    public function profiledit($id, UserRepository $userRepository, Request $request, User $user, UserPasswordHasherInterface $passwordHasher): Response
+    public function profiledit($id, UserRepository $userRepository, Request $request, User $user, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
-        $userInSession = $userRepository->findOneBy(["username" => $this->getUser()->getUsername()]);
-        $userTest = $userRepository->find($id);
-        $form = $this->createForm(UserType::class, $user);
-        //Si l'id existe mais qu'il ne correspond pas au pseudo de l'utilisateur en session
-
-
         $this->denyAccessUnlessGranted("ROLE_USER");
 
-        #On recupere le pseudo de l'adhérent en cours
+        // Récupérer le pseudo de l'adhérent en cours
         $user1 = $this->getUser()->getUsername();
 
-        #Utilisation du formulaire de la classe user#
+        // Utiliser un formulaire pour le profil actuel de l'utilisateur
+        $form = $this->createForm(UserType::class, $user);
 
-        #Gere le traitement du formulaire
+        // Gérer la soumission du formulaire
         $form->handleRequest($request);
-        if ($this->getUser()->getUsername() != $user->getUsername()) {
-            $utilisateurParDefault = $userRepository->findOneBy(['username' => $user1]);
-            $formRefresh = $this->createForm(UserType::class, $utilisateurParDefault);
+
+        // Récupérer l'utilisateur en session
+        $userInSession = $userRepository->findOneBy(["username" => $this->getUser()->getUsername()]);
+        // $userTest = $userRepository->find($id);
+
+        // Si l'ID existe mais ne correspond pas au pseudo de l'utilisateur en session
+        if ((int)$id !== $userInSession->getId()) {
             $this->addFlash('danger', 'Vous ne pouvez pas modifier le profil des autres adhérents !');
-            return $this->render('user/profiledit.html.twig', [
-                'user' => $utilisateurParDefault,
-                'form' => $formRefresh->createView(),
-                $id => $utilisateurParDefault->getId()
-            ]);
+            return $this->redirectToRoute('home1'); // Rediriger vers une autre page, par exemple la page d'accueil
         }
+
+        // if ($this->getUser()->getUsername() != $user->getUsername()) {
+        //     $utilisateurParDefault = $userRepository->findOneBy(['username' => $user1]);
+        //     $formRefresh = $this->createForm(UserType::class, $utilisateurParDefault);
+        //     $this->addFlash('danger', 'Vous ne pouvez pas modifier le profil des autres adhérents !');
+        //     return $this->render('user/profiledit.html.twig', [
+        //         'user' => $utilisateurParDefault,
+        //         'form' => $formRefresh->createView(),
+        //         $id => $utilisateurParDefault->getId()
+        //     ]);
+        // }
         if ($form->isSubmitted() && $form->isValid()) {
 
             //Hashe le mot de passe
@@ -424,27 +436,28 @@ class UserController extends AbstractController
 
             //On recupere les photos envoyées
             $photos = $form->get('photos')->getData();
-            dump($photos);
-            //On boucle sur les photos
+
+            // Boucler sur les photos
             foreach ($photos as $photo) {
 
-                //On genere un nouveau no de fichier
+                // Générer un nouveau nom de fichier
                 $fichier = md5(uniqid()) . '.' . $photo->guessExtension();
-                dump($fichier);
-                //Copie le fichier dans le dossier photo-profil
+                
+                // Copier le fichier dans le dossier photo-profil
                 $photo->move(
                     $this->getParameter('photo_directory'),
                     $fichier
                 );
 
-                //On stocke le nom de la photo dans la bdd
+                // Stocker le nom de la photo dans la base de données
                 $phot = new Photo();
                 $phot->setName($fichier);
                 $user->addPhoto($phot);
             }
 
-            $this->getDoctrine()->getManager()->flush();
-            //On renvoie un message de succes à l'utilisateur pour prévenir de la réussite de la modification.
+            $entityManager->flush();
+
+            // Ajouter un message de succès pour informer l'utilisateur de la réussite de la modification
             $this->addFlash('success', 'Votre profil a bien été modifié !!');
 
             //On redirige l'utilisateur sur la page home/index.html.twig

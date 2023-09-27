@@ -14,6 +14,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EspaceController extends AbstractController
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
     /**
      * Cette methode est en charge d'afficher le trombinoscope
      * 
@@ -23,7 +29,7 @@ class EspaceController extends AbstractController
 
     #[Route('/trombi', name : 'trombi')]
 
-    public function index(EntityManagerInterface $entityManager, IntroPhotoRepository $introPhotoRepository, UserRepository $userRepository, Request $request): Response
+    public function index(IntroPhotoRepository $introPhotoRepository, UserRepository $userRepository, Request $request): Response
     {
         //On as accès a cette page a partir du moment qu'on est Adhérent
         $this->denyAccessUnlessGranted("ROLE_USER");

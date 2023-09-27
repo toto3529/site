@@ -22,6 +22,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DocumentationController extends AbstractController
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+    
     /**
      * Cette méthode permet de diriger les utilisateurs vers la page documentation.
      * Elle affiche les documentations triées par date (dateModification) sur la page documentation.
@@ -32,7 +39,7 @@ class DocumentationController extends AbstractController
 
     #[Route('/documentation', name: 'documentation')]
 
-    public function documentation(EntityManagerInterface $entityManager, IntroPhotoRepository $introPhotoRepository, DocumentationRepository $documentationRepository, Request $request): Response
+    public function documentation(IntroPhotoRepository $introPhotoRepository, DocumentationRepository $documentationRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
 
         $photoIntroDocumentation = $introPhotoRepository->find("1");
@@ -102,9 +109,7 @@ class DocumentationController extends AbstractController
 
     #[Route ('/show/documentation/{id}', name : 'show_documentation')]
 
-    public function showDocumentation(
-        Documentation $documentation, DocumentationRepository $documentationRepository,
-        CommentaireRepository $commentaireRepository, Request $request): Response
+    public function showDocumentation(Documentation $documentation, DocumentationRepository $documentationRepository, CommentaireRepository $commentaireRepository, Request $request, EntityManagerInterface $entityManager): Response
         {
         //On refuse l'accès a cette méthode a l'utilisateur si l'utilisateur n'a pas le rôle User.
         $this->denyAccessUnlessGranted("ROLE_USER");
@@ -115,7 +120,7 @@ class DocumentationController extends AbstractController
         //On créer une nouvelle instance de l'objet Commentaire et on le stock dans la variable $comment.
         $comment = new Commentaire;
 
-        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager = $this->entityManager;
         //On récupère le pseudo(username) en session et on le stock dans la variable $user.
         $name = $this->getUser()->getUsername();
         //On créé notre formulaire.
@@ -155,7 +160,7 @@ class DocumentationController extends AbstractController
 
     #[Route ('/create/documentation', name : 'create_documentation')]
 
-    public function createDocumentation(Request $request): Response
+    public function createDocumentation(Request $request, EntityManagerInterface $entityManager): Response
     {
         //On refuse l'accès a cette méthode a l'utilisateur si l'utilisateur n'a pas le rôle User.
         $this->denyAccessUnlessGranted("ROLE_USER");
@@ -208,7 +213,6 @@ class DocumentationController extends AbstractController
             }
 
             //On envoie les informations a la base de donnée.
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($documentation);
             $entityManager->flush();
             //On renvoie un message de success a l'utilisateur pour prévenir de la réussite.
@@ -234,12 +238,12 @@ class DocumentationController extends AbstractController
 
     #[Route ('/update/documentation/{id}', name : 'update_documentation')]
 
-    public function updateDocumentation(Documentation $documentation, Request $request): Response
+    public function updateDocumentation(Documentation $documentation, Request $request, EntityManagerInterface $entityManager): Response
     {
         //On refuse l'accès a cette méthode a l'utilisateur si l'utilisateur n'a pas le rôle User.
         $this->denyAccessUnlessGranted("ROLE_USER");
 
-        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager = $this->entityManager;
         //On récupère le nom de l'image stocké en base de donnée et on le stock dans la variable $image.
         $image = $documentation->getImage();
         //On récupère le nom de l'image2 stocké en base de donnée et on le stock dans la variable $image2.
@@ -371,12 +375,11 @@ class DocumentationController extends AbstractController
 
     #[Route ('/delete/documentation/{id}', name : 'delete_documentation')]
 
-    public function deleteDocumentation(Documentation $documentation): RedirectResponse
+    public function deleteDocumentation(Documentation $documentation, EntityManagerInterface $entityManager): RedirectResponse
     {
         //On refuse l'accès a cette méthode a l'utilisateur si l'utilisateur n'a pas le rôle User.
         $this->denyAccessUnlessGranted("ROLE_USER");
 
-        $entityManager = $this->getDoctrine()->getManager();
         //Si la propriété image n'est pas null (vide)...
         if ($documentation->getImage() != null) {
             //On récupère le nom de l'image stocké en base de donnée.
@@ -413,11 +416,10 @@ class DocumentationController extends AbstractController
 
     #[Route ('/update/commentaire/{id}', name :'update_commentaire')]
 
-    public function updateCommentaire(Commentaire $commentaire, Request $request): Response
+    public function updateCommentaire(Commentaire $commentaire, Request $request, EntityManagerInterface $entityManager): Response
     {
         //On refuse l'accès a cette méthode a l'utilisateur si l'utilisateur n'a pas le rôle User.
         $this->denyAccessUnlessGranted("ROLE_USER");
-        $entityManager = $this->getDoctrine()->getManager();
         //On créer notre formulaire.
         $form = $this->createForm(CommentaireType::class, $commentaire);
         //On récupère les information saisi.
@@ -449,12 +451,11 @@ class DocumentationController extends AbstractController
 
     #[Route ('/delete/commentaire/{id}', name : 'delete_commentaire')]
 
-    public function deleteCommentaire(Commentaire $commentaire): RedirectResponse
+    public function deleteCommentaire(Commentaire $commentaire, EntityManagerInterface $entityManager): RedirectResponse
     {
         //On refuse l'accès a cette méthode a l'utilisateur si l'utilisateur n'a pas le rôle User.
         $this->denyAccessUnlessGranted("ROLE_USER");
 
-        $entityManager = $this->getDoctrine()->getManager();
         //On supprime les valeur stockées dans la base de donnée.
         $entityManager->remove($commentaire);
         $entityManager->flush();

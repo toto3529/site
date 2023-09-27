@@ -15,6 +15,13 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class TestModifBDController extends AbstractController
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+    
     #[Route('/test/modif/b/d', name : 'app_test_modif_b_d')]
     
     public function affichage(UserRepository $userRepository): Response

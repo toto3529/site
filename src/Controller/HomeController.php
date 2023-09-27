@@ -61,6 +61,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
 
     /**
      * Cette méthode est en charge de rediriger l'utilisateur sur la page accueil lors d'une déconnexion.
@@ -1180,7 +1186,6 @@ class HomeController extends AbstractController
         // Renvoie la vue
         return $this->render('Association/Statistiques.html.twig');
     }
-
 
     /**
      * Cette méthode est en charge de créer un pdf.

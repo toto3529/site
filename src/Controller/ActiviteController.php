@@ -24,6 +24,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ActiviteController extends AbstractController
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * Cette méthode est en charge de rediriger l'utilisateur sur la page Programme,
      * d'afficher les activités avec un état 'ouvert' ou 'modifier' et d'afficher un filtre.
@@ -106,7 +113,7 @@ class ActiviteController extends AbstractController
 
     #[Route('/new', name : 'activite_new', methods : ['GET','POST'])]
 
-    public function new(Request $request, EtatRepository $etatRepository): Response
+    public function new(Request $request, EtatRepository $etatRepository, EntityManagerInterface $entityManager): Response
     {
         //On refuse l'accès à cette méthode si l'utilisateur n'a pas le rôle Admin.
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
@@ -122,8 +129,7 @@ class ActiviteController extends AbstractController
         $form->handleRequest($request);
         //Si le formulaire a bien été envoyé et qu'il est valide ...
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-
+        
             //on hydrate l'activite avec l'organisateur.
             $activite->setOrganisateur($user);
 
@@ -138,7 +144,6 @@ class ActiviteController extends AbstractController
                 $file->move($this->getParameter('pdf_activite_directory'),$fileName);
                 $activite->setPdf($fileName);
                 $activite->setPdfModification($fileName);
-
             }
 
             //On envoie les informations à la base de données.
@@ -184,7 +189,7 @@ class ActiviteController extends AbstractController
 
     #[Route('/show/pdf/{id}', name : 'activite_show_pdf')]
 
-    public function showPdf(Activite $activite, ActiviteRepository $activiteRepository,Request $request): Response
+    public function showPdf(Activite $activite, ActiviteRepository $activiteRepository,Request $request, EntityManagerInterface $entityManager): Response
     {
         //On récupère une activité en fonction de son identifiant
         $activites = $activiteRepository->findOneBy(['id' => $activite]);
@@ -207,7 +212,7 @@ class ActiviteController extends AbstractController
 
     #[Route('/{id}/edit', name : 'activite_edit', methods : ['GET','POST'])]
 
-    public function edit(Request $request, Activite $activite, EtatRepository $etatRepository): Response
+    public function edit(Request $request, Activite $activite, EtatRepository $etatRepository, EntityManagerInterface $entityManager): Response
     {
         //On refuse l'accès à cette méthode si l'utilisateur n'a pas le rôle Admin.
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
@@ -237,7 +242,7 @@ class ActiviteController extends AbstractController
             }
 
             //On supprime le fichier stocké dans la base de données
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
             $this->addFlash('success', "L'activité est bien modifiée !");
             //On redirige l'utilisateur sur la page album.html.twig.
             return $this->redirectToRoute('activite_index');
@@ -260,13 +265,13 @@ class ActiviteController extends AbstractController
 
     #[Route ('/delete/{id}', name : 'delete_activite')]
 
-    public function deleteActivite(Activite $activite, DocPdfRepository $docPdfRepository, PhotoAlbumRepository $photoAlbumRepository): Response
+    public function deleteActivite(Activite $activite, DocPdfRepository $docPdfRepository, PhotoAlbumRepository $photoAlbumRepository, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
         $pdf = $docPdfRepository->findOneBy(['pdfactivite' => $activite]);
         $photo = $photoAlbumRepository->findOneBy(['activite' => $activite]);
 
-        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager = $this->entityManager;
 
         if ($pdf != null) {
             $nompdf = $pdf->getNompdf();
@@ -310,14 +315,13 @@ class ActiviteController extends AbstractController
 
     #[Route('/{id}/sinscrire', name : 'activite_sinscrire', methods : ['GET','POST'])]
 
-    public function sinscrire(Activite $activite): Response
+    public function sinscrire(Activite $activite, EntityManagerInterface $entityManager): Response
     {
 
         //On refuse l'accès à cette méthode si l'utilisateur n'a pas le rôle User.
         $this->denyAccessUnlessGranted("ROLE_USER");
         //On récupère les informations de l'utilisateur stocké en session.
         $user = $this->getUser();
-        $entityManager = $this->getDoctrine()->getManager();
         //On ajoute l'utilisateur à la liste des inscrits.
         $activite->addUser($user);
         //On supprime le fichier stocké dans la base de données
@@ -329,7 +333,6 @@ class ActiviteController extends AbstractController
         return $this->redirectToRoute('activite_index');
     }
 
-
     /**
      * Cette méthode sert à se désister d'une activité.
      * 
@@ -340,13 +343,12 @@ class ActiviteController extends AbstractController
     #[Route('/{id}/sedesister', name : 'activite_sedesister', methods : ['GET','POST'])]
 
 
-    public function sedesister(Activite $activite): Response
+    public function sedesister(Activite $activite, EntityManagerInterface $entityManager): Response
     {
         //On refuse l'accès à cette méthode si l'utilisateur n'a pas le rôle User.
         $this->denyAccessUnlessGranted("ROLE_USER");
         //On récupère les informations de l'utilisateur stocké en session.
         $user = $this->getUser();
-        $entityManager = $this->getDoctrine()->getManager();
         //On supprime l'utilisateur de la liste des inscrits.
         $activite->removeUser($user);
         //On supprime le fichier stocké dans la base de données
@@ -368,12 +370,10 @@ class ActiviteController extends AbstractController
 
     #[Route ('/{id}/annuler', name : 'activite_annuler', methods : ['GET','POST'])]
 
-    public function annuler(Activite $activite, EtatRepository $etatRepository): Response
+    public function annuler(Activite $activite, EtatRepository $etatRepository, EntityManagerInterface $entityManager): Response
     {
         //On refuse l'accès à cette méthode si l'utilisateur n'a pas le rôle User.
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
-
-        $entityManager = $this->getDoctrine()->getManager();
 
         //on met l'état en tant que annulé dans la bdd.
         $etat = $etatRepository->findOneBy(['libelle' => 'annulée']);

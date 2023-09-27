@@ -11,9 +11,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityManagerInterface;
 
 class PartenaireController extends AbstractController
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
 
     /**
      * Cette méthode sert à rediriger sur la page Gestion des partenaires et à afficher tous les partenaires présents en base données.
@@ -34,7 +41,7 @@ class PartenaireController extends AbstractController
     }
 
     /**
-     * Cette méthode sert a créer un partenaire.
+     * Cette méthode sert à créer un partenaire.
      * 
      * @param Request $request
      * @return Response
@@ -42,9 +49,9 @@ class PartenaireController extends AbstractController
 
     #[Route('/createP', name: 'createP')]
 
-    public function createPartenaire(Request $request): Response
+    public function createPartenaire(Request $request, EntityManagerInterface $entityManager): Response
     {
-        //On refuse l'accès a cette méthode a l'utilisateur si l'utilisateur n'a pas le rôle Admin.
+        //On refuse l'accès à cette méthode a l'utilisateur si l'utilisateur n'a pas le rôle Admin.
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
         //On créer une nouvelle instance de l'objet Partenaire et on le stock dans la variable $partenaire.
         $partenaire = new Partenaire();
@@ -64,7 +71,6 @@ class PartenaireController extends AbstractController
             //On injecte le nouveau nom du fichier dans la propriété image.
             $partenaire->setLogo($fileName);
             //On envoie les informations a la base de donnée
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($partenaire);
             $entityManager->flush();
             //On renvoie un message de success a l'utilisateur pour prévenir de la réussite.
@@ -89,12 +95,11 @@ class PartenaireController extends AbstractController
 
     #[Route ('/update/{id}', name : 'partenaire_update')]
 
-    public function partenaireUpdate(Partenaire $partenaire, Request $request): Response
+    public function partenaireUpdate(Partenaire $partenaire, Request $request, EntityManagerInterface $entityManager): Response
     {
         //On refuse l'accès a cette méthode a l'utilisateur si l'utilisateur n'a pas le rôle Admin.
         $this->denyAccessUnlessGranted("ROLE_USER");
 
-        $entityManager = $this->getDoctrine()->getManager();
         //On récupère le nom de l'image stocké en base donnée et le stock dans la variable $nom
         $nom = $partenaire->getLogo();
         //On créer notre formulaire.
@@ -140,19 +145,18 @@ class PartenaireController extends AbstractController
 
     #[Route('/delete/{id}', name : 'partenaire_delete')]
 
-    public function partenaireDelete(Partenaire $partenaire): RedirectResponse
+    public function partenaireDelete(Partenaire $partenaire, EntityManagerInterface $entityManager): RedirectResponse
     {
         //On refuse l'accès a cette méthode si l'utilisateur n'a pas le rôle Admin.
         $this->denyAccessUnlessGranted("ROLE_USER");
 
-        $em = $this->getDoctrine()->getManager();
         //On récupère le nom de l'image stocké en base de donnée.
         $nom = $partenaire->getLogo();
         //On supprime le fichier stocker dans le repository logos.
         unlink($this->getParameter('logo_directory') . '/' . $nom);
         //On supprime le fichier stocker dans la base de donnée
-        $em->remove($partenaire);
-        $em->flush();
+        $entityManager->remove($partenaire);
+        $entityManager->flush();
         //On redirige l'utilisateur sur la page partenaire.html.twig.
         return $this->redirectToRoute('partenaire');
     }

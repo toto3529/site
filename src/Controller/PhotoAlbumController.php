@@ -21,6 +21,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PhotoAlbumController extends AbstractController
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
     /**
      * Cette méthode sert à rediriger l'utilisateur sur la page Album photo et permet aussi de faire l'affichage des activités avec l'état 'fini' ou 'annulé' et d'afficher un filtre.
      * 
@@ -97,7 +103,7 @@ class PhotoAlbumController extends AbstractController
 
     #[Route ('/album/create/{id}', name : 'create_album')]
 
-    public function createAlbum(Request $request, Activite $activite): Response
+    public function createAlbum(EntityManagerInterface $entityManager, Request $request, Activite $activite): Response
     {
         //On refuse l'accès à cette méthode si l'utilisateur n'a pas le rôle Admin.
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
@@ -125,7 +131,6 @@ class PhotoAlbumController extends AbstractController
                 $album->setImage($fileName);
             }
             //On envoie les informations à la base de données.
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($album);
             $entityManager->flush();
             //On renvoie un message de success à l'utilisateur pour prévenir de la réussite.
@@ -181,12 +186,11 @@ class PhotoAlbumController extends AbstractController
 
     #[Route ('/delete/album/{id}', name : 'delete_album')]
 
-    public function deleteAlbum(PhotoAlbum $photoAlbum): Response
+    public function deleteAlbum(EntityManagerInterface $entityManager, PhotoAlbum $photoAlbum): Response
     {
         //On refuse l'accès à cette méthode si l'utilisateur n'a pas le rôle Admin.
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
 
-        $entityManager = $this->getDoctrine()->getManager();
         //Si la propriété image n'est pas null (vide)...
         if ($photoAlbum->getImage() != null) {
             //On récupère le nom de l'image stockée en base de données et on le stocke dans la variable $nom.
@@ -213,7 +217,7 @@ class PhotoAlbumController extends AbstractController
 
     #[Route ('/pdf/create/{id}', name : 'create_pdf')]
 
-    public function createPdf(Request $request, Activite $activite): Response
+    public function createPdf(EntityManagerInterface $entityManager, Request $request, Activite $activite): Response
     {
         //On refuse l'accès à cette méthode si l'utilisateur n'a pas le rôle Admin.
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
@@ -243,7 +247,6 @@ class PhotoAlbumController extends AbstractController
                 $pdf->setNompdf($fileName);
             }
             //On envoie les informations à la base de données.
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($pdf);
             $entityManager->flush();
             //On envoie un message de success pour prévenir l'utilisateur de la réussite.
@@ -266,12 +269,11 @@ class PhotoAlbumController extends AbstractController
 
     #[Route ('/delete/pdf/{id}', name : 'delete_pdf')]
 
-    public function deletePdf(DocPdf $docPdf): Response
+    public function deletePdf(EntityManagerInterface $entityManager, DocPdf $docPdf): Response
     {
         //On refuse l'accès à cette méthode si l'utilisateur n'a pas le rôle Admin.
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
 
-        $entityManager = $this->getDoctrine()->getManager();
         //Si la propriété image n'est pas null (vide)...
         if ($docPdf->getNompdf() != null) {
             //On récupère le nom de l'image stockée en base de données.

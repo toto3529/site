@@ -19,6 +19,12 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class OrganigrammeController extends AbstractController
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
     /**
      * Affiche l'organigramme de l'association sur la page "Gestion de l'organigramme"
      */
@@ -48,9 +54,7 @@ class OrganigrammeController extends AbstractController
 
     #[Route('/{id}/edit', name : 'referent_edit', methods : ['GET','POST'])]
 
-    public function edit (Request $request, int $id, User $user, UserPasswordHasherInterface $passwordHasher,
-                        UserRepository $userRepository, ReferentRepository $referentRepository,
-                        EntityManagerInterface $entityManager):Response
+    public function edit (Request $request, int $id, User $user, UserPasswordHasherInterface $passwordHasher, UserRepository $userRepository, ReferentRepository $referentRepository, EntityManagerInterface $entityManager):Response
         {
         //On refuse l'accès à cette méthode si l'utilisateur n'a pas le rôle Admin.
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
@@ -71,12 +75,11 @@ class OrganigrammeController extends AbstractController
         // Si le formulaire a été envoyé et est valide
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $em = $this->getDoctrine()->getManager();
             // Récupère le champ "Nom" du formulaire
             $referent = $form->getData();
             $user->setReferents($referent);
-            $em->persist($user);
-            $em->flush();
+            $entityManager->persist($user);
+            $entityManager->flush();
 
             /*
             if ($ref == 'Président'){
@@ -84,12 +87,9 @@ class OrganigrammeController extends AbstractController
             dd($user);
             */
 
-
             // Persiste l'instance d'entité sélectionnée (obligatoire sous peine d'erreur)
 
-
             // Attribue le référent choisi dans le formulaire à l'user concerné
-
 
             // Enregistre en BD la nouvelle instance de l'user et remplace l'ancienne
             $entityManager -> persist($user);

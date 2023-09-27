@@ -19,6 +19,12 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class PasswordController extends AbstractController
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
 
     #[Route('/password', name: 'password')]
 
@@ -43,8 +49,7 @@ class PasswordController extends AbstractController
 
     #[Route('/request', name : 'app_forgot_password_request')]
 
-    public function request(Request $request, UserRepository $userRepository,
-        UserPasswordHasherInterface $passwordHasher, MailerInterface $mailer, EntityManagerInterface $em): Response
+    public function request(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher, MailerInterface $mailer, EntityManagerInterface $entityManager): Response
         {
 
         #nombre aléatoire à 8 chiffres
@@ -54,7 +59,6 @@ class PasswordController extends AbstractController
         if ($utilisateur = $userRepository->findOneBy(['email' => $request->request->get('mail')])) {
             //on checke son pseudo.
             $utilsateurpseudo = $utilisateur->getUsername();
-            $this->em = $em;
 
             //on checke son mail.
             $utilisateur1 = $utilisateur->getEmail();
@@ -65,8 +69,7 @@ class PasswordController extends AbstractController
                     ->setFrom('vrnb2020@velorandonaturebruz.fr')
                     ->setTo($utilisateur1)
                     ->setBody(
-                        $this->renderView(
-                            'emails/change_mdp.html.twig',
+                        $this->renderView('emails/change_mdp.html.twig',
                             [
                                 'random' => $random,
                                 'utilisateurpseudo' => $utilsateurpseudo,
@@ -81,7 +84,7 @@ class PasswordController extends AbstractController
                 //on hashe le mot de passe généré aléatoirement pour le mettre en bdd.
                 $hashedPassword = $passwordHasher->hashPassword($utilisateur, $random);
                 $utilisateur->setPassword($hashedPassword);
-                $this->em->flush();
+                $entityManager->flush();
                 //On renvoie un message de success pour prévenir l'utilisateur de la réussite.
                 $this->addFlash('success', "Un nouveau mot de passe vous a été envoyé par mail. Si besoin, veuillez vérifier vos spams");
 
@@ -92,7 +95,6 @@ class PasswordController extends AbstractController
         } else
             return $this->render('user/reset_password/request.html.twig');
     }
-
 
     /**
      * cette méthode est pour changer de mot de passe
@@ -106,18 +108,11 @@ class PasswordController extends AbstractController
 
     #[Route('/reset/{id}', name :'app_reset_password', requirements : ['id' => '\d+'])]
 
-    public function reset(
-        Request $request,
-        UserPasswordHasherInterface $passwordHasher,
-        User $utilisateur,
-        EntityManagerInterface $em
-    ): Response {
+    public function reset(Request $request, UserPasswordHasherInterface $passwordHasher, User $utilisateur, EntityManagerInterface $entityManager): Response {
 
         //On refuse l'accès a cette méthode si l'utilisateur n'a pas le rôle User.
         $this->denyAccessUnlessGranted("ROLE_USER");
 
-
-        $this->em = $em;
         //On créer notre formulaire.
         $form = $this->createForm(ChangePasswordFormType::class);
         //On récupère les information saisi.
@@ -132,7 +127,7 @@ class PasswordController extends AbstractController
             );
 
             $utilisateur->setPassword($hashedPassword);
-            $this->em->flush();
+            $entityManager->flush();
             //On renvoie un message de success a l'utilisateur pour prévenir de la réussite.
             $this->addFlash('success', 'Votre mot de passe a bien été réinitialisé');
             //On redirige l'utilisateurs sur la page activite/index.html.twig (Programme)
