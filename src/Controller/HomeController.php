@@ -912,8 +912,8 @@ class HomeController extends AbstractController
             $photo = $ecocitoyenneteForm->get('EcocitoyennetePhoto')->getData();
 
             if ($photo == null) {
-                $activiteText->setEscapadeTitle($title);
-                $activiteText->setEscapadeText($text);
+                $activiteText->setEcocitoyenneteTitle($title);
+                $activiteText->setEcocitoyenneteText($text);
                 $entityManager->persist($activiteText);
                 $entityManager->flush();
             } else {

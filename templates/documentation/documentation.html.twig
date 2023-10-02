@@ -35,7 +35,7 @@
 
 
 		{# Si l'Utilisateur est Adhérent alors il peut Créer une documentation #}
-		{% if is_granted(["ROLE_USER"]) %}
+		{% if is_granted("ROLE_USER") %}
 
 			{# Le bouton Créer une Documentation #}
 
@@ -113,7 +113,7 @@
 							</div>
 
 							{# Si l'utilisateur est Adhérent #}
-							{% if is_granted(["ROLE_USER"]) %}
+							{% if is_granted("ROLE_USER") %}
 								<div
 									class="documentation__option">
 

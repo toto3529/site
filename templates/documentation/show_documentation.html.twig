@@ -172,7 +172,7 @@
 
 								{# Si l'Utilisateur est Adhérent alors il peut voir le commentaire #}
 								<div class="comment_commentaire col-lg-12">
-									{% if is_granted(["ROLE_USER"]) %}
+									{% if is_granted("ROLE_USER") %}
 										<p>{{ com.commentaire }}</p>
 									{% endif %}
 								</div>

@@ -1,6 +1,5 @@
 {# Création d'une navbar en haut de la page #}
-<nav
-	class="navbar d-flex flex-nowrap navbar-expand-lg navbar-light navbar-custom ">
+<nav class="navbar d-flex flex-nowrap navbar-expand-lg navbar-light navbar-custom ">
 
 	{# pour le responsive on créé le menu burger qui s'affichera sur petit écran #}
 
@@ -21,7 +20,7 @@
 				<a class="nav-link" href="{{path('home1')}}">Accueil</a>
 			</li>
 
-			{# éléments a menu déroulant #}
+			{# Eléments à menu déroulant #}
 
 			{# Partie Association #}
 			<li class="nav-item dropdown">
@@ -29,7 +28,7 @@
 					Association
 				</a>
 
-				{# éléments dans le menu déroulant #}
+				{# Eléments dans le menu déroulant #}
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 					<a class="dropdown-item" href="{{path('presentation')}}">Présentation</a>
 					<a class="dropdown-item" href="{{path('organisation')}}">Organisation</a>
@@ -37,21 +36,21 @@
 			</li>
 
 			{# Partie Documentation #}
-			{% if is_granted('ROLE_USER') %}
+			{% if is_granted("ROLE_USER") %}
 				<li class="nav-item active ">
 					<a class="nav-link" href="{{path('documentation')}}">Documentation</a>
 				</li>
 			{% endif %}
 
-			{# éléments a menu déroulant #}
+			{# Eléments à menu déroulant #}
 
-			{# Partie Activite #}
+			{# Partie Activité #}
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					Activités
 				</a>
 
-				{# éléments dans le menu déroulant #}
+				{# Eléments dans le menu déroulant #}
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 					<a class="dropdown-item" href="{{path('randosvelo')}}">Randonnées à vélo</a>
 					<a class="dropdown-item" href="{{path('formations')}}">Formations
@@ -67,13 +66,13 @@
 				</div>
 			</li>
 
-			{# Si l'Utilisateur est Adhérent on affiche pas Adhesion #}
-			{% if is_granted('ROLE_USER') %}
+			{# Si l'Utilisateur est Adhérent on n'affiche pas Adhésion #}
+			{% if is_granted("ROLE_USER") %}
 
-				{# Sinon on affiche Adhesion#}
+				{# Sinon on affiche Adhésion#}
 			{% else %}
 
-				{# Partie Adhesion #}
+				{# Partie Adhésion #}
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('adhesion') }}">Adhésion</a>
 				</li>
@@ -85,14 +84,14 @@
 			</li>
 
 			{# Si l'Utilisateur est Adhérent alors il peut voir Album Photo #}
-			{% if is_granted(["ROLE_USER"]) %}
+			{% if is_granted("ROLE_USER") %}
 
 				{# Partie Nos Balades #}
 				<li class="nav-item">
 					<a class="nav-link text-nowrap" href="{{ path('album') }}">Nos balades</a>
 				</li>
 			{% endif %}
-			{# éléments a menu déroulant #}
+			{# éléments à menu déroulant #}
 
 			{# Si l'Utilisateur est Adhérent alors il peut voir Espace Adhérent #}
 			{% if is_granted ("ROLE_USER")%}
@@ -160,7 +159,7 @@
 			{% endif %}
 
 			{# Si l'Utilisateur est en session alors on affiche le bouton Déconnexion #}
-			{% if is_granted ('IS_AUTHENTICATED_REMEMBERED')%}
+			{% if is_granted ("IS_AUTHENTICATED_REMEMBERED")%}
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
 				</li>

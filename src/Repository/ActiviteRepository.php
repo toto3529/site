@@ -45,12 +45,12 @@ class ActiviteRepository extends ServiceEntityRepository
     public function miseajouretat()
     {
 
-        $em = $this->getEntityManager();
+        $entityManager = $this->getEntityManager();
         $datejour = new DateTime();
-        $query = $em->createQuery(
+        $query = $entityManager->createQuery(
             'UPDATE App\Entity\Activite as a
-             SET a.etat =2
-             WHERE a.date_activite < :date')
+            SET a.etat =2
+            WHERE a.date_activite < :date')
             ->setParameter('date', $datejour);
 
         return $query->getResult();
@@ -61,9 +61,9 @@ class ActiviteRepository extends ServiceEntityRepository
     public function affichepastille()
     {
         #pour l'affichage de la pastille clignotante dans l'acceuil, on filtre sur les activités ouvertes ou modifiees
-        $em = $this->getEntityManager();
+        $entityManager = $this->getEntityManager();
 
-        $query = $em->createQuery(
+        $query = $entityManager->createQuery(
             'SELECT a
                 FROM App\Entity\Activite a
                 WHERE a.etat = 1 OR a.etat= 4');
@@ -76,9 +76,9 @@ class ActiviteRepository extends ServiceEntityRepository
     public function affichefinie()
     {
         #pour l'affichage de la page de la liste des recaps
-        $em = $this->getEntityManager();
+        $entityManager = $this->getEntityManager();
 
-        $query = $em->createQuery(
+        $query = $entityManager->createQuery(
             'SELECT a
                 FROM App\Entity\Activite a
                 WHERE a.etat = 2
