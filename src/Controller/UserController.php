@@ -11,6 +11,7 @@ use App\Repository\PhotoRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -127,25 +128,22 @@ class UserController extends AbstractController
 
             //Ici nous enverrons automatiquement un mail avec le mot de passe non hashé
             //Pour que le nouvel adhérent puisse s'inscrire avec ses nouveaux identifiants
-            $message = (new MailerInterface('Votre adhesion est validee'))
-                ->setFrom('vrnb2020@velorandonaturebruz.fr')
-
+            $message = (new Email())
+                ->from('vrnb2020@velorandonaturebruz.fr')
                 //On attribue le destinataire
-                ->setTo($user->getEmail())
-
+                ->to($user->getEmail())
+                ->subject('Votre adhesion est validee')
                 //On créée le message avec la vue twig
-                ->setBody(
-                    $this->renderView(
-                        'emails/buletin_valide.html.twig',
-                        [
-                            'adherent' => $adherent,
-                            'user' => $user,
-                            'password' => $plainpassword,
+                ->html(
+                $this->renderView(
+                'emails/buletin_valide.html.twig',
+                [
+                    'adherent' => $adherent,
+                    'user' => $user,
+                    'password' => $plainpassword,
                         ]
-                    ),
-                    'text/html'
+                    )
                 );
-
             //On envoie le message
             $mailer->send($message);
 

@@ -2,10 +2,10 @@
     Partie mentions legales
  */
 .text-mentionsLegales,.text-mentionsLegales ul{
-    align-items: center;
     display: flex;
     flex-direction: column;
-    text-align: left;
+    text-align: justify;
+    
 }
 .title-mentionsLegales{
     text-align: center;
@@ -42,4 +42,8 @@
 .map-presentation{
     width: 300px;
     height: 300px;
+}
+
+.text-mentionsLegales >h2{
+font-size: 24px;
 }

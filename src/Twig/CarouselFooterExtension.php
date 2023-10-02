@@ -33,9 +33,9 @@ class CarouselFooterExtension extends AbstractExtension
 }
 
     public function getCarousel(): string{
-         $partenaire = $this->partenaireRepository->findPartenaire();
-         return $this->twig->render('inc/nav_footer.html.twig',[
-             'partenaires' => $partenaire
-         ]);
+        $partenaire = $this->partenaireRepository->findPartenaire();
+        return $this->twig->render('inc/nav_footer.html.twig',[
+            'partenaires' => $partenaire
+        ]);
     }
 }
