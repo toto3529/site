@@ -53,6 +53,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_naissance;
 
+    #[ORM\Column(type: 'string', length: 100)]
+    private $resetToken;
+
     #[ORM\ManyToMany(targetEntity: Activite::class, inversedBy: 'users')]
     private $inscription;
 
@@ -216,6 +219,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): self
+    {
+        $this->resetToken = $resetToken;
+
+        return $this;
+    }
 
     public function getReferents(): ?Referent
     {
