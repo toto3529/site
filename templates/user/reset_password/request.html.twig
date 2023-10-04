@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{{ parent() }}
-	| Réinitialiser mon mot de passe
+	{{ parent() }} | Réinitialiser mon mot de passe
 {% endblock %}
 {# page de reinitialisation de mdp #}
 
-{% block body %}
-	{# formulaire pour changer le mot de passe #}
+{# formulaire pour changer le mot de passe #}
+{# {% block body %}
+	
 	<div class="container">
 		<div class="form_password_forgotten">
 			<div class="title_form col-12">
@@ -32,4 +32,29 @@
 			</form>
 		</div>
 	</div>
+{% endblock %} #}
+
+{% block body %}
+    {# Page de demande de réinitialisation de mot de passe de secours (sans lien via mail) #}
+
+    <div class=" global-adhesion container-fluid">
+
+        <div class="adhesion-fond-noir m-5 col-lg-5 col-md-12 col-sm-12 size">
+            <div class="justify-content-center">
+        
+                <article id="texteAdhésion">
+                    <h1 class="text-accueil">Vous souhaitez réinitialiser votre mot de passe car vous l'avez oublié ?</h1>
+                    <div class="texte-adhesion">
+                        <p class=" text-center">Pas de problème, pour cela contacter : <strong>{{ president.prenom }}</strong> </p>
+                        <ul>
+                            <li class="list-unstyled text-center">- par téléphone :  au {{ president.telephone }}</li>
+							<br>
+                            <li class="list-unstyled text-center">- ou par mail : vrnb2020@velorandonaturebruz.fr</li>
+                        </ul>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}

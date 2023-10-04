@@ -93,7 +93,8 @@ class PasswordController extends AbstractController
                 $this->redirectToRoute('app_login');
             }
         } else
-            return $this->render('user/reset_password/request.html.twig');
+            $president = $userRepository->findOneBy(['referents' => '1']);
+            return $this->render('user/reset_password/request.html.twig', ['president' => $president]);
     }
 
     /**
