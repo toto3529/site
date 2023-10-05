@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: 'App\Repository\UserRepository')]
-#[UniqueEntity(fields: ['username'], message: 'Il y a déjà un compte avec ce pseudo')]
+#[UniqueEntity(fields: ['username', 'email'], message: 'Il y a déjà un compte avec ce pseudo ou  cet email')]
 
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -47,13 +47,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $telephone;
 
     #[Assert\Email()]
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, unique : true)]
     private $email;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $date_naissance;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
     private $resetToken;
 
     #[ORM\ManyToMany(targetEntity: Activite::class, inversedBy: 'users')]
