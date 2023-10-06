@@ -8,7 +8,7 @@
 {% block body %}
 
 	<div class="container">
-		<div class="form_contact col-10">
+		<div class="form_contact col-20">
 			<div class="title_contact col-12">
 				<h1>Nous contacter</h1>
 			</div>
@@ -18,11 +18,11 @@
 
 				{{ form_start(contactForm) }}
 				<p>
-					Nom :
+					Nom et Prénom :
 					{{ form_widget(contactForm.nom) }}</p>
 				<p>
-					Mail :
-					{{ form_widget(contactForm.email) }}</p>
+					Email :
+					{{ form_widget(contactForm.emailContact) }}</p>
 				<p>
 					Message :
 					{{ form_widget(contactForm.message) }}</p>

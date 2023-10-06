@@ -3,12 +3,13 @@
 namespace App\Controller;
 
 use App\Form\ContactType;
+use App\Service\ContactMailService;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ContactController extends AbstractController
 {
@@ -28,7 +29,7 @@ class ContactController extends AbstractController
 
     #[Route('/contact', name: 'contact')]
 
-    public function index(Request $request, MailerInterface $mailer): Response
+    public function index(Request $request, ContactMailService $mail): Response
     {
         //On créer notre formulaire.
         $form = $this->createForm(ContactType::class);
@@ -37,26 +38,29 @@ class ContactController extends AbstractController
         //Si le formulaire a bien été envoyer et qu'il est valide ...
         if ($form->isSubmitted() && $form->isValid()) {
             //On récupère les information saisie dans le formulaire et on les hydrate dans la variable $contact.
-            $contact = $form->getData();
+            $context = $form->getData();
+            //dd($contact);
+            // //ici nous enverrons le mail.
+            // $message = (new MailerInterface('Nouveau Contact'))
+            //     ->setFrom($contact['email'])
 
-            //ici nous enverrons le mail.
-            $message = (new MailerInterface('Nouveau Contact'))
-                ->setFrom($contact['email'])
+            //     //on attribue le destinataire - ci-dessous c'est le mail du site.
+            //     ->setTo('vrnb2020@velorandonaturebruz.fr')
 
-                //on attribue le destinataire - ci-dessous c'est le mail du site.
-                ->setTo('vrnb2020@velorandonaturebruz.fr')
+            //     //on créée le message avec la vue twig (qui est dans les templates emails).
+            //     ->setBody($this->renderView('emails/contact.html.twig', compact('contact')),'text/html');
 
-                //on créée le message avec la vue twig (qui est dans les templates emails).
-                ->setBody(
-                    $this->renderView(
-                        'emails/contact.html.twig',
-                        compact('contact')
-                    ),
-                    'text/html'
-                );
+            // // on envoie le message
+            // $mailer->send($message);
 
-            // on envoie le message
-            $mailer->send($message);
+            // Envoi du mail
+            $mail->sendContact(
+                'no-reply@velorandonaturebruz.fr',
+                'vrnb2020@velorandonaturebruz.fr',
+                'Mail de demande de contact depuis le formulaire de contact',
+                'contact',
+                $context
+            );
             //On renvoie un message de success a l'utilisateur pour prévenir de la réussite.
             $this->addFlash('success', 'Votre message a bien été envoyé');
             //On redirige l'utilisateur sur la page index.html.twig (accueil).
