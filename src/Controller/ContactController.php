@@ -39,20 +39,7 @@ class ContactController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             //On récupère les information saisie dans le formulaire et on les hydrate dans la variable $contact.
             $context = $form->getData();
-            //dd($contact);
-            // //ici nous enverrons le mail.
-            // $message = (new MailerInterface('Nouveau Contact'))
-            //     ->setFrom($contact['email'])
-
-            //     //on attribue le destinataire - ci-dessous c'est le mail du site.
-            //     ->setTo('vrnb2020@velorandonaturebruz.fr')
-
-            //     //on créée le message avec la vue twig (qui est dans les templates emails).
-            //     ->setBody($this->renderView('emails/contact.html.twig', compact('contact')),'text/html');
-
-            // // on envoie le message
-            // $mailer->send($message);
-
+            
             // Envoi du mail
             $mail->sendContact(
                 'no-reply@velorandonaturebruz.fr',
@@ -61,6 +48,7 @@ class ContactController extends AbstractController
                 'contact',
                 $context
             );
+            
             //On renvoie un message de success a l'utilisateur pour prévenir de la réussite.
             $this->addFlash('success', 'Votre message a bien été envoyé');
             //On redirige l'utilisateur sur la page index.html.twig (accueil).
