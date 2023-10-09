@@ -15,7 +15,6 @@ class ContactType extends AbstractType
     {
         $builder
             ->add('nom')
-            // ->add('email', EmailType::class)
             ->add('emailContact', EmailType::class, [
                 'label' => 'Entrez votre e-mail',
                 'attr' => [

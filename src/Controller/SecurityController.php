@@ -57,15 +57,17 @@ class SecurityController extends AbstractController
 
     #[Route('/oubli-pass', name:'forgotten_password')]
 
-    public function forgottenPassword(Request $request, UserRepository $usersRepository, TokenGeneratorInterface $tokenGenerator, EntityManagerInterface $entityManager, SendMailService $mail): Response
+    public function forgottenPassword(Request $request, UserRepository $userRepository, TokenGeneratorInterface $tokenGenerator, EntityManagerInterface $entityManager, SendMailService $mail): Response
     {
+        //Fonction de réinitialisation de mot de passe avec formulaire (à commenter si utilisation de la page de secours)
+
         $requestPassForm = $this->createForm(ResetPasswordRequestFormType::class);
 
         $requestPassForm->handleRequest($request);
 
         if($requestPassForm->isSubmitted() && $requestPassForm->isValid()){
             //On va chercher l'utilisateur par son email
-            $user = $usersRepository->findOneByEmail($requestPassForm->get('email')->getData());
+            $user = $userRepository->findOneByEmail($requestPassForm->get('email')->getData());
 
             // On vérifie si on a un utilisateur
             if($user){
@@ -91,17 +93,27 @@ class SecurityController extends AbstractController
                 );
 
                 $this->addFlash('success', 'Email envoyé avec succès');
-                return $this->redirectToRoute('app_login');
-            }
-            // $user est null
-            $this->addFlash('danger', 'Un problème est survenu');
             return $this->redirectToRoute('app_login');
-        }
-
-        return $this->render('user/reset_password/request.html.twig', [
+            } 
+    
+        $this->addFlash('danger', "Cet email n'existe pas");
+        return $this->render('security/reset_password_request.html.twig', [
             'requestPassForm' => $requestPassForm->createView()
         ]);
+        }
+        return $this->render('security/reset_password_request.html.twig', [
+            'requestPassForm' => $requestPassForm->createView()
+        ]);
+
+    // à décommenter si l'on n'utilise pas la réinitialisation de mot de passe par formulaire, mais avec la page de secours de réinitialisation dans request.twig.html
+
+    // $president = $userRepository->findOneBy(['referents' => '1']);
+    
+    //             return $this->render('security/reset_password_request.html.twig', [
+    //                 'president' => $president
+    //             ]);
     }
+
 
     #[Route('/oubli-pass/{token}', name:'reset_pass')]
     public function resetPass(string $token, Request $request, UserRepository $userRepository, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response

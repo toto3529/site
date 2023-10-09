@@ -1,7 +1,7 @@
 .bas_form_contact1, .bas_form_contact2{
     display: flex;
     justify-content: center;
-    margin: 10px;
+    margin: 0px;
 }
 .form_contact{
     margin-top: 120px;

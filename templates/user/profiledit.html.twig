@@ -84,14 +84,18 @@
 
 							{# Les Boutons Enregistrer et Retour #}
 							<div class="margin_button col-24row d-flex justify-content-center">
-								<div class="col-3">
-									{{ form_end(form) }}
+
+								<div class="bas_form_contact col-12">
+									<div class="bas_form_contact1">
+										{{ form_widget(form.envoyer) }}
+										{{ form_end(form) }}
+									</div>
+									<div class="bas_form_contact2">
+										<a href="{{ path('user_show', { 'id': app.user.id}) }}" class="btn btn-outline-secondary btn btn-lg">Retour</a>
+									</div>
 								</div>
-								<div class="col-14">
-									<a href="{{ path('user_show', { 'id': app.user.id}) }}" class="btn btn-outline-secondary btn">Retour</a>
-								</div>
-							</div>
-							
+							</div> 
+
 						</div>
 					</div>
 				{% else %}

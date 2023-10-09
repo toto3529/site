@@ -78,9 +78,8 @@ class UserType extends AbstractType
                 'mapped' => false,
                 'required' => false
             ])
-
-            ->add('enregistrer', SubmitType::class, [
-                'attr' => ['class' => 'btn btn-success'],
+            ->add('envoyer', SubmitType::class, [
+                'attr' => ['class' => 'btn-success'],
             ]);
 
 
