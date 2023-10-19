@@ -8,8 +8,7 @@
 {# La page organisation bureau #}
 {% block body %}
 
-	<div
-		class="container bureau_main">
+	<div class="container bureau_main">
 		<!-- Affichage de la photo d'accueil de la page -->
 		{% if photoIntro is not empty %}
 			<figure class="textcenter">
@@ -38,8 +37,7 @@
 
 		<div class="container">
 			<div class="carte col-2 offset-5">
-				<div
-					class="carte-entete membresBureau">
+				<div class="carte-entete membresBureau">
 
 					<!-- On boucle sur l'entité User -->
 					{% for user in users %}
@@ -50,8 +48,7 @@
 							<!-- On affiche la qualité référent -->
 							<p class="role_user">{{ user.referents.getNom() }}</p>
 						</div>
-						<div
-							class="card-body ">
+						<div class="card-body ">
 							<!-- On affiche les nom et prénom -->
 							<p class="nomPrenom">{{user.prenom}}&nbsp</p>
 							<p class="nomPrenom">{{user.nom}}</p>

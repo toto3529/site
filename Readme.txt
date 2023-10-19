@@ -25,6 +25,8 @@ Je suis passé par un Virtual Host.
 Les codes d'accès au dashboard Matomo, au serveur d'hébergement et à l'accès SSH sur le serveur sont à récupérer auprès de l'administrateur. 
 
 
-Antoine MARTIN VAUFREY
+Antoine MARTIN VAUFREY (Oct-Nov 2023)
 
 passage de SF 4.4 à 6.3 (Php 8.1 fait par hébergeur)
+
+BDD utilisée en production : dbs1369285
