@@ -79,8 +79,14 @@
 }
 
 .carte-entete{
-    margin-top:2px;
-    background-color: #fbfff0;
+    padding: 5px;
+    /* background-color: #fbfff0; */
+    border: 1px solid black;
+    border-radius: 2px 2px 0 0;
+}
+.carte-enteteReferent{
+    padding: 5px;
+    /* background-color: #fbfff0; */
     border: 1px solid black;
     border-radius: 2px 2px 0 0;
 }
@@ -177,8 +183,32 @@
     margin-right: 3vh;
 }
 
+.case {
+    width: 400px;
+    height: 200px;
+    border: 2px solid black;
+    background: rgb(205, 205, 219);
+    margin-bottom: 5px;
+    margin-right: 5px;
+    text-align : center;
+}
 
-@media (max-width: 992px){
+.wrap {
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+    justify-content: center;
+    text-align : center;
+}
+
+.mt {
+    margin-top: 130px;
+}
+.mb {
+    margin-bottom: 30px;
+}
+
+/* @media (max-width: 992px){
     .role_user{
         font-size: 1.65vw;
     }
@@ -249,7 +279,7 @@
         font-size: 0.5em;
         margin:0;
     }
-}
+} */
 
 
 

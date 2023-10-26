@@ -83,4 +83,11 @@ class PhotoAlbum
 
         return $this;
     }
+
+    public function __toString() : string
+
+    {
+        return $this->image;
+    }
+
 }

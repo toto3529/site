@@ -2,62 +2,63 @@
 
 namespace App\Controller;
 
-use App\Form\AccueilEtiquette\FirstEtiquetteType;
-use App\Form\AccueilEtiquette\FourthEtiquetteType;
-use App\Form\AccueilEtiquette\ThirdEtiquetteType;
-use App\Form\AccueilText\FirstTextType;
-use App\Form\AccueilText\SecondTextType;
-use App\Form\AccueilText\ThirdTextType;
-use App\Form\AccueilText\FourthTextType;
-use App\Form\AccueilText\FifthTextType;
-use App\Form\AccueilText\SixthTextType;
-use App\Form\ActiviteText\AutreFormType;
-use App\Form\ActiviteText\BaladeTextType;
-use App\Form\ActiviteText\FormationTexteIntroTextType;
-use App\Form\ActiviteText\EcocitoyenneteTextType;
-use App\Form\ActiviteText\MecaniqueType;
-use App\Form\ActiviteText\EcocitoyenneteFormType;
-use App\Form\ActiviteText\EscapadeFormType;
-use App\Form\ActiviteText\PhotosVideosTextType;
-use App\Form\ActiviteText\ProjectionFilmFormType;
-use App\Form\ActiviteText\ProjectionfilmTextType;
-use App\Form\ActiviteText\RandoveloTextIntro;
-use App\Form\ActiviteText\SecourismeTextType;
-use App\Form\ActiviteText\SecuriteTextType;
-use App\Form\ActiviteText\AutresTextType;
-use App\Form\IntroPhoto\AutreIntroPhotoType;
-use App\Form\IntroPhoto\EcocitoyenneteIntroPhotoType;
-use App\Form\IntroPhoto\FormationIntroPhotoType;
-use App\Form\IntroPhoto\OrganisationIntroPhotoType;
-use App\Form\IntroPhoto\PresentationIntroPhotoType;
-use App\Form\IntroPhoto\ProjectionFilmIntroPhotoType;
-use App\Form\IntroPhoto\RandoVeloIntroPhotoType;
 use App\Form\PdfStatusType;
-use App\Form\AccueilEtiquette\SecondEtiquetteType;
-use App\Form\PresentationText\TextFiveType;
-use App\Form\PresentationText\TextFourType;
-use App\Form\PresentationText\TextOneType;
-use App\Form\PresentationText\TextSixType;
-use App\Form\PresentationText\TextThreeType;
-use App\Form\PresentationText\TextTwoType;
-use App\Form\PresentationText\TitleFourType;
-use App\Form\PresentationText\TitleOneType;
-use App\Form\PresentationText\TitleThreeType;
-use App\Form\PresentationText\TitleTwoType;
-use App\Repository\ActiviteContentRepository;
+use App\Entity\PhotoCarousel;
+use App\Repository\UserRepository;
 use App\Repository\ActiviteRepository;
+use App\Form\AccueilText\FifthTextType;
+use App\Form\AccueilText\FirstTextType;
+use App\Form\AccueilText\SixthTextType;
+use App\Form\AccueilText\ThirdTextType;
 use App\Repository\ActualiteRepository;
-use App\Repository\EtiquetteContentRepository;
+use App\Form\AccueilText\FourthTextType;
+use App\Form\AccueilText\SecondTextType;
+use App\Form\ActiviteText\AutreFormType;
+use App\Form\ActiviteText\MecaniqueType;
 use App\Repository\IntroPhotoRepository;
 use App\Repository\PhotoAlbumRepository;
-use App\Repository\TextAccueilRepository;
-use App\Repository\TextPresentationRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Form\ActiviteText\AutresTextType;
+use App\Form\ActiviteText\BaladeTextType;
+use App\Repository\TextAccueilRepository;
+use App\Form\PresentationText\TextOneType;
+use App\Form\PresentationText\TextSixType;
+use App\Form\PresentationText\TextTwoType;
+use App\Form\ActiviteText\EscapadeFormType;
+use App\Form\ActiviteText\SecuriteTextType;
+use App\Form\PresentationText\TextFiveType;
+use App\Form\PresentationText\TextFourType;
+use App\Form\PresentationText\TitleOneType;
+use App\Form\PresentationText\TitleTwoType;
+use App\Form\IntroPhoto\AutreIntroPhotoType;
+use App\Form\PresentationText\TextThreeType;
+use App\Form\PresentationText\TitleFourType;
+use App\Form\ActiviteText\RandoveloTextIntro;
+use App\Form\ActiviteText\SecourismeTextType;
+use App\Form\PresentationText\TitleThreeType;
+use App\Repository\ActiviteContentRepository;
 use Symfony\Component\HttpFoundation\Request;
+use App\Repository\EtiquetteContentRepository;
+use App\Repository\TextPresentationRepository;
 use Symfony\Component\HttpFoundation\Response;
+use App\Form\ActiviteText\PhotosVideosTextType;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Form\IntroPhoto\FormationIntroPhotoType;
+use App\Form\IntroPhoto\RandoVeloIntroPhotoType;
+use App\Form\AccueilEtiquette\FirstEtiquetteType;
+use App\Form\AccueilEtiquette\ThirdEtiquetteType;
+use App\Form\ActiviteText\EcocitoyenneteFormType;
+use App\Form\ActiviteText\EcocitoyenneteTextType;
+use App\Form\ActiviteText\ProjectionFilmFormType;
+use App\Form\ActiviteText\ProjectionfilmTextType;
+use App\Form\AccueilEtiquette\FourthEtiquetteType;
+use App\Form\AccueilEtiquette\SecondEtiquetteType;
+use App\Form\IntroPhoto\OrganisationIntroPhotoType;
+use App\Form\IntroPhoto\PresentationIntroPhotoType;
+use App\Form\IntroPhoto\EcocitoyenneteIntroPhotoType;
+use App\Form\IntroPhoto\ProjectionFilmIntroPhotoType;
+use App\Form\ActiviteText\FormationTexteIntroTextType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
@@ -283,8 +284,11 @@ class HomeController extends AbstractController
             }
         }
 
+        $photoCarousels = $entityManager->getRepository(PhotoCarousel::class)->find(1);
 
         return $this->render('home/index.html.twig', [
+
+            'photoCarousels' => $photoCarousels,
             'textes' => $textAccueilRepository->findAll(),
             'textesEtiquettes' => $etiquetteContentRepository->findAll(),
             'photos' => $photoAlbumRepository->findBy([], ['id' => 'ASC'], 10),

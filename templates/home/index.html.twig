@@ -45,283 +45,294 @@
 					{% include ('home/_news_activite.html.twig') %}
 				</div>
 			</div>
-			<div class="col-lg-3">
-				<div class="grid-meteo">
-					<iframe class="meteo_accueil" id="widget_meteo" scrolling="no" width="100" height="100" frameborder="0" src="https://meteofrance.com/widget/prevision/350470##B5EA86"></iframe>
+
+			{# Widget Météo sur 7 jours animé #}
+			<div class="col-lg-8 col-lg-offset-2 col-sm-12 text-center" style="margin-top: 20px; margin-bottom: 20px;">
+				<div id="cont_7ba91f7667a871243ab567aa5643dd21">
+					<script type="text/javascript" async src="https://www.tameteo.com/wid_loader/7ba91f7667a871243ab567aa5643dd21"></script>
 				</div>
 			</div>
-		</div>
 
-		<div class="carousel-container col-lg-12">
-			<div
-				class="col-lg-12">
-				{# Paragraphe avant Carrousel #}
-				{% for texte in textes %}
-					<p class="lead text-accueil">{{ texte.firstText | nl2br }}
-					</p>
-					{% if is_granted("ROLE_ADMIN") %}
-						<div class="boutonModifierTexte">
-							<button class="button_show btn btn-outline-success">Modifier le texte</button>
-						</div>
-						<div class="form-group formulaire" id="form">
-							{{ form(formFirst) }}
-								<div
-									class="mt-3 mb-5 text-center">
-									{# <p>{{ form_widget(formFirst.Enregistrer) }}</p> #}
-									<button class="button_close btn btn-outline-secondary">Annuler</button>
-								</div>
-							</div>
-						{% endif %}
-					{% endfor %}
-				</div>
-
-				{# <!----------------------- Carousel -----------------------------------> #}
-				<div class="description-accueil row">
-					<div class="slider">
-						<div class="slide-track" style="--nbImages:{{ photos|length }}">
-
-							{% for photo in photos %}
-								{% if photo.getImage() is empty %}
-									{% else %}
-										<div class="slide">
-											<img src="{{ asset('album-photo/'~ photo.image) }}" alt="tof rando">
-										</div>
-								{% endif %}
-							{% endfor %}
-						</div>
-					</div>
-				</div>
-
-				{# Paragraphe après Carrousel #}
-				<div class="col-lg-12">
+			<div class="carousel-container col-lg-12">
+				<div
+					class="col-lg-12">
+					{# Paragraphe avant Carrousel #}
 					{% for texte in textes %}
-						<p class="lead text-accueil">{{ texte.secondText | nl2br }}
+						<p class="lead text-accueil">{{ texte.firstText | nl2br }}
 						</p>
 						{% if is_granted("ROLE_ADMIN") %}
 							<div class="boutonModifierTexte">
 								<button class="button_show btn btn-outline-success">Modifier le texte</button>
 							</div>
 							<div class="form-group formulaire" id="form">
-								{{ form(formSecond) }}
+								{{ form(formFirst) }}
 									<div
 										class="mt-3 mb-5 text-center">
-										{# <p>{{ form_widget(formSecond.Enregistrer) }}</p> #}
+										{# <p>{{ form_widget(formFirst.Enregistrer) }}</p> #}
 										<button class="button_close btn btn-outline-secondary">Annuler</button>
 									</div>
 								</div>
 							{% endif %}
 						{% endfor %}
 					</div>
+
+					{# <!----------------------- Carrousel -----------------------------------> #}
+
+					<div class="box">
+						<div class="marquee">
+							<div class="marqueegroup">
+								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage1()) }}">
+								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage2()) }}">
+								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage3()) }}">
+								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage4()) }}">
+								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage5()) }}">
+								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage6()) }}">
+								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage7()) }}">
+							</div>
+
+							<div aria-hidden="true" class="marqueegroup">
+								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage1()) }}">
+								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage2()) }}">
+								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage3()) }}">
+								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage4()) }}">
+								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage5()) }}">
+								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage6()) }}">
+								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage7()) }}">
+							</div>
+						</div>
+					</div>
+
+
+					{# Paragraphe après Carrousel #}
+					<div class="col-lg-12">
+						{% for texte in textes %}
+							<p class="lead text-accueil">{{ texte.secondText | nl2br }}
+							</p>
+							{% if is_granted("ROLE_ADMIN") %}
+								<div class="boutonModifierTexte">
+									<button class="button_show btn btn-outline-success">Modifier le texte</button>
+								</div>
+								<div class="form-group formulaire" id="form">
+									{{ form(formSecond) }}
+										<div
+											class="mt-3 mb-5 text-center">
+											{# <p>{{ form_widget(formSecond.Enregistrer) }}</p> #}
+											<button class="button_close btn btn-outline-secondary">Annuler</button>
+										</div>
+									</div>
+								{% endif %}
+							{% endfor %}
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
 
-		<div class="center-hr">
-			<hr class="hr25-pourcent ">
-		</div>
+			<div class="center-hr">
+				<hr class="hr25-pourcent ">
+			</div>
 
-		<div
-			class="col-lg-12">
-			{# Paragraphe #}
-			{% for texte in textes %}
-				<div class="texte">
-					<h2 id="h2-accueil">{{ texte.thirdText }}</h2>
-					{% if is_granted("ROLE_ADMIN") %}
-						<div class="boutonModifierTexte">
-							<button class="button_show btn btn-outline-success">Modifier le texte</button>
-						</div>
-						<div class="form-group formulaire" id="form">
-							{{ form(formThird) }}
-								<div
-									class="mt-3 mb-5 text-center">
-									{# <p>{{ form_widget(formThird.Enregistrer) }}</p> #}
-									<button class="button_close btn btn-outline-secondary">Annuler</button>
-								</div>
-							</div>
-						{% endif %}
-					</div>
+			<div
+				class="col-lg-12">
+				{# Paragraphe #}
+				{% for texte in textes %}
 					<div class="texte">
-						<h5 id="h5-accueil">{{ texte.fourthText | nl2br }}</h5>
+						<h2 id="h2-accueil">{{ texte.thirdText }}</h2>
 						{% if is_granted("ROLE_ADMIN") %}
 							<div class="boutonModifierTexte">
 								<button class="button_show btn btn-outline-success">Modifier le texte</button>
 							</div>
 							<div class="form-group formulaire" id="form">
-								{{ form(formFourth) }}
+								{{ form(formThird) }}
 									<div
 										class="mt-3 mb-5 text-center">
-										{# <p>{{ form_widget(formFourth.Enregistrer) }}</p> #}
+										{# <p>{{ form_widget(formThird.Enregistrer) }}</p> #}
 										<button class="button_close btn btn-outline-secondary">Annuler</button>
 									</div>
 								</div>
 							{% endif %}
 						</div>
-					{% endfor %}
-				</div>
-				{# Les 4 cards de choix, leurs liens, leurs photo, et leurs effets #}
-				{% for texteEtiquette in textesEtiquettes %}
-					<div class="container">
-						<div
-							class="paragraphe3">
-							{# Première Card #}
-							<div class=" justify-content-center col-lg-6 col-md-12 taille">
-								<div class="hovereffect-home border-white mb-4">
-									<a href="{{ path('randosvelo') }}">
-										<img src="{{ asset('photo-activite/' ~ photoFirstEtiquette) }}" class="card-img-top" alt="randonnée à vélo">
-										<div class="centered">{{ texteEtiquette.firstEtiquetteText | nl2br }}</div>
-										<div class="overlay">
-											<h2>
-												{{ texteEtiquette.firstEtiquetteOverlay | nl2br }}</h2>
-										</div>
-									</a>
+						<div class="texte">
+							<h5 id="h5-accueil">{{ texte.fourthText | nl2br }}</h5>
+							{% if is_granted("ROLE_ADMIN") %}
+								<div class="boutonModifierTexte">
+									<button class="button_show btn btn-outline-success">Modifier le texte</button>
 								</div>
-							</div>
-							{# Seconde Card #}
-							<div class=" justify-content-center col-lg-6 col-md-12 taille">
-								<div class="hovereffect-home border-white mb-4">
-									<a href="{{ path('formations') }}">
-										<img src="{{ asset('photo-activite/' ~ photoSecondEtiquette) }}" class="card-img-top" alt="Formations">
-										<div class="centered">{{ texteEtiquette.secondEtiquetteText | nl2br }}</div>
-										<div class="overlay">
-											<h2>{{ texteEtiquette.SecondEtiquetteOverlay | nl2br }}</h2>
+								<div class="form-group formulaire" id="form">
+									{{ form(formFourth) }}
+										<div
+											class="mt-3 mb-5 text-center">
+											{# <p>{{ form_widget(formFourth.Enregistrer) }}</p> #}
+											<button class="button_close btn btn-outline-secondary">Annuler</button>
 										</div>
-									</a>
-								</div>
+									</div>
+								{% endif %}
 							</div>
-							{# Troisième Card #}
-							<div class=" justify-content-center col-lg-6 col-md-12 taille">
-								<div class="hovereffect-home border border-white mb-4">
-									<a href="{{ path('pleinair') }}">
-										<img src="{{ asset('photo-activite/' ~ photoThirdEtiquette) }}" class="card-img-top" alt="autres activités">
-										<div class="centered">{{ texteEtiquette.thirdEtiquetteText | nl2br }}</div>
-										<div class="overlay">
-											<h2>{{ texteEtiquette.ThirdEtiquetteOverlay | nl2br }}</h2>
-										</div>
-									</a>
-								</div>
-							</div>
-							{# Quatrième Card #}
-							<div class=" justify-content-center col-lg-6 col-md-12 taille mb-4">
-								<div class="hovereffect-home border border-white ">
-									<a href="{{ path('activite_index') }}">
-										<img src="{{ asset('photo-activite/' ~ photoFourthEtiquette) }}" class="card-img-top" alt="programme des activités">
-										<div class="centered">{{ texteEtiquette.fourthEtiquetteText | nl2br }}</div>
-										<div class="overlay">
-											<h2>{{ texteEtiquette.FourthEtiquetteOverlay | nl2br }}</h2>
-										</div>
-									</a>
-								</div>
-							</div>
-						</div>
+						{% endfor %}
 					</div>
-				{% endfor %}
-
-				{# Modification des 4 cards: texte, overlay, photo #}
-				{% if is_granted("ROLE_ADMIN") %}
-					<div
-						class="paragraphe3">
-						{# First etiquette #}
-						<div class="etiquette_accueil col-2">
-							<div class="boutonModifierTexte">
-								<button class="button_show btn btn-outline-success">Modifier la première étiquette</button>
-							</div>
-							<div class="form-group formulaire" id="form">
-								{{ form(formFirstEtiquette) }}
-									<div
-										class="mt-3 mb-5 text-center">
-										{# <p>{{ form_widget(formFirstEtiquette.Enregistrer) }}</p> #}
-										<button class="button_close btn btn-outline-secondary">Annuler</button>
+					{# Les 4 cards de choix, leurs liens, leurs photo, et leurs effets #}
+					{% for texteEtiquette in textesEtiquettes %}
+						<div class="container">
+							<div
+								class="paragraphe3">
+								{# Première Card #}
+								<div class=" justify-content-center col-lg-6 col-md-12 taille">
+									<div class="hovereffect-home border-white mb-4">
+										<a href="{{ path('randosvelo') }}">
+											<img src="{{ asset('photo-activite/' ~ photoFirstEtiquette) }}" class="card-img-top" alt="randonnée à vélo">
+											<div class="centered">{{ texteEtiquette.firstEtiquetteText | nl2br }}</div>
+											<div class="overlay">
+												<h2>
+													{{ texteEtiquette.firstEtiquetteOverlay | nl2br }}</h2>
+											</div>
+										</a>
+									</div>
+								</div>
+								{# Seconde Card #}
+								<div class=" justify-content-center col-lg-6 col-md-12 taille">
+									<div class="hovereffect-home border-white mb-4">
+										<a href="{{ path('formations') }}">
+											<img src="{{ asset('photo-activite/' ~ photoSecondEtiquette) }}" class="card-img-top" alt="Formations">
+											<div class="centered">{{ texteEtiquette.secondEtiquetteText | nl2br }}</div>
+											<div class="overlay">
+												<h2>{{ texteEtiquette.SecondEtiquetteOverlay | nl2br }}</h2>
+											</div>
+										</a>
+									</div>
+								</div>
+								{# Troisième Card #}
+								<div class=" justify-content-center col-lg-6 col-md-12 taille">
+									<div class="hovereffect-home border border-white mb-4">
+										<a href="{{ path('pleinair') }}">
+											<img src="{{ asset('photo-activite/' ~ photoThirdEtiquette) }}" class="card-img-top" alt="autres activités">
+											<div class="centered">{{ texteEtiquette.thirdEtiquetteText | nl2br }}</div>
+											<div class="overlay">
+												<h2>{{ texteEtiquette.ThirdEtiquetteOverlay | nl2br }}</h2>
+											</div>
+										</a>
+									</div>
+								</div>
+								{# Quatrième Card #}
+								<div class=" justify-content-center col-lg-6 col-md-12 taille mb-4">
+									<div class="hovereffect-home border border-white ">
+										<a href="{{ path('activite_index') }}">
+											<img src="{{ asset('photo-activite/' ~ photoFourthEtiquette) }}" class="card-img-top" alt="programme des activités">
+											<div class="centered">{{ texteEtiquette.fourthEtiquetteText | nl2br }}</div>
+											<div class="overlay">
+												<h2>{{ texteEtiquette.FourthEtiquetteOverlay | nl2br }}</h2>
+											</div>
+										</a>
 									</div>
 								</div>
 							</div>
-							{# Second etiquette #}
+						</div>
+					{% endfor %}
+
+					{# Modification des 4 cards: texte, overlay, photo #}
+					{% if is_granted("ROLE_ADMIN") %}
+						<div
+							class="paragraphe3">
+							{# First etiquette #}
 							<div class="etiquette_accueil col-2">
 								<div class="boutonModifierTexte">
-									<button class="button_show btn btn-outline-success">Modifier la deuxième étiquette</button>
+									<button class="button_show btn btn-outline-success">Modifier la première étiquette</button>
 								</div>
 								<div class="form-group formulaire" id="form">
-									{{ form(formSecondEtiquette) }}
+									{{ form(formFirstEtiquette) }}
 										<div
 											class="mt-3 mb-5 text-center">
-											{# <p>{{ form_widget(formSecondEtiquette.Enregistrer) }}</p> #}
+											{# <p>{{ form_widget(formFirstEtiquette.Enregistrer) }}</p> #}
 											<button class="button_close btn btn-outline-secondary">Annuler</button>
 										</div>
 									</div>
 								</div>
-								{# Third etiquette #}
+								{# Second etiquette #}
 								<div class="etiquette_accueil col-2">
 									<div class="boutonModifierTexte">
-										<button class="button_show btn btn-outline-success">Modifier la troisième étiquette</button>
+										<button class="button_show btn btn-outline-success">Modifier la deuxième étiquette</button>
 									</div>
 									<div class="form-group formulaire" id="form">
-										{{ form(formThirdEtiquette) }}
+										{{ form(formSecondEtiquette) }}
 											<div
 												class="mt-3 mb-5 text-center">
-												{# <p>{{ form_widget(formThirdEtiquette.Enregistrer) }}</p> #}
+												{# <p>{{ form_widget(formSecondEtiquette.Enregistrer) }}</p> #}
 												<button class="button_close btn btn-outline-secondary">Annuler</button>
 											</div>
 										</div>
 									</div>
-									{# Fourth etiquette #}
+									{# Third etiquette #}
 									<div class="etiquette_accueil col-2">
 										<div class="boutonModifierTexte">
-											<button class="button_show btn btn-outline-success">Modifier la quatrième étiquette</button>
+											<button class="button_show btn btn-outline-success">Modifier la troisième étiquette</button>
 										</div>
 										<div class="form-group formulaire" id="form">
-											{{ form(formFourthEtiquette) }}
+											{{ form(formThirdEtiquette) }}
 												<div
 													class="mt-3 mb-5 text-center">
-													{# <p>{{ form_widget(formFourthEtiquette.Enregistrer) }}</p> #}
+													{# <p>{{ form_widget(formThirdEtiquette.Enregistrer) }}</p> #}
 													<button class="button_close btn btn-outline-secondary">Annuler</button>
 												</div>
 											</div>
 										</div>
-									</div>
-								{% endif %}
-
-								<div class="center-hr m-5">
-									<hr class="hr25-pourcent center">
-								</div>
-
-								<div
-									class="col-lg-12">
-									{# Le texte sous les cards #}
-									<div class="text-bas-page example-wrapper">
-										{% for texte in textes %}
-											<div class="texte">
-												<p class="lead text-accueil">{{ texte.fifthText | nl2br }}
-												</p>
-												{% if is_granted("ROLE_ADMIN") %}
-													<div class="boutonModifierTexte">
-														<button class="button_show btn btn-outline-success">Modifier le texte</button>
+										{# Fourth etiquette #}
+										<div class="etiquette_accueil col-2">
+											<div class="boutonModifierTexte">
+												<button class="button_show btn btn-outline-success">Modifier la quatrième étiquette</button>
+											</div>
+											<div class="form-group formulaire" id="form">
+												{{ form(formFourthEtiquette) }}
+													<div
+														class="mt-3 mb-5 text-center">
+														{# <p>{{ form_widget(formFourthEtiquette.Enregistrer) }}</p> #}
+														<button class="button_close btn btn-outline-secondary">Annuler</button>
 													</div>
-													<div class="form-group formulaire" id="form">
-														{{ form(formFifth) }}
-															<div
-																class="mt-3 mb-5 text-center">
-																{# <p>{{ form_widget(formFifth.Enregistrer) }}</p> #}
-																<button class="button_close btn btn-outline-secondary">Annuler</button>
-															</div>
-														</div>
-													{% endif %}
 												</div>
+											</div>
+										</div>
+									{% endif %}
+
+									<div class="center-hr m-5">
+										<hr class="hr25-pourcent center">
+									</div>
+
+									<div
+										class="col-lg-12">
+										{# Le texte sous les cards #}
+										<div class="text-bas-page example-wrapper">
+											{% for texte in textes %}
 												<div class="texte">
-													<p class="lead text-accueil">{{ texte.sixthText | nl2br }}</p>
+													<p class="lead text-accueil">{{ texte.fifthText | nl2br }}
+													</p>
 													{% if is_granted("ROLE_ADMIN") %}
 														<div class="boutonModifierTexte">
 															<button class="button_show btn btn-outline-success">Modifier le texte</button>
 														</div>
 														<div class="form-group formulaire" id="form">
-															{{ form(formSixth) }}
+															{{ form(formFifth) }}
 																<div
 																	class="mt-3 mb-5 text-center">
-																	{# <p>{{ form_widget(formSixth.Enregistrer) }}</p> #}
+																	{# <p>{{ form_widget(formFifth.Enregistrer) }}</p> #}
 																	<button class="button_close btn btn-outline-secondary">Annuler</button>
 																</div>
 															</div>
 														{% endif %}
 													</div>
-												{% endfor %}
+													<div class="texte">
+														<p class="lead text-accueil">{{ texte.sixthText | nl2br }}</p>
+														{% if is_granted("ROLE_ADMIN") %}
+															<div class="boutonModifierTexte">
+																<button class="button_show btn btn-outline-success">Modifier le texte</button>
+															</div>
+															<div class="form-group formulaire" id="form">
+																{{ form(formSixth) }}
+																	<div
+																		class="mt-3 mb-5 text-center">
+																		{# <p>{{ form_widget(formSixth.Enregistrer) }}</p> #}
+																		<button class="button_close btn btn-outline-secondary">Annuler</button>
+																	</div>
+																</div>
+															{% endif %}
+														</div>
+													{% endfor %}
+												</div>
 											</div>
-										</div>
-									{% endblock %}
+										{% endblock %}

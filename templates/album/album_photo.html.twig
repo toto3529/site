@@ -11,7 +11,7 @@
 	<div class="container container-profil">
 		{% if photoIntro is not empty %}
 			<figure class="textcenter">
-				<img src="{{ asset('photo-intro/'~ photoIntro) }}" alt="Albums photos de l'association Vélo Rando Nature Bruz">
+				<img class="opacite" src="{{ asset('photo-intro/'~ photoIntro) }}" alt="Albums photos de l'association Vélo Rando Nature Bruz">
 				<figcaption class="fig">Nos balades</figcaption>
 			</figure>
 		{% else %}
