@@ -77,30 +77,34 @@
 					</div>
 
 					{# <!----------------------- Carrousel -----------------------------------> #}
+					{% if photoCarousels %}
+						<div class="box">
+							<div class="marquee">
+								<div class="marqueegroup">
+									<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage1()) }}">
+									<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage2()) }}">
+									<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage3()) }}">
+									<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage4()) }}">
+									<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage5()) }}">
+									<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage6()) }}">
+									<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage7()) }}">
+								</div>
 
-					<div class="box">
-						<div class="marquee">
-							<div class="marqueegroup">
-								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage1()) }}">
-								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage2()) }}">
-								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage3()) }}">
-								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage4()) }}">
-								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage5()) }}">
-								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage6()) }}">
-								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage7()) }}">
-							</div>
-
-							<div aria-hidden="true" class="marqueegroup">
-								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage1()) }}">
-								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage2()) }}">
-								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage3()) }}">
-								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage4()) }}">
-								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage5()) }}">
-								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage6()) }}">
-								<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage7()) }}">
+								<div aria-hidden="true" class="marqueegroup">
+									<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage1()) }}">
+									<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage2()) }}">
+									<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage3()) }}">
+									<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage4()) }}">
+									<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage5()) }}">
+									<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage6()) }}">
+									<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage7()) }}">
+								</div>
 							</div>
 						</div>
-					</div>
+
+						{% else %}
+						<!-- Le carousel est vide ou inexistant -->
+					{% endif %}
 
 
 					{# Paragraphe après Carrousel #}

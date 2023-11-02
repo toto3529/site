@@ -18,38 +18,46 @@
 					<h2>Modifier les Photos</h2>
 					{{ form(form) }}
 					</div>
-					<div class="col-md-3">
-						<h3>Image 1</h3>
-						<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage1()) }}" alt="photo 1 Carousel" class="img-thumbnail">
-					</div>
-					<div class="col-md-3">
-						<h3>Image 2</h3>
-						<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage2()) }}" alt="photo 2 Carousel" class="img-thumbnail">
-					</div>
-					<div class="col-md-3">
-						<h3>Image 3</h3>
-						<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage3()) }}" alt="photo 3 Carousel" class="img-thumbnail">
-					</div>
+					{% if photoCarousels %}
+						<div class="col-md-3">
+							<h3>Image 1</h3>
+							<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage1()) }}" alt="photo 1 Carousel" class="img-thumbnail">
+						</div>
+						<div class="col-md-3">
+							<h3>Image 2</h3>
+							<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage2()) }}" alt="photo 2 Carousel" class="img-thumbnail">
+						</div>
+						<div class="col-md-3">
+							<h3>Image 3</h3>
+							<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage3()) }}" alt="photo 3 Carousel" class="img-thumbnail">
+						</div>
+						{% else %}
+						<!-- Les photos du carousel sont vides -->
+					{% endif %}
 				</div>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-3">
-				<h3>Image 4</h3>
-				<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage4()) }}" alt="photo 4 Carousel" class="img-thumbnail">
-			</div>
-			<div class="col-md-3">
-				<h3>Image 5</h3>
-				<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage5()) }}" alt "photo 5 Carousel" class="img-thumbnail">
-			</div>
-			<div class="col-md-3">
-				<h3>Image 6</h3>
-				<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage6()) }}" alt="photo 6 Carousel" class="img-thumbnail">
-			</div>
-			<div class="col-md-3">
-				<h3>Image 7</h3>
-				<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage7()) }}" alt="photo 7 Carousel" class="img-thumbnail">
-			</div>
+			{% if photoCarousels %}
+				<div class="col-md-3">
+					<h3>Image 4</h3>
+					<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage4()) }}" alt="photo 4 Carousel" class="img-thumbnail">
+				</div>
+				<div class="col-md-3">
+					<h3>Image 5</h3>
+					<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage5()) }}" alt "photo 5 Carousel" class="img-thumbnail">
+				</div>
+				<div class="col-md-3">
+					<h3>Image 6</h3>
+					<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage6()) }}" alt="photo 6 Carousel" class="img-thumbnail">
+				</div>
+				<div class="col-md-3">
+					<h3>Image 7</h3>
+					<img src="{{ asset('photo-carousel/' ~ photoCarousels.getImage7()) }}" alt="photo 7 Carousel" class="img-thumbnail">
+				</div>
+				{% else %}
+				<!-- Les photos du carousel sont vides -->
+			{% endif %}
 		</div>
 	</div>
 {% endblock %}
