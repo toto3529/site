@@ -1,0 +1,5 @@
+Pour mettre le site en maintenance, il suffit de renommer le fichier " .maintenanceOFF " en " .maintenance "
+
+Pour remettre le site en ligne, il suffit de renommer le fichier " .maintenance " en " .maintenanceOFF "
+
+Il se mettra automatiquement en maintenance avec le template : maintenance.html.twig

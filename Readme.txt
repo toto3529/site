@@ -10,7 +10,7 @@ La version Symfony du projet est 4.4.44 :
 -> Prévoir une montée de version avant toute modification conséquente du site. 
 
 
-- J'ai tenté d'installer les modules Glide et Liip Imagine, pour pouvoir générer des vignettes des photos contenues dans l'album-photo, pour réduire la masse de données à l'affichage du carousel de la page accueil. je n'ai pas réussi à les faire fonctionner, les bundles ne s'installent pas correctement, certainement à cause de ces conflits.
+- J'ai tenté d'installer les modules Glide et Liip Imagine, pour pouvoir générer des vignettes des photos contenues dans l'album-photo, pour réduire la masse de données à l'affichage du carrousel de la page accueil. je n'ai pas réussi à les faire fonctionner, les bundles ne s'installent pas correctement, certainement à cause de ces conflits.
 
 
 - Afin de permettre à l'administrateur d'obtenir des statistiques sur la fréquentation du site, j'ai implémenté le module Matomo, car il est plus conforme à la protection des données au sens Européen, que Google Analytics qui est aujourdh'hui déconseillé à ce titre. 
